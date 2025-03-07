@@ -1,0 +1,39 @@
+variableName,description,unitText
+Biogeographic area,Biogeographical region to which the site belongs,Categorical
+Country,Country where the site is located,Categorical
+Site,The name of the site,Categorical
+Site_name_machine_readable,Machine-readable name of the site,Categorical
+Archive type,"Type of core (i.e. marine, terrestrial, lacustrine, archaeological, etc.)",Categorical
+Latitude,Exact latitude (in decimal degrees) where the site is located,decimalDegree
+Longitude,Exact longitude (in decimal degrees) where the site is located,decimalDegree
+Altitude,Altitude of the site,meters
+Database,Database where the site was extracted from,Categorical
+Pollen,Modern if the pollen grains were obtained from a modern sediment or fossil if fossilized pollen grains are preserved in older sediments,Categorical
+Published,The site has been published in a database repository,Categorical
+Data received (from authors),"Data received from authors, not included in a publicly available database",Categorical
+Link to database,Link to the exact repository of the database from which the site was extracted,Categorical
+dataset_id,ID of Neotoma dataset,Categorical
+Dated,The site includes a calendar chronology or radiocarbon dates,Categorical
+Recalibrated,Site radiocarbon dates have been updated to calendar years,Categorical
+Period,"Geological time period of the site, including Late Holocene (Meghalayan: 0 to 4.2 ka BP), Mid Holocene (Northgrippian: 4.2 to 8.2 ka BP), Early Holocene (Greenlandian: 8.2 to 11.7 ka BP), Pre-Holocene (11.7 to MA BP), Holocene (0 to 11.7 ka BP), and Holocene-Pre-Holocene (present to MA BP)",Categorical
+African Humid Period,Indicates whether the site or part of the site coincides with all or part of the African Humid Period (14.8 to 5 ka BP),Categorical
+Minimum mean cal BP,Minimum mean age (Before Present),years BP
+Maximum mean cal BP,Maximum mean age (Before Present),years BP
+Observations,Observations about the chronology of the site,Categorical
+"Concentration (Lycopodium, Eucalyptus, Spikes)",Indicates whether the site includes Lycopodium (or Eucalyptus) tablet counts for concentration calculation,Categorical
+Reference 1,Reference of the site,Categorical
+Reference 2,Reference of the site,Categorical
+Reference 3,Reference of the site,Categorical
+Reference 4,Reference of the site,Categorical
+Reference 5,Reference of the site,Categorical
+Reference 6,Reference of the site,Categorical
+Reference 7,Reference of the site,Categorical
+Reference 8,Reference of the site,Categorical
+Reference 9,Reference of the site,Categorical
+Reference 10,Reference of the site,Categorical
+Reference 11,Reference of the site,Categorical
+Reference 12,Reference of the site,Categorical
+Reference 13,Reference of the site,Categorical
+Reference 14,Reference of the site,Categorical
+Reference 15,Reference of the site,Categorical
+Reference 16,Reference of the site,Categorical

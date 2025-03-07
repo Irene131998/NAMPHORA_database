@@ -1,0 +1,35 @@
+Habit categories Vincens et al. (2007),Description Vincens et al. (2007),Habit (life form),Description,Habit_summarised (for percentage calculation),REPASAR
+A,Trees or shrubs,Trees,Trees,Trees,
+AP,Trees or shrubs hemiparasitic,Shrubs,Shrubs,Shrubs,
+AL,"Trees, Lianas or climbing shrubs",Herbs,Herbs,Herbs,
+L,Lianas,Lianas,Woody climbers,Shrubs,X
+PA,Tree-like palms,Aquatic,Only Aquatic taxa,Aquatic,
+PL,Climbing palms,Parasitic,Parasitic of other plants,Parasitic,
+NG,Giant herbs,Palm,Palm-like trees,Trees,
+PI,Undifferentiated palms,Algae,Algae,Algae,
+I,Undifferentiated,Mangrove,Shrub or Trees that only grows in coastal saline or brackish water,Aquatic,
+,,Climbers,Herbs or Shrubs with climbing habit,Herbs or Shrubs,X
+,,Climbing herbs,Herbs with climbing habit,Herbs,X
+,,Climbing shrubs,Shrubs with climbing habit,Shrubs,X
+,,Shrubs or Climbers,"Shrubs, erect or climbing",Shrubs,X
+,,Herbs or Climbers,"Herbs, erect or climbing",Herbs,X
+,,Shrubs or Trees,Shrubs or Trees,Shrubs or Trees,
+,,Herbs or Shrubs,Herbs or Shrubs,Herbs or Shrubs,
+,,Shrubs or Lianas,Erect shrubs or Lianas (a group of woody climbers),Shrubs,X
+,,Trees or Lianas,Trees or Lianas (a group of woody climbers),Shrubs or Trees,X
+,,Herbs or Shrubs or Trees,Herbs or Shrubs or Trees,Herbs or Shrubs or Trees,
+,,Herbs or Shrubs or Lianas,Herbs or Shrubs or Lianas (woody climbers),Herbs or Shrubs,X
+,,Herbs or Shrubs or Climbers,"Herbs or Shrubs, erect or climbing",Herbs or Shrubs,X
+,,Shrubs or Trees or Lianas,Erect shrubs or Lianas (a group of woody climbers) or Trees,Shrubs or Trees,X
+,,Shrubs or Trees or Climbers,"Shrubs, erect or climbing, or Trees",Shrubs or Trees,X
+,,Shrubs or Trees or Epiphytic,"Shrubs, sometimes Epiphytic (growing on the surface of another plant), or Trees",Shrubs or Trees,
+,,Herbs or Climbers or Epiphytic,"Herbs, erect or climbing, sometimes Epiphytic (growing on the surface of another plant)",Herbs,X
+,,Herbs or Shrubs or Trees or Lianas,Herbs or Shrubs or Trees or Lianas (woody climbers),Herbs or Shrubs or Trees,X
+,,Herbs or Shrubs or Trees or climbers,"Herbs or Shrubs, sometimes with climbing habit, or Trees",Herbs or Shrubs or Trees,X
+,,Shrubs or Trees or Lianas or Epiphytic,"Shrubs, erect or climbing, sometimes Epiphytic (growing on the surface of another plant) or Trees",Shrubs or Trees,X
+,,Geophytes,Geophytes,Geophyte,
+,,Selaginellaceae,Selaginellaceae,Selaginellaceae,X
+,,Bryophyta,Bryophyta,Bryophyta,X
+,,Fungi,Fungi,Fungi,X
+,,Fern,Fern,Fern,X
+,,Hepaticae,Hepaticae,Hepaticae,X

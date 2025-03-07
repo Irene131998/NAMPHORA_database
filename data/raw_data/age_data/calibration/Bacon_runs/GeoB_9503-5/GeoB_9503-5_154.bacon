@@ -1,0 +1,21 @@
+## Ran on Sun Aug  4 14:12:24 2024 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : KIA 28454 , 1675, 30, 20,  0,  0,  3,  4,  2;
+Det 1 : KIA 29768 , 1870, 30, 70,  0,  0,  3,  4,  2;
+Det 2 : KIA 29767 , 2310, 30, 140,  0,  0,  3,  4,  2;
+Det 3 : KIA 28452 , 2555, 30, 213,  0,  0,  3,  4,  2;
+Det 4 : KIA 29766 , 2665, 30, 320,  0,  0,  3,  4,  2;
+Det 5 : KIA 29765 , 2740, 30, 410,  0,  0,  3,  4,  2;
+Det 6 : KIA 28451 , 2925, 30, 529,  0,  0,  3,  4,  2;
+Det 7 : KIA 29764 , 2965, 30, 600,  0,  0,  3,  4,  2;
+Det 8 : KIA 29763 , 3600, 30, 700,  0,  0,  3,  4,  2;
+Det 9 : KIA 28450 , 4140, 35, 780,  0,  0,  3,  4,  2;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 154,  -74,  1e+06,  1713,  1692,  5,  5,  1.5,  0.75, 20, 790, 698268;

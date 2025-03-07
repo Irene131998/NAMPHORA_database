@@ -1,0 +1,15 @@
+## Ran on Fri Jan 17 17:25:55 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : ETH-15432 , 1765, 75, 265.8,  0,  0,  3,  4,  2;
+Det 1 : ETH-13970 , 1915, 80, 273.5,  0,  0,  3,  4,  2;
+Det 2 : ETH-15433 , 2095, 95, 280.5,  0,  0,  3,  4,  2;
+Det 3 : ETH-15434 , 2270, 105, 302.5,  0,  0,  3,  4,  2;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 9,  -75,  1e+06,  1796,  1778,  5,  5,  1.5,  0.075, 265.8, 310.8, 407452;

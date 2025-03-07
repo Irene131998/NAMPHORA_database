@@ -1,0 +1,19 @@
+## Ran on Mon Mar  4 16:44:00 2024 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : SacA 7200 , 1060, 30, 55.5,  0,  0,  3,  4,  2;
+Det 1 : SacA 7201 , 1345, 30, 105.5,  0,  0,  3,  4,  2;
+Det 2 : SacA 7202 , 1790, 50, 149.5,  0,  0,  3,  4,  2;
+Det 3 : SacA 7203 , 2810, 45, 205.6,  0,  0,  3,  4,  2;
+Det 4 : SacA 7205 , 3810, 30, 215.5,  0,  0,  3,  4,  2;
+Det 5 : SacA 7208 , 4025, 30, 305.5,  0,  0,  3,  4,  2;
+Det 6 : SacA 7209 , 6305, 30, 365.5,  0,  0,  3,  4,  2;
+Det 7 : SacA 7210 , 6475, 30, 405,  0,  0,  3,  4,  2;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 72,  -74,  1e+06,  1015,  1060,  5,  5,  1.5,  0.075, 55.5, 415.5, 176;

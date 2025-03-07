@@ -1,0 +1,14 @@
+## Ran on Tue Mar  5 17:21:08 2024 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : Lito_1 , 1010, 100, 227.5,  0,  0,  3,  4,  1;
+Det 1 : Lito_2 , 2750, 100, 505,  0,  0,  3,  4,  1;
+Det 2 : Lito_3 , 4350, 110, 662.5,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 89,  -74,  1e+06,  928,  881,  5,  5,  1.5,  0.15, 227.5, 672.5, 231858;

@@ -1,0 +1,11 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+639043,Carbon-14,Radiocarbon years BP,82,4,1865,20,20,false,,BE-5282,Twig, periderm, Erica leaf fragments, seed indet.,
+639044,Carbon-14,Radiocarbon years BP,137,4,2120,75,75,false,,BE-5283,Wood, twigs, periderm indet.,
+639045,Carbon-14,Radiocarbon years BP,208,2,2940,90,90,false,,Poz-62147,Wood indet.,
+639046,Carbon-14,Radiocarbon years BP,357.5,5,3250,45,45,false,,BE-4044,Twig with periderm indet.,
+639047,Carbon-14,Radiocarbon years BP,721,2,5275,35,35,false,,Poz-62149,Charred Erica leaf,
+639048,Carbon-14,Radiocarbon years BP,457.5,5,3750,60,60,false,,BE-4045,Erica leaf, twig, wood indet.,
+639049,Carbon-14,Radiocarbon years BP,641,2,4620,40,40,false,,Poz-62148,Charred leaves indet.,
+639050,Carbon-14,Radiocarbon years BP,891,2,6985,35,35,false,,Poz-56288,Charred leaves indet.,
+639051,Carbon-14,Radiocarbon years BP,542.5,5,3960,40,40,false,,BE-4046,Leaf fragments, wood indet.,
+639052,Carbon-14,Radiocarbon years BP,870.5,1,6535,30,30,false,,Poz-56286,Seed indet.,

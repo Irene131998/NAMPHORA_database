@@ -1,0 +1,3 @@
+sampleid,geochrontype,agetype,depth,thickness,age,errorolder,erroryounger,infinite,delta13c,labnumber,materialdated,notes,
+356545,Carbon-14,Radiocarbon years BP,225,10,4535,40,40,FALSE,,GrN 5426,Peat,Pretreatment: acid.,
+356546,Carbon-14,Radiocarbon years BP,497.5,5,45800,1900,1900,TRUE,,GrN 6181,Black, peaty clay,Pretreatment: acid.

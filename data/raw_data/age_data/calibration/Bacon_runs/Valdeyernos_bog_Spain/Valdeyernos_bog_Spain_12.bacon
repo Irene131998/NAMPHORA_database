@@ -1,0 +1,15 @@
+## Ran on Wed Mar  6 13:03:16 2024 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  2 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  2 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : CNA 717 , -102, 21, 14.5,  0,  0,  3,  4,  1;
+Det 1 : CNA 719 , 95, 30, 29.5,  0,  0,  3,  4,  1;
+Det 2 : CNA 718 , 515, 30, 40,  0,  0,  3,  4,  1;
+Det 3 : CNA 093 , 2935, 33, 49,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 12,  -74,  1e+06,  -74,  -74,  5,  5,  1.5,  0.015, 14.5, 50.5, 806198;

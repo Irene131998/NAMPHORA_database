@@ -1,0 +1,5 @@
+,"method [undefined]","depthcm [cm]","thickness [cm]","materialdated [undefined]","agebp [years]","agesdup [years]","grthanage [undefined]","basis [undefined]","enriched [undefined]","labnumber [undefined]","deltac13 [undefined]","notes [undefined]"
+,Method,Depth (cm),thickness,Material dated,14C age (yr BP),error,grthanage,basis,enriched,labnumber,deltac13,notes
+,14C,250.0,,Organic matter,4280.0,60.0,,,,Beta-93999,,AMS
+,14C,700.0,,Organic matter,8750.0,200.0,,,,,,Conventional
+,14C,775.0,,Organic matter,9000.0,200.0,,,,,,Conventional

@@ -1,0 +1,22 @@
+## Ran on Thu Mar 14 11:27:47 2024 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : tig_1 , 2990, 100, 2075,  0,  0,  3,  4,  1;
+Det 1 : tig_2 , 1755, 140, 2075,  0,  0,  3,  4,  1;
+Det 2 : tig_3 , 3220, 100, 2205,  0,  0,  3,  4,  1;
+Det 3 : tig_4 , 2840, 100, 2205,  0,  0,  3,  4,  1;
+Det 4 : tig_5 , 4440, 100, 2443,  0,  0,  3,  4,  1;
+Det 5 : tig_6 , 4415, 100, 2443,  0,  0,  3,  4,  1;
+Det 6 : tig_7 , 6865, 140, 2806,  0,  0,  3,  4,  1;
+Det 7 : tig_8 , 7760, 110, 2872,  0,  0,  3,  4,  1;
+Det 8 : tig_9 , 8240, 90, 3030,  0,  0,  3,  4,  1;
+Det 9 : tig_10 , 8920, 90, 3080,  0,  0,  3,  4,  1;
+Det 10 : tig_11 , 10220, 250, 3178,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 111,  -74,  1e+06,  2925,  2885,  5,  5,  1.5,  0.3, 2075, 3185, 859315;

@@ -1,0 +1,20 @@
+## Ran on Tue Mar  5 13:58:21 2024 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : Pta-8642 , 1350, 110, 1,  0,  0,  3,  4,  1;
+Det 1 : Pta-8477 , 1460, 60, 13.5,  0,  0,  3,  4,  1;
+Det 2 : Pta-8471 , 2550, 100, 94.5,  0,  0,  3,  4,  1;
+Det 3 : Pta-8673 , 2620, 100, 100.5,  0,  0,  3,  4,  1;
+Det 4 : Pta-8667 , 3820, 50, 124.5,  0,  0,  3,  4,  1;
+Det 5 : GrA-20794 , 3980, 50, 130,  0,  0,  3,  4,  1;
+Det 6 : Pta-8678 , 4030, 100, 136.5,  0,  0,  3,  4,  1;
+Det 7 : GrA-20795 , 4250, 50, 141.5,  0,  0,  3,  4,  1;
+Det 8 : Pta-8478 , 5860, 80, 168.5,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 35,  -74,  1e+06,  1387,  1503,  5,  5,  1.5,  0.075, 1, 176, 415905;

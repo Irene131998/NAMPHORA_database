@@ -1,0 +1,5 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+501033,Uranium series,Calendar years BP,5,0,0,0,0,false,,HL1,speleothem,
+501034,Uranium series,Calendar years BP,15,0,11800,400,400,false,,HL8,speleothem,
+501035,Uranium series,Calendar years BP,10,0,10000,1520,1520,false,,HL13,speleothem,
+501036,Uranium series,Calendar years BP,20,0,176500,27000,27000,false,,HL9,speleothem,

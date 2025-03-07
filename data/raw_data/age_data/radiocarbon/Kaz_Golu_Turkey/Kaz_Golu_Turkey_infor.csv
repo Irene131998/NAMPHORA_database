@@ -1,0 +1,3 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+418400,Carbon-14,Radiocarbon years BP,420,10,2220,90,90,false,,GrN18624,,
+418401,Carbon-14,Radiocarbon years BP,955,10,8770,80,80,false,,GrN12791,,

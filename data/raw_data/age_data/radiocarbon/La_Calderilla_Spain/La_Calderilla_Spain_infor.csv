@@ -1,0 +1,8 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+457181,Carbon-14,Radiocarbon years BP,418,1,2420,34,34,false,,UBA-21295,charcoal, >1 mm,
+457179,Carbon-14,Radiocarbon years BP,200,1,2244,35,35,false,,UBA-25487,bulk sediment, mainly charcoal,
+457182,Carbon-14,Radiocarbon years BP,418,1,2322,49,49,false,,UBA-21296,charcoal, 150 µm to 1 mm,
+457183,Carbon-14,Radiocarbon years BP,453,1,2727,26,26,false,,UBA-24109,bulk sediment, mainly charcoal,
+457180,Carbon-14,Radiocarbon years BP,357,1,2200,42,42,false,,UBA-24108,bulk sediment, mainly charcoal,
+457184,Carbon-14,Radiocarbon years BP,822,1,9270,30,30,false,,Beta-394947,bulk sediment, mainly charcoal,
+457185,Carbon-14,Radiocarbon years BP,610,1,3713,28,28,false,,UBA-25488,bulk sediment, mainly charcoal,

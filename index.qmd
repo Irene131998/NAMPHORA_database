@@ -1,0 +1,825 @@
+---
+title: "NaAMPHoRA: Unveiling the Sahara’s Past – A High-Resolution Database of Fossil and Modern Pollen Records"
+date: 2025-04-30
+author:
+  
+  - name: Irene Solano
+    id: is
+    orcid: 0000-0001-5667-6008
+    email: irene13@liverpool.ac.uk
+    affiliation: 
+      - name: Department	of	Evolution,	Ecology	 and	Behaviour,	University	of	Liverpool, Liverpool, UK
+
+  - name: Jakob Bro-Jorgensen
+    id: jb
+    affiliation: 
+        - name: Department	of	Evolution,	Ecology	 and	Behaviour,	University	of	Liverpool, Liverpool, UK
+
+  - name: Ignacio A. Lazagabaster
+    id: ial
+    affiliation: 
+      - name: Department	of	Evolution,	Ecology	 and	Behaviour,	University	of	Liverpool, Liverpool, UK
+
+      - name: Centro	Nacional	de	Investigación	Sobre	 Evolución	Humana	CENIEH, Burgos, Spain
+     
+  - name: Chris D. Thomas
+    id: ct
+    affiliation: 
+      - name: Leverhulme	Centre	for	Anthropocene	 Biodiversity,	Department	of	Biology,	 University	of	York, York, UK
+
+  - name: Saúl Manzano
+    id: sm
+    affiliation: 
+      - name: Área de Botánica, Departamento de Biodiversidad y Gestión Ambiental, Facultad de Ciencias Biológicas y Ambientales, Universidad de León, León, Spain
+
+abstract: > 
+ Fossil pollen records are crucial for reconstructing past vegetation and climate, offering insights into the origin and distribution of past flora. Modern pollen records, used as analogues, help interpret these reconstructions by linking pollen types to contemporary vegetation and climate. Additionally, integrating fossil pollen records with plant functional traits enhances our understanding of ecological and climatic adaptations over time. Despite the significant contributions of the African Pollen Database (APD) and Neotoma, access to Northern African and Arabian pollen data remains limited, particularly for large-scale analyses. This paper aims to address these challenges by compiling and providing machine-readable access to the most comprehensive set of pollen records available for the region.
+keywords:
+  - Fossil pollen records
+  - Modern pollen records
+  - Palaeoecology
+  - Holocene
+  - Databases
+license: "CC BY"
+copyright: 
+  holder: Irene Solano
+  year: 2025
+citation: 
+  container-title: Scientific Data
+  volume: x 
+  issue: x
+  doi: x
+funding: "The author received funding from NERC ACCE DTP and the University of Liverpool"
+output: html_document
+toc: true  # Add table of contents for navigation
+number-sections: true
+execute:
+  echo: false  # Do not show R code in the final report
+  warning: false  # Suppress warnings
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Table of Contents
+
+1.  [Introduction](#intro)
+
+2.  [Project structure](#project-structure)
+
+3.  [Data pipeline](#data-pipeline)
+
+    3.1. [Project set up](#project-setup)
+
+    3.2. [Data Preparation](#data-preparation)
+
+    3.3. [Data Visualisation](#data-visualisation)
+
+    3.4. [Metadata](#metadata)
+
+    3.5. [Functions](#functions)
+
+4.  [References](#references)
+
+# Introduction {#intro}
+
+![](images/Database_logo.png)
+
+The ***NaAMPHoRA*** (*North African, Arabian, and Mediterranean Pollen
+Holocene Records Archive*) is a high-resolution database compiling
+fossil and modern pollen records from North Africa, Arabia, and the
+Mediterranean.
+
+The database includes fossil and modern pollen records, both raw and
+harmonised, as well as uncalibrated and calibrated radiocarbon dates.
+The harmonised pollen list provides information on growth form (habit),
+phytogeographical affinity categorisation, and 15 plant functional
+traits.
+
+Pollen records and radiocarbon dates were sourced from the Neotoma
+(https://www.neotomadb.org/) and African Pollen Database (APD:
+https://africanpollendatabase.ipsl.fr/#/home) databases, and unpublished
+data were obtained directly from the authors. Growth form and
+phytogeographical affinity data for each harmonised pollen type were
+compiled using the Global Biodiversity Information Facility (GBIF:
+https://www.gbif.org/), the Plants of the World Online (POWO:
+https://powo.science.kew.org/) website, and relevant literature, while
+plant functional traits were retrieved from the Botanical Information
+and Ecology Network (BIEN: https://bien.nceas.ucsb.edu/bien/ ) and TRY
+Plant Trait Database (TRY: https://www.try-db.org/TryWeb/Home.php)
+databases.
+
+# Project structure {#project-structure}
+
+Different sections (folders) of the project are as follows:
+
+-   `data/`: All raw and processed data are stored in this folder.
+
+    -   `/raw_data`: contains raw data on the following subfolders:
+
+        -   `/age_data`: contains information on radiocarbon dates and
+            their calibration for each dated pollen record.
+
+            -   `/calibration`: contains calibration data for each dated
+                fossil pollen record. If more than two radiocarbon dates
+                are available, calibration is performed using a Bayesian
+                age-depth model with the *rbacon* R package
+                (`Bacon_runs` folder). If only a single date is
+                reported, calibration is performed using the *rice* R
+                package (`Single_depth_calibration` folder).
+
+            -   `/radiocarbon`: contains the uncalibrated radiocarbon
+                dates for each dated fossil pollen record. Obtained from
+                the APD (https://africanpollendatabase.ipsl.fr/#/home),
+                from Neotoma (https://www.neotomadb.org/), from Giesecke
+                *et al.* (2014) \[1\], and from the authors directly.
+
+        -   `/mapping_data`: contains the WWF terrestrial ecoregions of
+            the world shapefile `/EcoregionsWWF_2017` (retrieved from
+            https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world)
+            and the elevation raster file (*elevation.tiff*) obtained
+            from Lazagabaster *et al.* (2024). \[2\]
+
+        -   `/plant_functional_types`: contains the `/TRY` folder, which
+            includes plant functional trait data (i.e. leaf type)
+            downloaded from the TRY database. Specifically, it contains
+            a list of original taxa present in the TRY database
+            (TryAccSpecies.csv), a list of taxa selected for download
+            (Try_list_download.csv) and the trait information retrieved
+            from the database for the selected taxa (leaf_type_TRY.xlsx)
+
+        -   `/pollen_data`: contains raw fossil (`/fossil` folder) and
+            modern (`/modern` folder) pollen records, obtained from the
+            APD (https://africanpollendatabase.ipsl.fr/#/home), from
+            Neotoma (https://www.neotomadb.org/) using the neotoma2
+            package and the Neotoma API, and from the authors directly.
+
+        -   `/taxonomy`: contains two subfolders:
+
+            -   `/harmonisation_lists`: contains harmonisation tables
+                from Lézine *et al*. (2009) \[3\], Mottl *et al.* (2021)
+                \[4\] & the APD
+                (https://africanpollendatabase.ipsl.fr/#/taxon-dict) &
+                the pollen inventory from Vincens *et al.* (2007) \[5\],
+                which includes information on habit, habitat and
+                phytogeographical distribution of APD pollen types.
+
+            -   `/raw_taxa_list`: contains the *raw_pollen_types.csv*
+                file, which lists the raw pollen types from all pollen
+                records compiled in the *NaAMPHoRA* database.
+
+    -   `/processed_data:` contains processed data on the following
+        subfolders:
+
+        -   `/age_calibrated`: contains calibrated radiocarbon dates for
+            each dated pollen record.
+
+        -   `/phytogeographical_affinity`: contains a file listing the
+            phytogeographical affinities for each harmonised pollen
+            type.
+
+        -   `/plant_functional_types`: contains the final processed
+            plant functional traits data in the file *total_pfts.csv*.
+
+        -   `/pollen_data`: contains processed fossil (`/fossil` folder)
+            and modern (`/modern` folder) pollen records. Each folder
+            includes:
+
+            -   `/harmonised_counts`: harmonised pollen records with
+                original counts.
+
+            -   `/harmonised_percentages`: harmonised pollen records
+                with calculated percentages.
+
+        -    `/taxonomy`: contains the *harmonised_taxonomy_list.csv*
+            file created for the *NaAMPHoRA* database.
+
+-   `docs/`
+
+    -   `/supplementary_info`: contains additional resources, organised
+        into:
+
+        -   `/original_excel_files_received_from_authors`: stores the
+            original files provided by the authors.
+
+        -   `/references`: contains the *pollen_records_references.bib,
+            phytogeographical_affinity_references.bib,
+            habit_references.bib, pfts_references.bib &
+            taxonomy_references.bib* files.
+
+-   `images/`: contains the PNG files of the database workflow and the
+    database logo.
+
+-   `metadata/`
+
+    -   `/age_calibrated`: contains the file
+        *calibration_information.csv*, which provides details on the
+        calibration process for each record.
+
+    -   `/phytogeographical_affinity`: contains the file
+        *phytogeographical_affinity_categories.csv*, which provides a
+        definition for each phytogeographical affinity category and the
+        corresponding reference.
+
+    -   `/plant_functional_types`: contains the file
+        *pfts_categories.csv*, which provides a definition for each
+        plant functional trait and the corresponding reference.
+
+    -   `/pollen_data`: contains the following:
+
+        -   *database.csv:* a file that contains the metadata
+            information for all the pollen records compiled in the
+            *NaAMPHoRA* database.
+
+        -   *pollen_metadata.csv*: a file that provides an explanation
+            for each column of the *database.csv* file.
+
+        -   *database.html*: a file that contains metadata for the
+            *database.csv* file.
+
+        -   `/pollen_metadata_html_files`: a folder that accompanies
+            *database.html* and is generated when running script
+            `pollen_metadata_html.qmd.`
+
+    -   `/references`: contains the file *database_references.csv*,
+        which lists references for each category of the database (i.e.
+        pollen records/age data, taxonomy, habit, phytogeographical
+        affinity and plant functional traits).
+
+    -   `/taxonomy`: contains the following:
+
+        -   *habit_categories.csv*: a file that provides a definition
+            for each plant habit (growth form) and the corresponding
+            reference
+
+        -   *taxonomy_metadata.csv*: a file that provides an explanation
+            for each column of the *harmonised_taxonomy_list.csv* file.
+
+        -   *taxonomy_metadata_html*: a file that contains metadata for
+            the *harmonised_taxonomy_list.csv* file.
+
+        -   `/taxonomy_metadata_html_files`: a folder that accompanies
+            *taxonomy_metadata_html* and is generated when running
+            script `taxonomy_metadata_html.qmd.`
+
+-   `outputs/`: This folder contains all the outputs of the data
+    visualisation in the form of maps (`outputs/maps/`) & graphs
+    (`outputs/graphs/`)
+
+-   `README_files/`: The files created when rendered this html document.
+
+-   `scripts/`: This folder contains all scripts of the data pipeline.
+    It also includes the following subfolder:
+
+    -   `/renv`: Stores all installed R packages along with a record of
+        their versions. 
+
+# Data pipeline {#data-pipeline}
+
+Data extraction, processing, and visualisation are conducted in R v.
+4.4.1., following this data pipeline:
+
+![](images/Database%20diagram.png) *Run the scripts in the following
+order:*
+
+## Dependencies set up {#dependencies-setup}
+
+`setup.R` (Run this script to install dependencies)
+
+## Data Preparation {#data-preparation}
+
+`01_pollen_list.R` (Extracts pollen records from Neotoma using the
+neotoma2 v1.0.5 R package and generates a raw pollen list for taxonomic
+harmonisation)
+
+`02_harmonisation_lists.`*R* (Adds the number of pollen sequences per
+pollen type and incorporates published harmonisation lists into the
+harmonised taxonomy list)
+
+`03_processing_pollen_data.R` (Processes raw pollen data, including
+taxonomic harmonisation, radiocarbon date recalibration, and percentage
+calculations)
+
+`04_process_PFTs.R` (Downloads and processes plant functional traits
+(PFTs) from the BIEN and TRY databases)
+
+`05_calibrate_14C_bacon.R` (Calibrates radiocarbon dates using Bayesian
+age-depth modelling with the rbacon v3.2.0 R package)
+
+`06_calibrate_14C_single_depth.R` (Calibrates radiocarbon dates for
+single-depth samples using the rice v1.0.0 R package)
+
+`07_altitude_sites.R` (Assigns altitude values to sites lacking altitude
+information)
+
+## Data Visualisation {#data-visualisation}
+
+`08_maps.R` (Creates maps of all fossil and modern pollen records
+compiled in this database)
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+
+# Load libraries and functions----
+
+source("functions.R")
+
+libraries <- c("dplyr","readxl","readr","here","tidyr","BIEN","purrr","sp","terra","geodata","tidyterra","ggtext","ggplot2","openxlsx","stringr","leaflet","sf","quarto","htmlwidgets")
+
+# Install missing packages
+invisible(lapply(libraries, install_if_missing))
+
+# Load the libraries
+lapply(libraries, require, character.only = TRUE)
+
+# Read sites data
+sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
+sites$Latitude <- as.numeric(sites$Latitude)
+
+# Eliminate na rows
+sites <- sites |>
+  filter(!is.na(Dated))
+
+# Create a color palette based on the "Dated" column
+color_palette <- colorFactor(palette =  c("red", "blue","green"), domain = sites$Dated)
+
+# Create leaflet map 
+
+sites_map <- leaflet(sites) %>%
+  addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
+  addCircleMarkers(
+    lng = ~Longitude, lat = ~Latitude,  # Coordinates
+    color = ~color_palette(Dated),  # Color based on "Dated"
+    radius = 2, fillOpacity = 0.8,
+    popup = ~paste( "<b>Name:</b>", Site_name_machine_readable, "<br>",
+                    "<b>Dated:</b>", Dated, "<br>",
+                    "<b>Link:</b>", `Link to database`, "<br>")  # Show name of site, date info and link
+  ) %>%
+  addLegend(
+    position = "bottomright", 
+    pal = color_palette, values = ~Dated, 
+    title = "Dated", opacity = 1
+  )
+
+```
+
+```{r}
+#| fig-cap: "Figure 1. Map of pollen records (modern & dated and non-dated fossil records) compiled in the *NAAMPHoRA* database"
+sites_map
+```
+
+`09_description_database_figures.R` (Creates graphs to summarise and
+describe the database)
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+
+# 0. Load libraries and functions----
+
+source("functions.R")
+
+libraries <- c("dplyr","readxl","readr","here","tidyr","BIEN","purrr","sp","terra","geodata","tidyterra","ggtext","ggplot2","openxlsx","stringr","leaflet","sf","quarto")
+
+# Install missing packages
+invisible(lapply(libraries, install_if_missing))
+
+# Load the libraries
+lapply(libraries, require, character.only = TRUE)
+
+
+# 1) Read sites----
+
+sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
+
+# 2) Number sites per bigeographic region----
+
+# Total sites
+sites_biogeo <- sites |> select(Site_name_machine_readable,'Biogeographic area')
+
+# Count number of total sites per biogeographic region
+site_counts <- sites_biogeo |> 
+  count(`Biogeographic area`)
+names(site_counts)[2] <- "Total"
+
+# Modern sites
+modern_sites_biogeo <- sites |> filter(Pollen=="Modern") |> select(Site_name_machine_readable,'Biogeographic area')
+
+# Count number of total sites per biogeographic region
+modern_site_counts <- modern_sites_biogeo |> 
+  count(`Biogeographic area`)
+names(modern_site_counts)[2] <- "Modern"
+
+# Dated sites
+site_dated_filtered <- sites |> filter(Pollen=="Fossil")|> filter(Dated == "Yes")
+
+sites_dated_biogeo <- site_dated_filtered |>  select(Site_name_machine_readable,'Biogeographic area')
+
+# Count number of sites per biogeographic region
+site_dated_counts <- sites_dated_biogeo |> 
+  count(`Biogeographic area`)
+names(site_dated_counts)[2] <- "Dated"
+
+# Not dated sites
+site_not_dated_filtered <- sites |> filter(Pollen=="Fossil")|> filter(Dated == "No")
+sites_not_dated_biogeo <- site_not_dated_filtered |>  select(Site_name_machine_readable,'Biogeographic area')
+
+# Count number of sites per biogeographic region
+site_not_dated_counts <- sites_not_dated_biogeo |> 
+  count(`Biogeographic area`)
+names(site_not_dated_counts)[2] <- "Not dated"
+
+# Merge all counts into one dataframe
+sites_combined <- site_counts |> 
+  left_join(modern_site_counts, by = "Biogeographic area") |> 
+  left_join(site_dated_counts, by = "Biogeographic area") |> 
+  left_join(site_not_dated_counts, by = "Biogeographic area")
+
+# Reshape data to long format for ggplot
+sites_long <- sites_combined |> 
+  pivot_longer(cols = c("Total", "Modern","Dated", "Not dated"), 
+               names_to = "Site Type", 
+               values_to = "Count")
+
+
+# Define the order of periods (modify according to your data)
+order <- c("Total", "Modern","Dated", "Not dated")
+
+# Convert `Period` into a factor with the specified order
+sites_long$`Site Type` <- factor(sites_long$`Site Type`, levels = order)
+
+
+# Create the grouped bar plot
+combined_barplot <- ggplot(sites_long, aes(x = `Biogeographic area`, y = Count, fill = `Site Type`)) +
+  geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
+  theme_minimal() +
+  labs(x = "Biogeographic region", 
+       y = "Number of sites", 
+       fill = "Site type") +  # Ensure legend title is explicitly set
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size = 16),
+        plot.title = element_text(size = 18, face = "bold"),
+        legend.title = element_text(size = 14),  # Increase Site Type label size
+        legend.text = element_text(size = 14))
+# Save the plot
+ggsave(normalizePath("../outputs/graphs/combined_sites_biogeo_barplot.png"), combined_barplot, width = 17, height = 10, dpi = 300)
+
+
+# 3) Number sites (fossil and modern) per database----
+
+# Total sites
+sites_database <- sites |>  select(Site_name_machine_readable,Database, Pollen)
+
+# Count number of total sites per database
+total_counts <- sites_database |> 
+  count(Database)
+names(total_counts)[2] <- "Total"
+
+# Dated sites
+sites_database_fossil <- sites_database |> filter(Pollen=="Fossil")
+
+# Count number of sites per biogeographic region
+fossil_counts <- sites_database_fossil |> 
+  count(Database)
+names(fossil_counts)[2] <- "Fossil"
+
+# Not dated sites
+sites_database_modern <- sites_database |> filter(Pollen=="Modern")
+
+# Count number of sites per biogeographic region
+modern_counts <- sites_database_modern |> 
+  count(Database)
+names(modern_counts)[2] <- "Modern"
+
+# Merge all counts into one dataframe
+sites_combined_database <- total_counts |> 
+  left_join(fossil_counts, by = "Database") |> 
+  left_join(modern_counts, by = "Database")
+
+# Reshape data to long format for ggplot
+sites_long_database <- sites_combined_database |> 
+  pivot_longer(cols = c("Total", "Fossil", "Modern"), 
+               names_to = "Pollen Type", 
+               values_to = "Count")
+
+sites_long_database <- sites_long_database |> na.omit()
+# Create the grouped bar plot
+database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fill = `Pollen Type`)) +
+  geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
+  theme_minimal() +
+  labs(x = "Database", 
+       y = "Number of sites", 
+       fill = "Pollen type") +  # Ensure legend title is explicitly set
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size = 16),
+        plot.title = element_text(size = 18, face = "bold"),
+        legend.title = element_text(size = 14),  # Increase Site Type label size
+        legend.text = element_text(size = 14))
+# Save the plot
+ggsave(normalizePath("../outputs/graphs/database_barplot.png"), database_barplot, width = 17, height = 10, dpi = 300)
+
+
+# 4) Number sites per time period----
+
+sites_filtered <- sites |> filter(Dated == "Yes")
+
+sites_period <- sites_filtered |>  select(Site_name_machine_readable,Period)
+
+# Count number of sites per dated/non-dated
+sites_period_counts <- sites_period |> 
+  count(Period)
+sites_period_counts <- na.omit(sites_period_counts)
+
+# Define the order of periods (modify according to your data)
+period_order <- c("Late Holocene (Meghalayan)", "Middle Holocene (Northgrippian)", "Early Holocene (Greenlandian)", "Holocene (Early, Middle and Late)", "Holocene, Pre-Holocene","Pre-Holocene")
+
+# Convert `Period` into a factor with the specified order
+sites_period_counts$Period <- factor(sites_period_counts$Period, levels = period_order)
+
+# Create bar plot
+sites_period_barplot <- ggplot(sites_period_counts, aes(x = `Period`, y = n, fill = `Period`)) +
+  geom_bar(stat = "identity", color = "black") +
+  theme_minimal() +
+  labs(x = "Period", y = "Number of sites") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Increase font size of x-axis labels
+        axis.text.y = element_text(size = 14),  # Increase font size of y-axis labels
+        axis.title.x = element_text(size = 16),  # Increase font size of x-axis title
+        axis.title.y = element_text(size = 16),  # Increase font size of y-axis title
+        plot.title = element_text(size = 18), legend.position = "none")  # Increase plot title font size
+
+ggsave(normalizePath("../outputs/graphs/sites_period_barplot.png"), sites_period_barplot, width = 17, height = 10, dpi = 300)
+
+
+# 5) Number of dated records per time interval----
+
+
+#| warning: false
+sites_temporal <- sites_filtered |>  select(Site_name_machine_readable, "Minimum mean cal BP", "Maximum mean cal BP")
+sites_temporal$`Maximum mean cal BP`  <- sites_temporal$`Maximum mean cal BP` |>  as.numeric()
+sites_temporal$`Minimum mean cal BP`  <- sites_temporal$`Minimum mean cal BP` |>  as.numeric()
+
+# Define bin width (1000-year intervals)
+bin_width <- 1000
+
+# Create bins based on both `Minimum mean cal BP` and `Maximum mean cal BP`
+dated_records_binned <- sites_temporal %>%
+  mutate(
+    # Create bins based on the minimum and maximum cal BP range
+    year_bin = cut(
+      `Minimum mean cal BP`, 
+      breaks = seq(0, max(`Maximum mean cal BP`, na.rm = TRUE) + bin_width, by = bin_width),
+      labels = FALSE,  # Do not specify labels here, let `cut()` handle it
+      include.lowest = TRUE
+    )
+  ) %>%
+  count(year_bin)  # Count the number of records per bin
+
+# Convert 'year_bin' back to a meaningful numeric label
+dated_records_binned$year_bin <- as.numeric(as.character(dated_records_binned$year_bin)) * bin_width
+
+dated_records_binned <- na.omit(dated_records_binned)
+
+# Omit dates older than 32.000 years BP
+dated_records_binned <- dated_records_binned[-c(23:30),]
+
+# Create the bar plot
+dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_bin, y = n)) +
+  geom_bar(stat = "identity", fill = "black", color = "black") +
+  theme_minimal() +
+  labs(x = "Years BP", y = "Number of sites") +
+  scale_x_reverse() +  # Reverse x-axis to show recent years on the right
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Increase font size of x-axis labels
+        axis.text.y = element_text(size = 14),  # Increase font size of y-axis labels
+        axis.title.x = element_text(size = 16),  # Increase font size of x-axis title
+        axis.title.y = element_text(size = 16),  # Increase font size of y-axis title
+        plot.title = element_text(size = 18), legend.position = "none") + # Increase plot title font size
+  geom_vline(xintercept = c(5000, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
+
+ggsave(normalizePath("../outputs/graphs/dated_records_temporal_distribution.png"), dated_records_temporal_distribution, width = 17, height = 10, dpi = 300)
+
+
+# 6) Number of sites against year of publications by fossil and modern pollen----
+
+
+sites_publication <- sites |>  select(Site_name_machine_readable,`Reference 1`,Pollen)
+
+# Extract the first 4-digit number (year) from the `Reference 1` column
+sites_publication$year <- stringr::str_extract(sites_publication$`Reference 1`, "\\d{4}")
+
+# Ensure the 'year' column is numeric
+sites_publication$year <- as.numeric(sites_publication$year)
+
+# Group years into decades by rounding down
+sites_publication$decade <- floor(sites_publication$year / 10) * 10
+
+sites_publication <- sites_publication |>  select(Site_name_machine_readable,decade,Pollen)
+
+# Count number of sites per decade
+sites_publication_fossil <- sites_publication |> filter(Pollen=="Fossil") |> 
+  count(decade)
+sites_publication_fossil <- na.omit(sites_publication_fossil)
+sites_publication_fossil <- sites_publication_fossil %>% dplyr::filter(decade > 1900)
+names(sites_publication_fossil)[2] <- "Fossil"
+
+sites_publication_modern <- sites_publication |> filter(Pollen=="Modern") |> 
+  count(decade)
+sites_publication_modern <- na.omit(sites_publication_modern)
+names(sites_publication_modern)[2] <- "Modern"
+
+# Merge all counts into one dataframe
+sites_publication_total <-  full_join(sites_publication_fossil,sites_publication_modern)
+
+# Reshape data to long format for ggplot
+sites_publication_total_long <- sites_publication_total |> 
+  pivot_longer(cols = c("Fossil", "Modern"), 
+               names_to = "Pollen Type", 
+               values_to = "Count")
+
+
+sites_publication_total_long[is.na(sites_publication_total_long)] <- 0
+
+# Create bar plot
+sites_publication_barplot <- ggplot(sites_publication_total_long, aes(x = decade, y = Count, fill = `Pollen Type`)) +
+  geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
+  theme_minimal() +
+  labs(x = "Publication decade", 
+       y = "Number of sites", 
+       fill = "Pollen type") +  # Ensure legend title is explicitly set
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size = 16),
+        plot.title = element_text(size = 18, face = "bold"),
+        legend.title = element_text(size = 14),  # Increase Site Type label size
+        legend.text = element_text(size = 14))
+
+
+ggsave(normalizePath("../outputs/graphs/sites_publication_barplot.png"), sites_publication_barplot, width = 17, height = 10, dpi = 300)
+
+
+
+# 7) Latitudinal distribution of records according to their archive type----
+
+
+sites_archive_type <- sites |> select(Site_name_machine_readable,Latitude,"Archive type")
+
+# round latitude so it does not have decimals
+sites_archive_type$Latitude <- as.numeric(sites_archive_type$Latitude)
+sites_archive_type$Latitude <- round(sites_archive_type$Latitude,0)
+
+names(sites_archive_type)[3] <- "Archive_type"
+
+# Count the number of sites per latitude and archive type
+sites_archive_type_count <- sites_archive_type %>%
+  group_by(Latitude, Archive_type) %>%
+  summarise(num_sites = n(), .groups = "drop")
+
+sites_archive_type_count <- na.omit(sites_archive_type_count)
+
+# Create the bar plot with different colors for each archive type
+barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = factor(Latitude), fill = Archive_type)) +
+  geom_col() +  # Creates bars for each latitude
+  labs(
+    x = "Number of sites",
+    y = "Latitude",
+    fill = "Archive Type",
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",  # Move legend to top
+    legend.text = element_text(size = 6),  # Increase legend text size
+    legend.title = element_text(size = 8, face = "bold"),  # Increase and bold legend title
+    axis.text.x = element_text(size = 6),  # Increase x-axis labels
+    axis.text.y = element_text(size = 6),  # Increase y-axis labels
+    axis.title.x = element_text(size = 8, face = "bold"),  # Increase and bold x-axis title
+    axis.title.y = element_text(size = 8, face = "bold"),  # Increase and bold y-axis title
+    plot.title = element_text(size = 10, face = "bold", hjust = 0.5)  # Center and enlarge plot title
+  )
+
+ggsave(normalizePath("../outputs/graphs/barplot_archive_type.png"), barplot_archive_type, width = 17, height = 10, dpi = 300)
+
+
+
+
+# 8) Altitudinal distribution of records according to the biogeographic area----
+
+sites_altitude_type <- sites |> select(Site_name_machine_readable,Altitude,"Biogeographic area")
+
+sites_altitude_type$Altitude <- as.numeric(sites_altitude_type$Altitude)
+
+# Round down to nearest centennial
+sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
+
+names(sites_altitude_type)[3] <- "Biogeographic_area"
+
+# Eliminate Atlantic ocean
+sites_altitude_type <- sites_altitude_type |> filter(Biogeographic_area !="Atlantic ocean")
+
+# Count the number of sites per altitude and biogeographic area
+sites_altitude_type_count <- sites_altitude_type %>%
+  group_by(Altitude, Biogeographic_area) %>%
+  summarise(num_sites = n(), .groups = "drop")
+
+sites_altitude_type_count <- na.omit(sites_altitude_type_count)
+
+# Create the bar plot with different colors for each biogeographic area
+barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_sites, y = factor(Altitude), fill = Biogeographic_area)) +
+  geom_col() +  # Creates bars for each altitude
+  labs(
+    x = "Number of sites",
+    y = "Altitude",
+    fill = "Biogeographic area",
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",  # Move legend to top
+    legend.text = element_text(size = 6),  # Increase legend text size
+    legend.title = element_text(size = 8, face = "bold"),  # Increase and bold legend title
+    axis.text.x = element_text(size = 6),  # Increase x-axis labels
+    axis.text.y = element_text(size = 6),  # Increase y-axis labels
+    axis.title.x = element_text(size = 8, face = "bold"),  # Increase and bold x-axis title
+    axis.title.y = element_text(size = 8, face = "bold"),  # Increase and bold y-axis title
+    plot.title = element_text(size = 10, face = "bold", hjust = 0.5)  # Center and enlarge plot title
+  )
+
+ggsave(normalizePath("../outputs/graphs/barplot_altitude_biogeography.png"), barplot_altitude_biogeography, width = 17, height = 10, dpi = 300)
+
+```
+
+```{r}
+#| fig-cap: "Figure 2. Number of pollen records (sites) per biogeographic region"
+combined_barplot
+```
+
+```{r}
+#| fig-cap: "Figure 3. Number of pollen records (sites) per database"
+database_barplot
+```
+
+```{r}
+#| fig-cap: "Figure 4. Number of pollen records (sites) per time period"
+sites_period_barplot
+```
+
+```{r}
+#| fig-cap: "Figure 5. Number of dated pollen records (sites) per time interval"
+dated_records_temporal_distribution
+
+```
+
+```{r}
+#| fig-cap: "Figure 6. Number of pollen records (sites) by year of publication (decade)"
+sites_publication_barplot
+
+```
+
+```{r}
+#| fig-cap: "Figure 7. Latitudinal distribution of pollen records (sites) according to their archive type"
+barplot_archive_type
+```
+
+```{r}
+#| fig-cap: "Figure 8. Altitudinal distribution of pollen records (sites) according to the biogeographic area"
+barplot_altitude_biogeography
+
+
+```
+
+## Metadata {#metadata}
+
+`pollen_metadata_html.qmd` (Generates a csv and HTML files containing
+pollen metadata for the *database.csv* file)
+
+`taxonomy_metadata_html.qmd` (Generates a csv and HTML files containing
+pollen metadata for the *harmonised_taxonomy_list.csv* file)
+
+## Functions {#functions}
+
+`functions.R` (Contains custom functions used throughout the data
+pipeline)
+
+# References {#references}
+
+1.  **Giesecke, T.** *et al.* Towards mapping the late Quaternary
+    vegetation change of Europe. *Veg. Hist. Archaeobot.* **23**, 75–86
+    (2014).
+2.  **Lazagabaster, I. A.** *et al.* Evaluating species distribution
+    model predictions through time against paleozoological records.
+    *Ecol. Evol.* **14**, e70288 (2024).
+3.  **Lézine, A. M.**, **Watrin, J.**, **Vincens, A.** & **Hély, C.**
+    Are modern pollen data representative of west African vegetation?
+    *Rev. Palaeobot. Palynol.* **156**, 265–276 (2009).
+4.  **Mott, O.** *et al.* Global acceleration in rates of vegetation
+    change over the past 18,000 years. *Science* **372**, 860–864
+    (2021).
+5.  **Vincens, A.**, **Lézine, A. M.**, **Buchet, G.**, **Lewden, D.** &
+    **Le Thomas, A.** African pollen database inventory of tree and
+    shrub pollen types. *Rev. Palaeobot. Palynol.* **145**, 135–141
+    (2007).

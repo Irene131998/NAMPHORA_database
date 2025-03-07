@@ -1,0 +1,11 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+389038,Carbon-14,Radiocarbon years BP,77.5,3,200,30,30,false,,Poz-14738,PE, TW,PE=periderm, TW=twig
+389039,Carbon-14,Radiocarbon years BP,284.5,3,1930,30,30,false,,Poz-14739,W,C, Cyperaceae CF, Apiaceae S,W=wood, C=charcoal, CF=charred food, S=seed
+389040,Carbon-14,Radiocarbon years BP,410,6,2605,35,35,false,,Poz-14740,C, W, PE,
+389041,Carbon-14,Radiocarbon years BP,498.5,15,2800,40,40,false,,Poz-14741,C,
+389042,Carbon-14,Radiocarbon years BP,607,14,4020,50,50,false,,Poz-16195,Quercus BS, C, L,BS=bud scale, L=leaf
+389043,Carbon-14,Radiocarbon years BP,634.5,5,4470,80,80,false,,Poz-16178,Quercus BS, C,
+389044,Carbon-14,Radiocarbon years BP,698,4,6440,40,40,false,,Poz-16179,W, L, C,
+389045,Carbon-14,Radiocarbon years BP,742.5,3,7350,40,40,false,,Poz-14742,TW, PE, W, C,
+389046,Carbon-14,Radiocarbon years BP,999,4,8190,50,50,false,,Poz-14744,W, PE,
+389047,Carbon-14,Radiocarbon years BP,1116.5,31,8690,50,50,false,,Poz-14745,C, PE, L,

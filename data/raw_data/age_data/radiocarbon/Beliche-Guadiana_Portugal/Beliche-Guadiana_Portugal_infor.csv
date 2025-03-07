@@ -1,0 +1,10 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+519687,Carbon-14,Radiocarbon years BP,579,,4295,35,35,false,,KIA 15211,Shell (Venerupis sp.),Marine04 for calibration
+519688,Carbon-14,Radiocarbon years BP,890,,6764,45,45,false,,IGNS[NZA-21413],Shell (Cerastoderma glaucum),Marine04 for calibration
+519689,Carbon-14,Radiocarbon years BP,4270,,10273,66,66,false,,IGNS[NZA-21415],Wood,IntCal04 for calibration
+519690,Carbon-14,Radiocarbon years BP,333,,3375,39,39,false,,IGNS[NZA-21412],Shell (Scrobicula plana),Marine04 for calibration
+519692,Carbon-14,Radiocarbon years BP,1775,,7725,45,45,false,,KIA 15210,Shell (Cerastoderma sp.),Marine04 for calibration
+519691,Carbon-14,Radiocarbon years BP,1345,,7585,35,35,false,,KIA 15212,Shell (Venerupis sp.),Marine04 for calibration
+519693,Carbon-14,Radiocarbon years BP,2095,,8256,55,55,false,,IGNS[NZA-21414],Wood,IntCal04 for calibration
+519694,Carbon-14,Radiocarbon years BP,4767,,10990,40,40,false,,Beta-137110,Wood,IntCal04 for calibration
+519695,Carbon-14,Radiocarbon years BP,1085,,4095,30,30,false,,KIA 15213,Shell (Cerastoderma sp.),Marine04 for calibration, rejected by the author

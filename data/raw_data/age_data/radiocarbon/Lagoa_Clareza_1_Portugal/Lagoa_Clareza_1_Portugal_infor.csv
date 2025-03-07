@@ -1,0 +1,5 @@
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+536524,Carbon-14,Radiocarbon years BP,77.5,5,2780,35,35,false,,GrN-18344,bulk,
+536525,Carbon-14,Radiocarbon years BP,387.5,5,9050,50,50,false,,GrN-18347,bulk,
+536526,Carbon-14,Radiocarbon years BP,210,6,4495,40,40,false,,GrN-18345,bulk,
+536527,Carbon-14,Radiocarbon years BP,287.5,5,6875,45,45,false,,GrN-18346,bulk,
