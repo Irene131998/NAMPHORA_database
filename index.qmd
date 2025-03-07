@@ -154,17 +154,18 @@ Different sections (folders) of the project are as follows:
             Neotoma (https://www.neotomadb.org/) using the neotoma2
             package and the Neotoma API, and from the authors directly.
 
-        -   `/taxonomy`: contains two subfolders:
+        -   `/taxonomy`: contains the following subfolders:
 
-            -   `/harmonisation_lists`: contains harmonisation tables
-                from Lézine *et al*. (2009) \[3\], Mottl *et al.* (2021)
-                \[4\] & the APD
+            -   `harmonisation_lists`: contains taxonomic harmonisation
+                resources, including harmonisation tables from Lézine
+                *et al*. (2009) \[3\], Mottl *et al.* (2021) \[4\] and
+                the APD
                 (https://africanpollendatabase.ipsl.fr/#/taxon-dict) &
                 the pollen inventory from Vincens *et al.* (2007) \[5\],
                 which includes information on habit, habitat and
-                phytogeographical distribution of APD pollen types.
+                phytogeographical distribution of APD pollen types;
 
-            -   `/raw_taxa_list`: contains the *raw_pollen_types.csv*
+            -   `raw_taxa_list`: contains the *raw_pollen_types.csv*
                 file, which lists the raw pollen types from all pollen
                 records compiled in the *NaAMPHoRA* database.
 
@@ -324,7 +325,7 @@ compiled in this database)
 
 # Load libraries and functions----
 
-source("functions.R")
+source("scripts/functions.R")
 
 libraries <- c("dplyr","readxl","readr","here","tidyr","BIEN","purrr","sp","terra","geodata","tidyterra","ggtext","ggplot2","openxlsx","stringr","leaflet","sf","quarto","htmlwidgets")
 
@@ -335,7 +336,7 @@ invisible(lapply(libraries, install_if_missing))
 lapply(libraries, require, character.only = TRUE)
 
 # Read sites data
-sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
+sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
 sites$Latitude <- as.numeric(sites$Latitude)
 
 # Eliminate na rows
@@ -378,24 +379,7 @@ describe the database)
 #| output: false
 #| message: false
 
-# 0. Load libraries and functions----
-
-source("functions.R")
-
-libraries <- c("dplyr","readxl","readr","here","tidyr","BIEN","purrr","sp","terra","geodata","tidyterra","ggtext","ggplot2","openxlsx","stringr","leaflet","sf","quarto")
-
-# Install missing packages
-invisible(lapply(libraries, install_if_missing))
-
-# Load the libraries
-lapply(libraries, require, character.only = TRUE)
-
-
-# 1) Read sites----
-
-sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
-
-# 2) Number sites per bigeographic region----
+# 1) Number sites per bigeographic region----
 
 # Total sites
 sites_biogeo <- sites |> select(Site_name_machine_readable,'Biogeographic area')
@@ -467,10 +451,10 @@ combined_barplot <- ggplot(sites_long, aes(x = `Biogeographic area`, y = Count, 
         legend.title = element_text(size = 14),  # Increase Site Type label size
         legend.text = element_text(size = 14))
 # Save the plot
-ggsave(normalizePath("../outputs/graphs/combined_sites_biogeo_barplot.png"), combined_barplot, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/combined_sites_biogeo_barplot.png"), combined_barplot, width = 17, height = 10, dpi = 300)
 
 
-# 3) Number sites (fossil and modern) per database----
+# 2) Number sites (fossil and modern) per database----
 
 # Total sites
 sites_database <- sites |>  select(Site_name_machine_readable,Database, Pollen)
@@ -523,10 +507,10 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
         legend.title = element_text(size = 14),  # Increase Site Type label size
         legend.text = element_text(size = 14))
 # Save the plot
-ggsave(normalizePath("../outputs/graphs/database_barplot.png"), database_barplot, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/database_barplot.png"), database_barplot, width = 17, height = 10, dpi = 300)
 
 
-# 4) Number sites per time period----
+# 3) Number sites per time period----
 
 sites_filtered <- sites |> filter(Dated == "Yes")
 
@@ -554,10 +538,10 @@ sites_period_barplot <- ggplot(sites_period_counts, aes(x = `Period`, y = n, fil
         axis.title.y = element_text(size = 16),  # Increase font size of y-axis title
         plot.title = element_text(size = 18), legend.position = "none")  # Increase plot title font size
 
-ggsave(normalizePath("../outputs/graphs/sites_period_barplot.png"), sites_period_barplot, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/sites_period_barplot.png"), sites_period_barplot, width = 17, height = 10, dpi = 300)
 
 
-# 5) Number of dated records per time interval----
+# 4) Number of dated records per time interval----
 
 
 #| warning: false
@@ -602,10 +586,10 @@ dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_
         plot.title = element_text(size = 18), legend.position = "none") + # Increase plot title font size
   geom_vline(xintercept = c(5000, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
 
-ggsave(normalizePath("../outputs/graphs/dated_records_temporal_distribution.png"), dated_records_temporal_distribution, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), dated_records_temporal_distribution, width = 17, height = 10, dpi = 300)
 
 
-# 6) Number of sites against year of publications by fossil and modern pollen----
+# 5) Number of sites against year of publications by fossil and modern pollen----
 
 
 sites_publication <- sites |>  select(Site_name_machine_readable,`Reference 1`,Pollen)
@@ -661,11 +645,11 @@ sites_publication_barplot <- ggplot(sites_publication_total_long, aes(x = decade
         legend.text = element_text(size = 14))
 
 
-ggsave(normalizePath("../outputs/graphs/sites_publication_barplot.png"), sites_publication_barplot, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/sites_publication_barplot.png"), sites_publication_barplot, width = 17, height = 10, dpi = 300)
 
 
 
-# 7) Latitudinal distribution of records according to their archive type----
+# 6) Latitudinal distribution of records according to their archive type----
 
 
 sites_archive_type <- sites |> select(Site_name_machine_readable,Latitude,"Archive type")
@@ -703,12 +687,12 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
     plot.title = element_text(size = 10, face = "bold", hjust = 0.5)  # Center and enlarge plot title
   )
 
-ggsave(normalizePath("../outputs/graphs/barplot_archive_type.png"), barplot_archive_type, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"), barplot_archive_type, width = 17, height = 10, dpi = 300)
 
 
 
 
-# 8) Altitudinal distribution of records according to the biogeographic area----
+# 7) Altitudinal distribution of records according to the biogeographic area----
 
 sites_altitude_type <- sites |> select(Site_name_machine_readable,Altitude,"Biogeographic area")
 
@@ -749,7 +733,7 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
     plot.title = element_text(size = 10, face = "bold", hjust = 0.5)  # Center and enlarge plot title
   )
 
-ggsave(normalizePath("../outputs/graphs/barplot_altitude_biogeography.png"), barplot_altitude_biogeography, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"), barplot_altitude_biogeography, width = 17, height = 10, dpi = 300)
 
 ```
 
