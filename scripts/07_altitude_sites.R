@@ -2,7 +2,7 @@
   
 # 0. Load libraries and functions ----
 
-source("functions.R")
+source("scripts/functions.R")
 
 libraries <- c("dplyr","terra","readr")
 
@@ -16,10 +16,10 @@ lapply(libraries, require, character.only = TRUE)
 # 1. Load data ----
 
 # Sites
-sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"), locale = locale(encoding = "latin1"))
+sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"), locale = locale(encoding = "latin1"))
 
 # Elevation
-elevation <- rast(normalizePath("../data/raw_data/mapping_data/elevation.tiff"))
+elevation <- rast(normalizePath("data/raw_data/mapping_data/elevation.tiff"))
 
 
 # 2. Add altitude values and save ----
@@ -35,7 +35,7 @@ sites_w_altitude <- sites %>%
 # Save updated database
 write.table(
   sites_w_altitude, 
-  file = normalizePath("../metadata/pollen_data/database.csv", mustWork = FALSE),
+  file = normalizePath("metadata/pollen_data/database.csv", mustWork = FALSE),
   sep = ",",         
   row.names = FALSE, 
   fileEncoding = "latin1" 

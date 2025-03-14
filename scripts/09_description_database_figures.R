@@ -2,9 +2,9 @@
 
 # 0. Load libraries and functions----
 
-source("functions.R")
+source("scripts/functions.R")
 
-libraries <- c("dplyr","readr","tidyr","ggplot2","stringr")
+libraries <- c("dplyr","readr","tidyr","ggplot2","stringr","tibble")
 
 # Install missing packages
 invisible(lapply(libraries, install_if_missing))
@@ -13,9 +13,12 @@ invisible(lapply(libraries, install_if_missing))
 lapply(libraries, require, character.only = TRUE)
 
 
-# 1) Read sites----
+# 1) Read data----
 
-sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
+sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
+taxonomy <- read_csv(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv"))
+phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographical_affinity.csv"))
+pft <- read_csv(normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"))
 
 # 2) Number sites per bigeographic region----
 
@@ -82,14 +85,20 @@ combined_barplot <- ggplot(sites_long, aes(x = `Biogeographic area`, y = Count, 
        y = "Number of sites", 
        fill = "Site type") +  # Ensure legend title is explicitly set
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20),
-        plot.title = element_text(size = 24, face = "bold"),
-        legend.title = element_text(size = 18),  # Increase Site Type label size
-        legend.text = element_text(size = 16))
+        axis.text.y = element_text(size = 16),
+        axis.title.x = element_text(size = 18),
+        axis.title.y = element_text(size = 18),
+        plot.title = element_text(size = 22, face = "bold"),
+        legend.title = element_text(size = 16),  
+        legend.text = element_text(size = 14))
 # Save the plot
-ggsave(normalizePath("../outputs/graphs/combined_sites_biogeo_barplot.png"), combined_barplot, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/combined_sites_biogeo_barplot.png"), 
+       combined_barplot, 
+       width = 8.5,   
+       height = 6,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 
 combined_barplot
 
@@ -125,6 +134,9 @@ sites_combined_database <- total_counts |>
   left_join(fossil_counts, by = "Database") |> 
   left_join(modern_counts, by = "Database")
 
+sites_combined_database <- sites_combined_database |> filter(!Database == "APD/Neotoma")
+sites_combined_database <- sites_combined_database |> mutate(Database = ifelse(Database == "Received from authors", "Received", Database))
+
 # Reshape data to long format for ggplot
 sites_long_database <- sites_combined_database |> 
   pivot_longer(cols = c("Total", "Fossil", "Modern"), 
@@ -140,54 +152,24 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
        y = "Number of sites", 
        fill = "Pollen type") +  # Ensure legend title is explicitly set
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20),
-        plot.title = element_text(size = 24, face = "bold"),
-        legend.title = element_text(size = 18),  # Increase Site Type label size
-        legend.text = element_text(size = 16))
+        axis.text.y = element_text(size = 16),
+        axis.title.x = element_text(size = 18),
+        axis.title.y = element_text(size = 18),
+        plot.title = element_text(size = 22, face = "bold"),
+        legend.title = element_text(size = 16),  
+        legend.text = element_text(size = 14))
 # Save the plot
-ggsave(normalizePath("../outputs/graphs/database_barplot.png"), database_barplot, width = 17, height = 10, dpi = 300)
-
+ggsave(normalizePath("outputs/graphs/database_barplot.png"), 
+       database_barplot, 
+       width = 8,   
+       height = 6,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 database_barplot
 
-# 4) Number sites per time period----
+# 4) Number of dated records per time interval----
 
-sites_filtered <- sites |> filter(Dated == "Yes")
-
-sites_period <- sites_filtered |>  select(Site_name_machine_readable,Period)
-
-# Count number of sites per dated/non-dated
-sites_period_counts <- sites_period |> 
-  count(Period)
-sites_period_counts <- na.omit(sites_period_counts)
-
-# Define the order of periods (modify according to your data)
-period_order <- c("Late Holocene (Meghalayan)", "Middle Holocene (Northgrippian)", "Early Holocene (Greenlandian)", "Holocene (Early, Middle and Late)", "Holocene, Pre-Holocene","Pre-Holocene")
-
-# Convert `Period` into a factor with the specified order
-sites_period_counts$Period <- factor(sites_period_counts$Period, levels = period_order)
-
-# Create bar plot
-sites_period_barplot <- ggplot(sites_period_counts, aes(x = `Period`, y = n, fill = `Period`)) +
-  geom_bar(stat = "identity", color = "black") +
-  theme_minimal() +
-  labs(x = "Period", y = "Number of sites") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Increase font size of x-axis labels
-        axis.text.y = element_text(size = 14),  # Increase font size of y-axis labels
-        axis.title.x = element_text(size = 16),  # Increase font size of x-axis title
-        axis.title.y = element_text(size = 16),  # Increase font size of y-axis title
-        plot.title = element_text(size = 18), legend.position = "none")  # Increase plot title font size
-
-ggsave(normalizePath("../outputs/graphs/sites_period_barplot.png"), sites_period_barplot, width = 17, height = 10, dpi = 300)
-
-sites_period_barplot
-
-
-# 5) Number of dated records per time interval----
-
-
-#| warning: false
 sites_temporal <- sites_filtered |>  select(Site_name_machine_readable, "Minimum mean cal BP", "Maximum mean cal BP")
 sites_temporal$`Maximum mean cal BP`  <- sites_temporal$`Maximum mean cal BP` |>  as.numeric()
 sites_temporal$`Minimum mean cal BP`  <- sites_temporal$`Minimum mean cal BP` |>  as.numeric()
@@ -222,20 +204,25 @@ dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_
   theme_minimal() +
   labs(x = "Years BP", y = "Number of sites") +
   scale_x_reverse() +  # Reverse x-axis to show recent years on the right
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Increase font size of x-axis labels
-        axis.text.y = element_text(size = 14),  # Increase font size of y-axis labels
-        axis.title.x = element_text(size = 16),  # Increase font size of x-axis title
-        axis.title.y = element_text(size = 16),  # Increase font size of y-axis title
-        plot.title = element_text(size = 18), legend.position = "none") + # Increase plot title font size
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  
+        axis.text.y = element_text(size = 14),  
+        axis.title.x = element_text(size = 16), 
+        axis.title.y = element_text(size = 16),
+        plot.title = element_text(size = 18), legend.position = "none") + 
   geom_vline(xintercept = c(5000, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
 
-ggsave(normalizePath("../outputs/graphs/dated_records_temporal_distribution.png"), dated_records_temporal_distribution, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), 
+       dated_records_temporal_distribution, 
+       width = 8,   
+       height = 6,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 
 dated_records_temporal_distribution
 
 
-# 6) Number of sites against year of publications by fossil and modern pollen----
-
+# 5) Number of sites against year of publications by fossil and modern pollen----
 
 sites_publication <- sites |>  select(Site_name_machine_readable,`Reference 1`,Pollen)
 
@@ -290,12 +277,18 @@ sites_publication_barplot <- ggplot(sites_publication_total_long, aes(x = decade
         legend.text = element_text(size = 16))
 
 
-ggsave(normalizePath("../outputs/graphs/sites_publication_barplot.png"), sites_publication_barplot, width = 17, height = 10, dpi = 300)
+ggsave(normalizePath("docs/supplementary_info/graphs/sites_publication_barplot.png"), 
+       sites_publication_barplot, 
+       width = 8,   
+       height = 6,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 
 sites_publication_barplot
 
 
-# 7) Latitudinal distribution of records according to their archive type----
+# 6) Latitudinal distribution of records according to their archive type----
 
 sites_archive_type <- sites |> select(Site_name_machine_readable,Latitude,"Archive type")
 
@@ -322,22 +315,27 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
   ) +
   theme_minimal() +
   theme(
-    legend.position = "top",  # Move legend to top
-    legend.text = element_text(size = 14),  # Increase legend text size
-    legend.title = element_text(size = 16, face = "bold"),  # Increase and bold legend title
-    axis.text.x = element_text(size = 14),  # Increase x-axis labels
-    axis.text.y = element_text(size = 14),  # Increase y-axis labels
-    axis.title.x = element_text(size = 16, face = "bold"),  # Increase and bold x-axis title
-    axis.title.y = element_text(size = 16, face = "bold"),  # Increase and bold y-axis title
-    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  # Center and enlarge plot title
+    legend.position = "top", 
+    legend.text = element_text(size = 10),  
+    legend.title = element_text(size = 16, face = "bold"),  
+    axis.text.x = element_text(size = 10), 
+    axis.text.y = element_text(size = 8), 
+    axis.title.x = element_text(size = 16, face = "bold"),  
+    axis.title.y = element_text(size = 16, face = "bold"),  
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
   )
 
-ggsave(normalizePath("../outputs/graphs/barplot_archive_type.png"), barplot_archive_type, width = 17, height = 10, dpi = 300)
-
+ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"), 
+       barplot_archive_type, 
+       width = 10,   
+       height = 6,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 barplot_archive_type
 
 
-# 8) Altitudinal distribution of records according to the biogeographic area----
+# 7) Altitudinal distribution of records according to the biogeographic area----
 
 sites_altitude_type <- sites |> select(Site_name_machine_readable,Altitude,"Biogeographic area")
 
@@ -368,17 +366,155 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
   ) +
   theme_minimal() +
   theme(
-    legend.position = "top",  # Move legend to top
-    legend.text = element_text(size = 14),  # Increase legend text size
-    legend.title = element_text(size = 16, face = "bold"),  # Increase and bold legend title
-    axis.text.x = element_text(size = 14),  # Increase x-axis labels
-    axis.text.y = element_text(size = 14),  # Increase y-axis labels
-    axis.title.x = element_text(size = 16, face = "bold"),  # Increase and bold x-axis title
-    axis.title.y = element_text(size = 16, face = "bold"),  # Increase and bold y-axis title
-    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  # Center and enlarge plot title
+    legend.position = "top", 
+    legend.text = element_text(size = 10),  
+    legend.title = element_text(size = 16, face = "bold"),  
+    axis.text.x = element_text(size = 10), 
+    axis.text.y = element_text(size = 8), 
+    axis.title.x = element_text(size = 16, face = "bold"),  
+    axis.title.y = element_text(size = 16, face = "bold"),  
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
   )
 
-ggsave(normalizePath("../outputs/graphs/barplot_altitude_biogeography.png"), barplot_altitude_biogeography, width = 17, height = 10, dpi = 300)
-
+ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"), 
+       barplot_altitude_biogeography, 
+       width = 10,   
+       height = 6,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 barplot_altitude_biogeography
 
+# 8) Number of harmonised pollen taxa per phytogeographical affinity (proportion)----
+
+# Reshape data into long format
+phyto_aff_long <- phyto_aff %>%
+  pivot_longer(cols = -Pollen_type_SM_morphological, # Keep Pollen_type_SM_morphological
+               names_to = "Phytogeographical_Affinity", # Affinities become a new column
+               values_to = "Presence") %>%  # Presence/absence info
+  filter(Presence == "x")  # Keep only rows where the pollen type is associated with the affinity
+
+# Count the occurrences of each phytogeographical affinity
+affinity_counts <- phyto_aff_long %>%
+  count(Phytogeographical_Affinity) %>%
+  arrange(desc(n))  # Sort in descending order
+
+# Calculate proportions 
+affinity_percentages <- affinity_counts %>%
+mutate(percentage = n / sum(n) * 100)
+
+# Plotting the proportion of pollen types per phyto aff
+phyto_aff_proportions_chart <- ggplot(affinity_percentages, aes(x = "Number of harmonised pollen taxa", y = n, fill = Phytogeographical_Affinity)) +
+  geom_bar(stat = "identity", width = 1) +  
+  coord_polar(theta = "y") +  # Convert to pie chart
+  labs(x= "", y = "", fill= "Phytogeographical affinity") +  
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),  
+        axis.ticks = element_blank(), 
+        axis.text.y = element_blank(),  
+        legend.position = "right",       
+        legend.title = element_text(size = 12, face = "bold"),  
+        legend.key.size = unit(1, "cm"),  
+        plot.margin = margin(10, 10, 10, 10)) +  
+  scale_fill_manual(values = c("skyblue", "darkblue", "darkorange", "darkred", "lightgreen", 
+                               "gold", "purple", "turquoise", "red", "violet", 
+                               "yellow", "grey", "tomato", "darkgreen", 
+                               "darkcyan", "indianred", "blue", "pink", "steelblue", "green"))  +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), position = position_stack(vjust = 0.5), color = "black", size = 2.8)  +
+  guides(fill = guide_legend(ncol = 2))  # Divide legend into two columns
+
+
+# Save the plot
+ggsave(normalizePath("outputs/graphs/phyto_aff_proportions_chart.png"), 
+       phyto_aff_proportions_chart, 
+       width = 8,   
+       height = 5,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+phyto_aff_proportions_chart
+
+# 9) Number of taxa (divided by family, genus and species) per plant functional trait ----
+
+pft <- pft |> select(!c(Pollen_type_SM_morphological,Family,Genus,url_source,project_pi,project_pi_contact,Try_reference,Try_dataset,leaf_dry_mass_g))
+                     
+# Species (select those with two words)
+species <- pft %>% 
+  filter(str_detect(taxa, "^\\w+\\s+\\w+$"))
+species_counts <- species |> select(-taxa) |> summarise(across(everything(), n_distinct, na.rm = TRUE))
+species_counts <- t(species_counts) |> as.data.frame()
+names(species_counts)[1] <- "species"
+
+
+# Family (select taxa that ends with eae)
+family <- pft %>% 
+  filter(str_detect(taxa, "eae"))
+family_counts <- family |> select(-taxa) |> summarise(across(everything(), n_distinct, na.rm = TRUE))
+family_counts <- t(family_counts) |> as.data.frame()
+names(family_counts)[1] <- "family"
+
+# Genera
+genera <- pft %>%
+  filter(!taxa %in% species_counts$taxa & !taxa %in% family_counts$taxa)
+genera_counts <-genera |> select(-taxa)|> summarise(across(everything(), n_distinct, na.rm = TRUE))
+genera_counts <- t(genera_counts) |> as.data.frame()
+names(genera_counts)[1] <- "genus"
+
+# Merge all counts into one dataframe
+pfts_counts_combined <- cbind(family_counts,genera_counts,species_counts)
+pfts_counts_combined <- pfts_counts_combined %>%
+  tibble::rownames_to_column(var = "row_name")  # Store row names
+
+# Reshape data to long format for ggplot
+pfts_counts_long <- pfts_counts_combined %>%
+  pivot_longer(cols = -row_name, names_to = "category", values_to = "count")
+
+# Define the order
+order <- c( 
+  "seed_mass_mg", 
+  "whole_plant_height_m", 
+  "leaf_area_mm2", 
+  "leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1", 
+  "Leaf_dry_mass_per_area_g_mm_2", 
+  "plant_flowering_begin_month", 
+  "longest_whole_plant_longevity_years", 
+  "leaf_life_span_months", 
+  "plant_flowering_begin_date", 
+  "whole_plant_growth_form_diversity", 
+  "Leaf_type", 
+  "whole_plant_dispersal_syndrome",  
+  "whole_plant_vegetative_phenology", 
+  "whole_plant_sexual_system",  
+  "flower_pollination_syndrome"
+)
+
+# Ensure the row_name is a factor with the desired order
+pfts_counts_long$row_name <- factor(pfts_counts_long$row_name, levels = order)
+
+# Create the bar plot
+pft_barplot <- ggplot(pfts_counts_long, aes(x = row_name, y = count, fill = category)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  labs(x = "",
+       y = "Count",
+       fill = "Taxonomic Level") +
+  scale_fill_manual(values = c("family" = "blue", "genus" = "green", "species" = "red")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
+        axis.text.y = element_text(size = 18),
+        axis.title.x = element_text(size = 20),
+        axis.title.y = element_text(size = 18),
+        legend.title = element_text(size = 18),  
+        legend.text = element_text(size = 18),
+        legend.position = "bottom")
+
+
+# Save the plot
+ggsave(normalizePath("outputs/graphs/pft_barplot.png"), 
+       pft_barplot, 
+       width = 18,   
+       height = 10,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+
+pft_barplot

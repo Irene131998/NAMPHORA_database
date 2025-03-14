@@ -2,7 +2,7 @@
 
 # 0. Load libraries and functions----
 
-source("functions.R")
+source("scripts/functions.R")
 libraries <- c("readxl", "readr", "dplyr", "tidyr", "tibble", "stringr", "tools")
 
 # Install missing packages
@@ -16,7 +16,7 @@ lapply(libraries, require, character.only = TRUE)
 ## 1.1) Get harmonisation list----
 
 # Read Taxonomy database
-taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("../data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
+taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
 
 # Select columns
 harmonisation_list <- taxonomy_pollen_taxa |> select("Original_taxa","Pollen_type_SM_morphological")
@@ -24,11 +24,11 @@ harmonisation_list <- taxonomy_pollen_taxa |> select("Original_taxa","Pollen_typ
 ## 1.2) Fossil records----
 
 # Get the list of file paths
-folder_path <- normalizePath("../data/raw_data/pollen_data/fossil")
+folder_path <- normalizePath("data/raw_data/pollen_data/fossil")
 file_paths <- list.files(path=folder_path, full.names = TRUE)
 
 # Directory to save the files
-output_dir <- normalizePath("../data/processed_data/pollen_data/fossil/harmonised_counts")
+output_dir <- normalizePath("data/processed_data/pollen_data/fossil/harmonised_counts")
 
 for (file_path in file_paths) {
   # Read the file into R
@@ -99,14 +99,14 @@ for (file_path in file_paths) {
 ## 1.3) Modern records----
 
 # Get the list of file paths
-folder_path <- normalizePath("../data/raw_data/pollen_data/modern")
+folder_path <- normalizePath("data/raw_data/pollen_data/modern")
 file_paths <- list.files(path=folder_path, full.names = TRUE)
 
 # Exclude "desktop.ini"
 file_paths <- file_paths[!basename(file_paths) %in% "desktop.ini"]
 
 # Directory to save the files
-output_dir <- normalizePath("../data/processed_data/pollen_data/modern/harmonised_counts")
+output_dir <- normalizePath("data/processed_data/pollen_data/modern/harmonised_counts")
 
 for (file_path in file_paths) {
   # Read the file into R
@@ -171,8 +171,8 @@ for (file_path in file_paths) {
 # 2. Add calibrated dates to harmonised pollen records----
 
 # Define the two directories
-dir_calibration <- normalizePath("../data/processed_data/age_calibrated")
-dir_pollen_records <- normalizePath("../data/processed_data/pollen_data/fossil/harmonised_counts")
+dir_calibration <- normalizePath("data/processed_data/age_calibrated")
+dir_pollen_records <- normalizePath("data/processed_data/pollen_data/fossil/harmonised_counts")
 
 # List all CSV files in the first directory
 csv_files_dir_calibration <- list.files(path = dir_calibration, pattern = "\\.csv$", full.names = TRUE)
@@ -281,11 +281,11 @@ habit_list <- habit_list |> unique() |> na.omit()
 
 
 # Get the list of file paths
-folder_path <- normalizePath("../data/processed_data/pollen_data/fossil/harmonised_counts")
+folder_path <- normalizePath("data/processed_data/pollen_data/fossil/harmonised_counts")
 file_paths <- list.files(path=folder_path, full.names = TRUE)
 
 # Directory to save the files
-output_dir <- normalizePath("../data/processed_data/pollen_data/fossil/harmonised_percentages")
+output_dir <- normalizePath("data/processed_data/pollen_data/fossil/harmonised_percentages")
 
 for (file_path in file_paths) {
   # Read the file into R
@@ -414,11 +414,11 @@ for (file_path in file_paths) {
 
 
 # Get the list of file paths
-folder_path <- normalizePath("../data/processed_data/pollen_data/modern/harmonised_counts")
+folder_path <- normalizePath("data/processed_data/pollen_data/modern/harmonised_counts")
 file_paths <- list.files(path=folder_path, full.names = TRUE)
 
 # Directory to save the files
-output_dir <- normalizePath("../data/processed_data/pollen_data/modern/harmonised_percentages")
+output_dir <- normalizePath("data/processed_data/pollen_data/modern/harmonised_percentages")
 
 for (file_path in file_paths) {
   # Read the file into R

@@ -1,7 +1,7 @@
 ## Script to set up dependencies.
 
 # Get the project directory (root directory)
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # 1. Install renv R pkg
 #if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")

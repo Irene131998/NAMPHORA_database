@@ -2,7 +2,7 @@
 
 
 # 0. Load libraries and functions ----
-source("functions.R")
+source("scripts/functions.R")
 
 libraries <- c("readr", "tidyr", "dplyr", "readxl", "openxlsx")
 
@@ -17,7 +17,7 @@ lapply(libraries, require, character.only = TRUE)
 ## 1.1) Fossil sequences ----
 
 # Set the directory containing your CSV files
-folder_path <- normalizePath("../data/raw_data/pollen_data/fossil")
+folder_path <- normalizePath("data/raw_data/pollen_data/fossil")
 
 # Get a list of all CSV files in the directory
 file_list <- list.files(path = folder_path, pattern = "\\.csv$", full.names = TRUE)
@@ -56,7 +56,7 @@ sequences_df <- data.frame(Original_taxa = names(taxa_counts), Fossil_Sequences 
 
 
 # Set the directory containing your CSV files
-folder_path <- normalizePath("../data/raw_data/pollen_data/modern")
+folder_path <- normalizePath("data/raw_data/pollen_data/modern")
 
 # Get a list of all CSV files in the directory
 file_list <- list.files(path = folder_path, pattern = "\\.csv$", full.names = TRUE)
@@ -104,7 +104,7 @@ sequences_final <- sequences_final[!unnecessary_rows, , drop = FALSE]
 ## 1.4) Add to harmonisation list ----
 
 # Read taxonomy database
-taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("../data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
+taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
 
 # Insert columns of number of sequences to taxonomy database
 taxonomy_pollen_taxa <- left_join(taxonomy_pollen_taxa, sequences_final, by = "Original_taxa")
@@ -124,16 +124,16 @@ names(taxonomy_pollen_taxa)
 ## 2.1) Read data ----
 
 # Read Lezine 2009 data
-lezine_list <- readxl::read_excel(normalizePath("../data/raw_data/taxonomy/harmonisation_lists/Lezine_2009_pollen_types.xls"))
+lezine_list <- readxl::read_excel(normalizePath("data/raw_data/taxonomy/harmonisation_lists/Lezine_2009_pollen_types.xls"))
 
 # Read Mottl et al. 2020 data
-mottl_list <- read.csv(normalizePath("../data/raw_data/taxonomy/harmonisation_lists/Mottl_etal_Africa_HarmonizationTable.csv"))
+mottl_list <- read.csv(normalizePath("data/raw_data/taxonomy/harmonisation_lists/Mottl_etal_Africa_HarmonizationTable.csv"))
 
 # Read APD list
-apd_list <- readr::read_csv(normalizePath("../data/raw_data/taxonomy/harmonisation_lists/APD_dictionnary_export.csv"))
+apd_list <- readr::read_csv(normalizePath("data/raw_data/taxonomy/harmonisation_lists/APD_dictionnary_export.csv"))
 
 # Read Vincens et al. 2007 data
-vincens_list <- readxl::read_xlsx(normalizePath("../data/raw_data/taxonomy/harmonisation_lists/Vincens_2007_SI.xlsx"))
+vincens_list <- readxl::read_xlsx(normalizePath("data/raw_data/taxonomy/harmonisation_lists/Vincens_2007_SI.xlsx"))
 
 ## 2.2) Add Lezine (2009) list (taxonomic and habit) ----
 
@@ -197,5 +197,5 @@ taxonomy_pollen_taxa <- taxonomy_pollen_taxa |>
 
 ## 2.5) Save taxonomy with harmonisation lists and number of pollen sequences per pollen type ----
 
-openxlsx::write.xlsx(taxonomy_pollen_taxa, file =normalizePath("../data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx", rowNames = TRUE))
+openxlsx::write.xlsx(taxonomy_pollen_taxa, file =normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx", rowNames = TRUE))
 

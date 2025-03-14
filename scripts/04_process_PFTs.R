@@ -2,7 +2,7 @@
 
 # 0. Load libraries and functions----
 
-source("functions.R")
+source("scripts/functions.R")
 libraries <- c("readxl", "readr", "dplyr", "tidyr", "tibble", "stringr", "tools", "here", "purrr","BIEN")
 
 # Install missing packages
@@ -15,7 +15,7 @@ lapply(libraries, require, character.only = TRUE)
 ## 1) Read taxonomy and get vectors of taxa----
 
 # Read taxonomy database
-taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("../data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
+taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
 
 Pollen_types <- taxonomy_pollen_taxa |> dplyr::select(Family,Genus,Species_pollen_type,Pollen_type_SM_morphological) |>  dplyr::distinct(Pollen_type_SM_morphological, .keep_all = TRUE) |> 
   dplyr::mutate(across(everything(), trimws))  # Trim whitespace in all columns
@@ -115,7 +115,7 @@ names(species_categorical_variables) <- categorical_traits# Assign results to va
 #### 2.1.1) Citations----
 
 
-temp_dir <- file.path(normalizePath(here::here("../docs/supplementary_info/references/references_BIEN_database")))
+temp_dir <- file.path(normalizePath(here::here("docs/supplementary_info/references/references_BIEN_database")))
 # family
 for (i in seq_along(family_categorical_variables)) {  # For every item of the list
   BIEN_metadata_citation(
@@ -188,7 +188,7 @@ Species_continuous_traits <- lapply(Species_continuous_variables, process_specie
 #### 2.2.1) Citations----
 
 
-temp_dir <- file.path(normalizePath(here::here("../docs/supplementary_info/references/references_BIEN_database")))
+temp_dir <- file.path(normalizePath(here::here("docs/supplementary_info/references/references_BIEN_database")))
 
 # family
 for (i in seq_along(family_continuous_traits)) {  # For every item of the list
@@ -336,20 +336,20 @@ pollen_types_pfts_combined <- pollen_types_pfts %>%
 
 # Match pollen_types list with try species lists
 Try_sp <- readr::read_csv(
-  normalizePath("../data/raw_data/plant_functional_types/TRY/TryAccSpecies.csv"))
+  normalizePath("data/raw_data/plant_functional_types/TRY/TryAccSpecies.csv"))
 names(Try_sp)[2] <- "taxa"
 
 Try_sp_download <- semi_join(Try_sp, Pollen_types_final, by = "taxa") # keeps the rows from the Try_sp that matches those of Pollen_types. 
 names(Try_sp_download)[2] <- "AccSpeciesName" # rename to original column name
 
-readr::write_csv(Try_sp_download, file = normalizePath("../data/raw_data/plant_functional_types/TRY/Try_list_download.csv"))
+readr::write_csv(Try_sp_download, file = normalizePath("data/raw_data/plant_functional_types/TRY/Try_list_download.csv"))
 
 
 
 # Retrieve the downloaded variable from Try and match it to pollen types so we can include it to the Database as well
 
 
-leaf_type_TRY <- readxl::read_xlsx(normalizePath("../data/raw_data/plant_functional_types/TRY/leaf_type_TRY.xlsx"))
+leaf_type_TRY <- readxl::read_xlsx(normalizePath("data/raw_data/plant_functional_types/TRY/leaf_type_TRY.xlsx"))
 
 leaf_type_TRY <- leaf_type_TRY |> select(Dataset,AccSpeciesName,OrigValueStr,Reference) |>  rename(Leaf_type = OrigValueStr) |>  rename(taxa = AccSpeciesName)
 
@@ -382,6 +382,6 @@ Pollen_types_final_leaf_type <- Pollen_types_final_leaf_type %>%
 all_pfts <- full_join(pollen_types_pfts_combined,Pollen_types_final_leaf_type)
 
 # Save csv
-write.csv(all_pfts, file = normalizePath("../data/processed_data/plant_functional_types/total_pfts.csv"), row.names = FALSE)
+write.csv(all_pfts, file = normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"), row.names = FALSE)
 
 

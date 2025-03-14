@@ -1,5 +1,5 @@
 ---
-title: "Harmonised taxonomy metadata"
+title: "Pollen records metadata"
 author: "Irene Solano"
 format: html
 editor: visual
@@ -42,37 +42,33 @@ lapply(library, require, character.only = TRUE)
 # Read sites data
 sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
 sites$Latitude <- as.numeric(sites$Latitude)
+sites$Longitude <- as.numeric(sites$Longitude)
 
 # Eliminate na rows
 sites <- sites |>
   filter(!is.na(Dated))
 
-# Create a color palette based on the "Dated" column
-color_palette <- colorFactor(palette =  c("red", "blue","green"), domain = sites$Dated)
+# Define the boundaries
+lat_min <- min(sites$Latitude)   # Minimum latitude of the quadrat
+lat_max <- max(sites$Latitude)   # Maximum latitude of the quadrat
+long_min <- min(sites$Longitude)  # Minimum longitude of the quadrat
+long_max <- max(sites$Longitude)  # Maximum longitude of the quadrat
 
-# Create leaflet map 
-
-sites_map <- leaflet(sites) %>%
+# Create leaflet map with defined boundaries
+spatial_coverage_map <- leaflet(sites) %>%
   addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
-  addCircleMarkers(
-    lng = ~Longitude, lat = ~Latitude,  # Coordinates
-    color = ~color_palette(Dated),  # Color based on "Dated"
-    radius = 2, fillOpacity = 0.8,
-    popup = ~paste( "<b>Name:</b>", Site_name_machine_readable, "<br>",
-                    "<b>Dated:</b>", Dated, "<br>",
-                    "<b>Link:</b>", `Link to database`, "<br>")  # Show name of site, date info and link
-  ) %>%
-  addLegend(
-    position = "bottomright", 
-    pal = color_palette, values = ~Dated, 
-    title = "Dated", opacity = 1
-  )
+  # Add a rectangle representing the defined boundaries
+  addRectangles(
+    lng1 = long_min, lat1 = lat_min, 
+    lng2 = long_max, lat2 = lat_max,
+    color = "blue", weight = 2, fillOpacity = 0.1, fillColor = "blue"
+  )  
 
 ```
 
 ```{r}
 #| echo: false
-sites_map
+spatial_coverage_map
 ```
 
 # Temporal coverage

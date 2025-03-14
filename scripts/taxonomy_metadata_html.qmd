@@ -11,7 +11,7 @@ execute:
 
 # Description
 
-The **NaAMPHoRA database** compiles fossil and modern pollen records from multiple sources, including the **African Pollen Database (APD:** https://africanpollendatabase.ipsl.fr/#/home**), Neotoma** **Paleoecology Database** (https://www.neotomadb.org/)**, and direct contributions from authors**. However, due to differences in taxonomic nomenclature across these sources, a **taxonomic harmonisation process** was implemented to ensure consistency and comparability.
+The NaAMPHoRA database compiles fossil and modern pollen records from multiple sources, including the **African Pollen Database (APD:** https://africanpollendatabase.ipsl.fr/#/home**), Neotoma** **Paleoecology Database** (https://www.neotomadb.org/)**, and direct contributions from authors**. However, due to differences in taxonomic nomenclature across these sources, a **taxonomic harmonisation process** was implemented to ensure consistency and comparability.
 
 The pollen taxonomical harmonisation followed these key steps:
 
@@ -27,7 +27,7 @@ The pollen taxonomical harmonisation followed these key steps:
 
         -   **Mottl *et al*. (2021)** \[2\]
 
-        -   **Vincens *et al*. (2007)** \[3\]
+        -   **APD taxonomy list** (https://africanpollendatabase.ipsl.fr/#/taxon-dict)
 
     -   Synonyms and outdated classifications were updated to match current botanical taxonomy.
 
@@ -38,6 +38,8 @@ The pollen taxonomical harmonisation followed these key steps:
     -   Taxa were assigned phytogeographical affinities following GBIF, POWO & several references.
 
     -   Phytogeographical affinities were linked to GBIF & POWO.
+
+    -   Habit and phytogeograhical affinities were also cross-referenced with the pollen inventory of **Vincens *et al.* (2007)** \[3\].
 
 3.  **Final harmonisation list**
 
@@ -98,10 +100,10 @@ attributes <- data.frame(
                   "Reference for taxonomic identification", 
                   "Reference for taxonomic identification", 
                   "Observations on the pollen type harmonisation (by Saúl Manzano (SM))", 
-                  "Number of fossil sequences with chronology", 
-                  "Number of fossil sequences without chronology", 
-                  "Number of modern sequences", 
-                  "Total number of sequences", 
+                  "Number of dated fossil records in which the original pollen type is present", 
+                  "Number of undated fossil records in which the original pollen type is present", 
+                  "Number of modern records in which the original pollen type is present", 
+                  "Total number of records in which the original pollen type is present", 
                   "Phytogeographical affinity of the pollen type", 
                   "Summarised phytogeographical affinity category", 
                   "Reference for phytogeographical affinity", 
@@ -117,7 +119,7 @@ attributes <- data.frame(
                   "Link to GBIF record", 
                   "Phytogeographical affinity based on Plants of the World Online (POWO: https://powo.science.kew.org/) website", 
                   "Link to POWO record", 
-                  "Growth form or life habit of the plant", 
+                  "Life form or life habit of the plant", 
                   "Summarised habit category for percentage calculations", 
                   "Reference for plant habit classification", 
                   "Reference for plant habit classification", 
@@ -128,13 +130,13 @@ attributes <- data.frame(
                   "Reference for plant habit classification", 
                   "Reference for plant habit classification", 
                   "Observations on plant habit", 
-                  "Pollen type classification from Lézine et al. (2009) [1]", 
+                  "Pollen type classification from Lézine et al. (2009)", 
                   "Pollen habit classification from Lézine et al.(2009)", 
-                  "Pollen type classification from Mottl et al.(2020)[2]", 
+                  "Pollen type classification from Mottl et al.(2020)", 
                   "Pollen type classification from APD", 
                   "Pollen habit classification from APD", 
                   "Plant habit classification from APD", 
-                  "Number of species in Vincens et al. (2007)[3]", 
+                  "Number of species in Vincens et al. (2007)", 
                   "Habit classification from Vincens et al. (2007)", 
                   "Phytogeographical affinity from Vincens et al. (2007)", 
                   "Habitat classification from Vincens et al. (2007)"),
@@ -170,8 +172,8 @@ kable(attributes)
 
 # References
 
-1.  Lézine, A. M., Watrin, J., Vincens, A. & Hély, C. Are modern pollen data representative of west African vegetation? Rev. Palaeobot. Palynol. 156, 265–276 (2009).
+1.  Lézine, A. M., Watrin, J., Vincens, A., & Hély, C. Are modern pollen data representative of West African vegetation? *Review of Palaeobotany and Palynology, 156*, 265–276. (2009).
 
-2.  Mott, O. et al. Global acceleration in rates of vegetation change over the past 18,000 years. Science 372, 860–864 (2021).
+2.  Mott, O., et al. Global acceleration in rates of vegetation change over the past 18,000 years. *Science, 372*, 860–864. (2021).
 
-3.  Vincens, A., Lézine, A. M., Buchet, G., Lewden, D. & Le Thomas, A. African pollen database inventory of tree and shrub pollen types. Rev. Palaeobot. Palynol. 145, 135–141 (2007).
+3.  Vincens, A., Lézine, A. M., Buchet, G., Lewden, D., & Le Thomas, A. African pollen database inventory of tree and shrub pollen types. *Review of Palaeobotany and Palynology, 145*, 135–141. (2007).

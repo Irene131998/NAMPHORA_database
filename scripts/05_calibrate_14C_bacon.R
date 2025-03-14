@@ -2,7 +2,7 @@
 
 # Load library and set directory ----
 
-source("functions.R")
+source("scripts/functions.R")
 library <- c("rbacon")
 
 # Install missing packages
@@ -12,7 +12,7 @@ invisible(lapply(library, install_if_missing))
 lapply(library, require, character.only = TRUE)
 
 # Get directory where bacon runs are stored
-mydir <- normalizePath("../data/raw_data/age_data/calibration/Bacon_runs")
+mydir <- normalizePath("data/raw_data/age_data/calibration/Bacon_runs")
 
 
 # 1) Arabian Peninsula ----

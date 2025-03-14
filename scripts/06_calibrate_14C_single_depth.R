@@ -3,7 +3,7 @@
 # Load library ----
 
 
-source("functions.R")
+source("scripts/functions.R")
 library <- c("rice")
 
 # Install missing packages
