@@ -228,7 +228,7 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
 ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), 
        dated_records_temporal_distribution, 
        width = 6,   
-       height = 3,  
+       height = 4,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )

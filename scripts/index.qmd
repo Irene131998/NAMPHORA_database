@@ -132,15 +132,24 @@ Different sections (folders) of the project are structured as follows:
                 Neotoma (https://www.neotomadb.org/), from Giesecke *et
                 al.* (2014), and directly from the authors.
 
-        -   `/mapping_data`: Contains the WWF terrestrial ecoregions of
-            the world shapefile in the folder `/EcoregionsWWF_2017`
-            (retrieved from
-            https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world),
-            the phytoregions defined by White (1983) in the folder
-            `/Africa_Vegetation_White_1983` (retrieved from
-            https://www.miramon.cat/mmr/examples/miombo/docs/database/white/index.htm)
-            and the elevation raster file (*elevation.tiff*) obtained
-            from Lazagabaster *et al.* (2024).
+        -   `/mapping_data`: Contains the following:
+
+            -   `/EcoregionsWWF_2017`: Includes the WWF terrestrial
+                ecoregions of the world shapefile (retrieved from
+                https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world).
+
+            -   /`Regions_WWF_2017`: Includes a shapefile with the
+                regions for Europe and the Arabian Peninsula modified
+                from the WWF terrestrial ecoregions of the world
+                shapefile in QGIS v. 3.28.1 - Firenze.
+
+            -   `/Africa_Vegetation_White_1983`: Containes the
+                phytoregions shapefile, which were defined by
+                White (1983) (retrieved from
+                https://www.miramon.cat/mmr/examples/miombo/docs/database/white/index.htm)
+
+            -   The elevation raster file (*elevation.tiff*) obtained
+                from Lazagabaster *et al.* (2024).
 
         -   `/plant_functional_types`: Contains the `/TRY` folder, which
             includes plant functional trait data (i.e. leaf type trait)
@@ -678,36 +687,40 @@ bin_width <- 1000
 # Create bins based on both `Minimum mean cal BP` and `Maximum mean cal BP`
 dated_records_binned <- sites_temporal %>%
   mutate(
-    # Create bins based on the minimum and maximum cal BP range
     year_bin = cut(
       `Minimum mean cal BP`, 
       breaks = seq(0, max(`Maximum mean cal BP`, na.rm = TRUE) + bin_width, by = bin_width),
-      labels = FALSE,  # Do not specify labels here, let `cut()` handle it
+      labels = FALSE,
       include.lowest = TRUE
     )
   ) %>%
-  count(year_bin)  # Count the number of records per bin
+  group_by(year_bin, `Biogeographic area`) %>%  # Group by both bins and Biogeographic area
+  summarise(n = n(), .groups = "drop")  # Count occurrences
 
-# Convert 'year_bin' back to a meaningful numeric label
+# Convert 'year_bin' back to numeric for plotting
 dated_records_binned$year_bin <- as.numeric(as.character(dated_records_binned$year_bin)) * bin_width
 
+# Remove NA values
 dated_records_binned <- na.omit(dated_records_binned)
 
-# Omit dates older than 32.000 years BP
-dated_records_binned <- dated_records_binned[-c(24:31),]
+# Omit dates older than 20,000 years BP
+dated_records_binned <- filter(dated_records_binned, year_bin <= 20000)
 
-# Create the bar plot
-dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_bin, y = n)) +
-  geom_bar(stat = "identity", fill = `Biogeographic area`, color = "black") +
+# Create the bar plot with color per Biogeographic area
+dated_records_temporal_distribution <- ggplot(dated_records_binned, 
+                                              aes(x = year_bin, y = n, fill = `Biogeographic area`)) +
+  geom_bar(stat = "identity", color = "black", position = "stack") +  # Stack bars per Biogeographic area
   theme_minimal() +
-  labs(x = "Years BP", y = "Number of sites", fill+ "Biogeographic region") +
-  scale_x_reverse() +  # Reverse x-axis to show recent years on the right
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Increase font size of x-axis labels
-        axis.text.y = element_text(size = 14),  # Increase font size of y-axis labels
-        axis.title.x = element_text(size = 16),  # Increase font size of x-axis title
-        axis.title.y = element_text(size = 16),  # Increase font size of y-axis title
-        plot.title = element_text(size = 18), legend.position = "none") + # Increase plot title font size
-  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
+  labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
+  scale_x_reverse() +  # Reverse x-axis for chronological representation
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
+        axis.text.y = element_text(size = 12),  
+        axis.title.x = element_text(size = 12), 
+        axis.title.y = element_text(size = 12),
+        plot.title = element_text(size = 14),
+        legend.title = element_text(size = 8), 
+        legend.text = element_text(size = 8)) + 
+  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add AHP interval markers
 
 
 # 4) Latitudinal distribution of records according to their archive type----
@@ -980,3 +993,6 @@ pipeline)
 5.  Vincens, A., Lézine, A. M., Buchet, G., Lewden, D., & Le Thomas, A.
     African pollen database inventory of tree and shrub pollen types.
     *Review of Palaeobotany and Palynology, 145*, 135–141. (2007).
+6.  White, F. *The Vegetation of Africa: A Descriptive Memoir to
+    Accompany the Unesco/AETFAT/UNSO Vegetation Map of Africa*. (Unesco,
+    Paris, 1983).
