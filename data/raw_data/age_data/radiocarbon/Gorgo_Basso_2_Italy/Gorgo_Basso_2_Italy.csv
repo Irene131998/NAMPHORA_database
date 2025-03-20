@@ -1,11 +1,11 @@
-labID,age,error,depth,cc
-gorgo1,200,60,77.5,1
-gorgo2,1930,60,284.5,1
-gorgo3,2605,70,410,1
-gorgo4,2800,80,498.5,1
-gorgo5,4020,100,607,1
-gorgo6,4470,160,634.5,1
-gorgo7,6440,80,698,1
-gorgo8,7350,80,742.5,1
-gorgo9,8190,100,999,1
-gorgo10,8690,100,1116.5,1
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+346947,Carbon-14,Radiocarbon years BP,77.5,3,200,30,30,false,,Poz-14738,Periderm, twig,
+346948,Carbon-14,Radiocarbon years BP,284.5,3,1930,30,30,false,,Poz-14739,Wood, charcoal, Cyperaceae charred fruit, Apiaceae seed,
+346949,Carbon-14,Radiocarbon years BP,410,6,2605,35,35,false,,Poz-14740,Charcoal, wood, periderm,
+346950,Carbon-14,Radiocarbon years BP,498.5,15,2800,40,40,false,,Poz-14741,Charcoal,
+346951,Carbon-14,Radiocarbon years BP,607,14,4020,50,50,false,,Poz-16195,Quercus bud scales, charcoal, leaves,
+346952,Carbon-14,Radiocarbon years BP,634.5,5,4470,80,80,false,,Poz-16178,Quercus bud scales, charcoal,
+346953,Carbon-14,Radiocarbon years BP,698,4,6440,40,40,false,,Poz-16179,Wood, leaves, charcoal,
+346954,Carbon-14,Radiocarbon years BP,742.5,3,7350,40,40,false,,Poz-14742,Twigs, periderm, wood, charcoal,
+346955,Carbon-14,Radiocarbon years BP,999,4,8190,50,50,false,,Poz-14744,Wood, periderm,
+346956,Carbon-14,Radiocarbon years BP,1116.5,31,8690,50,50,false,,Poz-14745,Charcoal, periderm, leaves,

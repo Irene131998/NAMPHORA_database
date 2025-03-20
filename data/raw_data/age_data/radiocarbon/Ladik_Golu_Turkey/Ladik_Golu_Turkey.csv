@@ -1,5 +1,5 @@
-labID,age,error,depth,cc
-GrN-18631,2760,50,383,1
-GrN-18632,4280,80,409.5,1
-GrN-18633,6590,90,515,1
-GrN-12790,12120,110,717.5,1
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+237826,Carbon-14,Radiocarbon years BP,383,6,2760,50,50,false,,GrN-18631,organic material,
+237827,Carbon-14,Radiocarbon years BP,409.5,3,4280,80,80,false,,GrN-18632,,
+237828,Carbon-14,Radiocarbon years BP,515,10,6590,90,90,false,,GrN-18633,,
+237829,Carbon-14,Radiocarbon years BP,717.5,3,12120,110,110,false,,GrN-12790,,

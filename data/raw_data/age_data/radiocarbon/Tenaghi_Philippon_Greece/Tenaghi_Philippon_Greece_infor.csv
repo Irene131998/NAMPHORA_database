@@ -1,7 +1,0 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-355448,Carbon-14,Radiocarbon years BP,90,,3255,100,100,false,,Bln-953,Peat,
-355449,Carbon-14,Radiocarbon years BP,90,,3320,100,100,false,,Bln-953a,Peat,
-355450,Carbon-14,Radiocarbon years BP,120,,3722,100,100,false,,Bln-954,Peat,
-355451,Carbon-14,Radiocarbon years BP,145,,4193,120,120,false,,Bln-955,Peat with mollusc shells,
-355452,Carbon-14,Radiocarbon years BP,200,,5031,180,180,false,,SRR-83,Peat,
-355453,Carbon-14,Radiocarbon years BP,90,,3088,100,100,false,,Bln-965,Humic fraction,

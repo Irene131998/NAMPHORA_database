@@ -1,8 +1,8 @@
-labID,age,error,depth,cc
-LGQ 343,0,0,5,1
-LGQ 736,0,0,45,1
-LHGI 545,560,120,59,1
-LGQ 342,590,220,86,1
-LGQ 737,2050,200,125,1
-LGQ 284,1560,284,175,1
-LGQ 738,2920,240,195,1
+sample_name,depth,age,materialdated,labnumber,Method,Depth (cm),thickness,14C age (yr BP),notes,error
+,,,Organic sediment,LGQ 343,C,5.0,10.0,0.0,Modern,nan
+,,,Organic sediment,LGQ 736,C,45.0,10.0,0.0,Modern,nan
+,,,Organic sediment,LHGI 545,C,59.0,2.0,560.0,nan,120.0
+,,,Organic sediment,LGQ 342,C,86.0,9.0,590.0,nan,220.0
+,,,Organic sediment,LGQ 737,C,125.0,10.0,2050.0,nan,200.0
+,,,Organic sediment,LGQ 284,C,175.0,10.0,1560.0,nan,284.0
+,,,Organic sediment,LGQ 738,C,195.0,10.0,2920.0,nan,240.0

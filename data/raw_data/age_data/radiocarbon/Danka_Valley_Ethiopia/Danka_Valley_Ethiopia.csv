@@ -1,2 +1,2 @@
-Depth (cm),error,Method,14C age (yr BP),notes,labnumber,materialdated
-250,80,14C,7920,Warning: mistake in Bonnefille et al (1982),Q-1362,Organic matter
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+349136,Carbon-14,Radiocarbon years BP,240,10,7920,80,80,false,,Q-1362,bulk sediment,

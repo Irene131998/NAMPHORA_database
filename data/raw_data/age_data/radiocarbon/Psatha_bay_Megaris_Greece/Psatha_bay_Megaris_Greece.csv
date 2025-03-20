@@ -1,3 +1,3 @@
-labID,age,error,depth,cc
-HD-13639,420,20,64,1
-HD-13549,1870,55,151.5,1
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+629604,Carbon-14,Radiocarbon years BP,64,4,420,20,20,false,,HD-13639,peat (bulk),
+629605,Carbon-14,Radiocarbon years BP,151.5,3,1870,55,55,false,,HD-13549,peat (bulk),

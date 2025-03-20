@@ -1,7 +1,7 @@
-labID,age,error,depth,cc
-GrN-9914,2680,80,88,1
-GrN-9916,8310,160,432,1
-GrN-9913,1450,60,58,1
-GrN-9915,2680,100,102,1
-GrN-9917,9080,200,478,1
-GrN-9918,9200,270,503,1
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+536583,Carbon-14,Radiocarbon years BP,88,4,2680,80,80,false,,GrN-9914,bulk,
+536584,Carbon-14,Radiocarbon years BP,432,4,8310,160,160,false,,GrN-9916,bulk,
+536585,Carbon-14,Radiocarbon years BP,58,4,1450,60,60,false,,GrN-9913,bulk,
+536586,Carbon-14,Radiocarbon years BP,102,4,2680,100,100,false,,GrN-9915,bulk,
+536588,Carbon-14,Radiocarbon years BP,478,4,9080,200,200,false,,GrN-9917,bulk,
+536587,Carbon-14,Radiocarbon years BP,503,4,9200,270,270,false,,GrN-9918,bulk,

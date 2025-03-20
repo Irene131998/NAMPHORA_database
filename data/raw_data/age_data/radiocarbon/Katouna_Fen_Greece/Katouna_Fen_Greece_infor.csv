@@ -1,9 +1,0 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-637906,Carbon-14,Radiocarbon years BP,46,8,75,36,36,false,,KIA 10875,charcoal,
-637907,Carbon-14,Radiocarbon years BP,149,6,910,27,27,false,,KIA 10858,Carex seeds,
-637908,Carbon-14,Radiocarbon years BP,228,8,668,37,37,false,,KIA 20330,peat,rejected by the author
-637909,Carbon-14,Radiocarbon years BP,402,8,2317,27,27,false,,KIA 20329,peat,
-637911,Carbon-14,Radiocarbon years BP,900,6,3939,58,58,false,,KIA 10862,Carex seeds,rejected by the author
-637910,Carbon-14,Radiocarbon years BP,493,6,2474,132,132,false,,KIA 10859,charcoal,rejected by the author
-637912,Carbon-14,Radiocarbon years BP,548.5,5,2675,31,31,false,,KIA 10860,Carex seeds,
-637913,Carbon-14,Radiocarbon years BP,867,6,4759,55,55,false,,KIA 10861,Ranunculus batrachyum seeds,

@@ -1,10 +1,11 @@
-labID,age,error,depth,cc
-UCIAMS 51256,3060,15,40,1
-UCIAMS 51255,1520,15,20,1
-UCIAMS 63003,2255,20,26.75,1
-UCIAMS 63006,6550,20,109.5,1
-UCIAMS 32495,8570,60,123.5,1
-UCIAMS 63004,3525,20,46,1
-UCIAMS 51257,4010,15,60,1
-UCIAMS 63005,5505,20,83.25,1
-UCIAMS 51258,5450,30,80,1
+"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
+647604,Carbon-14,Radiocarbon years BP,40,,3060,15,15,false,,UCIAMS 51256,,
+647605,Carbon-14,Radiocarbon years BP,20,,1520,15,15,false,,UCIAMS 51255,,
+647603,Carbon-14,Radiocarbon years BP,26.75,0.5,2255,20,20,false,,UCIAMS 63003,,
+647606,Carbon-14,Radiocarbon years BP,109.5,,6550,20,20,false,,UCIAMS 63006,,
+647607,Carbon-14,Radiocarbon years BP,123.5,1,8570,60,60,false,,UCIAMS 32495,,
+647610,Carbon-14,Radiocarbon years BP,46,,3525,20,20,false,,UCIAMS 63004,,
+647608,Carbon-14,Radiocarbon years BP,60,,4010,15,15,false,,UCIAMS 51257,,
+647609,Carbon-14,Radiocarbon years BP,83.25,0.5,5505,20,20,false,,UCIAMS 63005,,
+647611,Carbon-14,Radiocarbon years BP,80,,5450,30,30,false,,UCIAMS 51258,,
+647602,Lead-210,Calendar years AD/BC,15,,59,,,false,,,,
