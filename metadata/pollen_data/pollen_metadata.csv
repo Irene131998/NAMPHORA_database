@@ -1,4 +1,4 @@
-variableName,description,unitText
+Name,Description,Unit
 Biogeographic area,Biogeographical region to which the site belongs,Categorical
 Country,Country where the site is located,Categorical
 Site,The name of the site,Categorical

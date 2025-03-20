@@ -1,0 +1,87 @@
+---
+title: "Calibration metadata"
+author: "Irene Solano"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Description
+
+The **NaAMPHoRA database** includes modern and fossil pollen records along with their chronologies. Raw radiocarbon dates were calibrated using a Bayesian age-depth modelling approach implemented in the ***rbacon*** **R package** (v3.2.0; Blaauw & Christen, 2011). For sites with only one dated depth or missing depth information, we calibrated radiocarbon ages using the ***rice*** **R package** (v1.0.0; Blaauw, 2024).
+
+Details on the calibration for each site are available in the *calibration_information.csv* file, which contains the following metadata:
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+# Load libraries and functions ----
+source("functions.R")
+
+library <- c("knitr", "dplyr","readr")
+
+# Install missing packages
+invisible(lapply(library, install_if_missing))
+
+# Load the library
+lapply(library, require, character.only = TRUE)
+
+```
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+# Define Attributes
+
+# Define variable names, descriptions, and units
+
+# View the dataframe
+attributes <- data.frame(
+  Name = c("Biogeographic area", "Country", "Site", "Site_name_machine_readable", 
+           "Dated", "Recalibrated", "Calibration R package", "Radiocarbon dates", 
+           "Depths", "Material dated", "Dating method (Conventional/AMS)", 
+           "Calibration curve", "Hiatus", "Post-bomb curve", 
+           "Reservoir effect", "Accumulation rate (yr/cm)", "Section thickness (cm)", 
+           "Comments #1", "Comment #2"),
+  Description = c("Biogeographical region to which the site belongs", 
+                  "Country where the site is located", "Site name", 
+                  "Machine-readable name for the site", "Whether the record was dated", 
+                  "Whether the record was recalibrated in this study", "R package used for calibration", 
+                  "Whether the record had raw radiocarbon dates with its associated error", "Whether the record reports depths along with the radicarbon dates", 
+                  "Material used for dating (e.g., wood, sediment)", 
+                  "Method used for radiocarbon dating (Conventional or AMS)", 
+                  "Calibration curve used in the calibration process", 
+                  "Whether there was a hiatus in the record", 
+                  "Whether there was a post-bomb dated and the corresponding Post-bomb curve used in calibration", 
+                  "Whether there was an effect of reservoir on radiocarbon dating", 
+                  "Rate of accumulation in years per cm used in the calibration", "Thickness of the section in cm used in the calibration", 
+                  "Additional comments regarding the site or data", 
+                  "Further comments or notes on the dataset"),
+  Unit = c("Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical","Categorical", "Categorical", "Categorical", "Categorical", "Years/cm", "Centimeters","Categorical", "Categorical")
+)
+
+
+
+# Save attributes metadata as CSV
+write_csv(attributes, normalizePath("../metadata/age_calibrated/calibration_metadata.csv"))
+
+```
+
+# Metadata
+
+```{r}
+#| echo: false
+# Display table in HTML
+kable(attributes)
+```
+
+# References
+
+1.  Blaauw, M., & Christen, J. A. Flexible paleoclimate age-depth models using an autoregressive gamma process. *Bayesian Analysis, 6*(3), 457–474. <https://doi.org/10.1214/11-BA618> (2011).
+
+2.  Blaauw, M. *rice: Radiocarbon Equations*. <https://CRAN.R-project.org/package=rice> (2024).

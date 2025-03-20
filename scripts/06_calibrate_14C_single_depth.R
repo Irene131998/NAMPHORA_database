@@ -704,13 +704,18 @@ calib.1 <- caldist(7920, 80)
 points.1 <- point.estimates(calib.1)
 points.1 # midpoint = 8776.0   ; median= 8768.1    : weighted mean: 8779.5  
 
+# South-west Fourtchiak, Chad
+calibrate(age = 21000,error = 2000,cc=1)
+calib.1 <- caldist(21000, 2000)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =24874.0  ; median= 24329.5  : weighted mean:24403.4   
 
 
 # 5) Atlantic Ocean ----
 
 
 # GIK12329-6_Atlantic_Ocean
-calibrate(age = 20050,error = 2325,cc=2) # plot of the radiocarbon and calibrated distributions, together with their hpd ranges
+calibrate(age = 20050,error = 2325,cc=2) 
 calib.balid_1 <- caldist(20050, 2325, cc=2)
 points.balid_1 <- point.estimates(calib.balid_1)
 points.balid_1 # midpoint = 22892.0 ; weighted mean= 22989.3       ; median =23055.5   

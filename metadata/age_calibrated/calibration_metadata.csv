@@ -1,0 +1,20 @@
+Name,Description,Unit
+Biogeographic area,Biogeographical region to which the site belongs,Categorical
+Country,Country where the site is located,Categorical
+Site,Site name,Categorical
+Site_name_machine_readable,Machine-readable name for the site,Categorical
+Dated,Whether the record was dated,Categorical
+Recalibrated,Whether the record was recalibrated in this study,Categorical
+Calibration R package,R package used for calibration,Categorical
+Radiocarbon dates,Whether the record had raw radiocarbon dates with its associated error,Categorical
+Depths,Whether the record reports depths along with the radicarbon dates,Categorical
+Material dated,"Material used for dating (e.g., wood, sediment)",Categorical
+Dating method (Conventional/AMS),Method used for radiocarbon dating (Conventional or AMS),Categorical
+Calibration curve,Calibration curve used in the dating process,Categorical
+Hiatus,Whether there was a hiatus in the record,Categorical
+Post-bomb curve,Whether there was a post-bomb dated and the corresponding Post-bomb curve used in calibration,Categorical
+Reservoir effect,Whether there was an effect of reservoir on radiocarbon dating,Categorical
+Accumulation rate (yr/cm),Rate of accumulation in years per cm used in the calibration,Years/cm
+Section thickness (cm),Thickness of the section in cm used in the calibration,Centimeters
+Comments #1,Additional comments regarding the site or data,Categorical
+Comment #2,Further comments or notes on the dataset,Categorical

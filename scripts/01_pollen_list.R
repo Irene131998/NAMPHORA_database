@@ -1,7 +1,7 @@
 ## Script for extracting data from Neotoma & get raw pollen list for harmonisation
 
 # 0. Load libraries and functions ----
-source("functions.R")
+source("scripts/functions.R")
 
 libraries <- c("neotoma2", "dplyr", "tidyr", "readr")
 
@@ -15,7 +15,7 @@ lapply(libraries, require, character.only = TRUE)
 
 ## 1.1) Download from neotoma ----
 # Read sites_id file to download all from neotoma using neotoma2 R package
-datasets_ids_df <- read.csv(normalizePath("../metadata/pollen_data/database.csv"))
+datasets_ids_df <- read.csv(normalizePath("metadata/pollen_data/database.csv"))
 datasets_ids_df <- datasets_ids_df |> dplyr::filter(Database == "Neotoma") |> select(Site_name_machine_readable,dataset_id,Pollen)
 
 # Ensure site names are character
@@ -105,7 +105,7 @@ for (i in seq_along(df_list)) {
 }
 
 # Save dfs into corresponding folders
-fossil_folder_path <- normalizePath("../data/raw_data/pollen_data/fossil/")
+fossil_folder_path <- normalizePath("data/raw_data/pollen_data/fossil/")
 
 for (name in names(fossil_list)) {
   df <- fossil_list[[name]]
@@ -118,7 +118,7 @@ for (name in names(fossil_list)) {
   write.csv(df, file = file.path(fossil_folder_path, paste0(name, ".csv")), row.names = FALSE)
 }
 
-modern_folder_path <- normalizePath("../data/raw_data/pollen_data/modern/")
+modern_folder_path <- normalizePath("data/raw_data/pollen_data/modern/")
 for (name in names(modern_list)) {
   df <- modern_list[[name]]
   
@@ -134,7 +134,7 @@ for (name in names(modern_list)) {
 
 ## 2.1) Fossil records ----
 # Set the directory containing your CSV files
-folder_path <- normalizePath("../data/raw_data/pollen_data/fossil")
+folder_path <- normalizePath("data/raw_data/pollen_data/fossil")
 
 # Get a list of all CSV files in the directory
 file_list <- list.files(path = folder_path, pattern = "\\.csv$", full.names = TRUE)
@@ -163,7 +163,7 @@ raw_taxa_list <- unique(unlist(raw_taxa_list)) # we need to unlist before elimin
 
 ## 2.2) Modern records ----
 # Set the directory containing your CSV files
-folder_path <- normalizePath("../data/raw_data/pollen_data/modern")
+folder_path <- normalizePath("data/raw_data/pollen_data/modern")
 
 # Get a list of all CSV files in the directory
 file_list <- list.files(path = folder_path, pattern = "\\.csv$", full.names = TRUE)
@@ -204,4 +204,4 @@ unnecessary_rows <- grepl("Fossilva|MADCAP|BP|Depth|depth|sample_name|C14|Age|Ca
 raw_taxa <- raw_taxa[!unnecessary_rows, , drop = FALSE]
 
 # Save raw taxa list
-write.csv(raw_taxa, file = normalizePath("../data/raw_data/taxonomy/raw_taxa_list/raw_pollen_types.csv"), row.names = TRUE)
+write.csv(raw_taxa, file = normalizePath("data/raw_data/taxonomy/raw_taxa_list/raw_pollen_types.csv"), row.names = TRUE)

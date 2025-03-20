@@ -17,7 +17,7 @@ lapply(libraries, require, character.only = TRUE)
 
 sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
 taxonomy <- read_csv(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv"))
-phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographical_affinity.csv"))
+phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographic_affinity.csv"))
 pft <- read_csv(normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"))
 
 # 2) Number sites per bigeographic region----
@@ -70,7 +70,7 @@ sites_long <- sites_combined |>
                values_to = "Count")
 
 
-# Define the order of periods (modify according to your data)
+# Define the order
 order <- c("Total", "Modern","Dated", "Not dated")
 
 # Convert `Period` into a factor with the specified order
@@ -134,8 +134,8 @@ sites_combined_database <- total_counts |>
   left_join(fossil_counts, by = "Database") |> 
   left_join(modern_counts, by = "Database")
 
-sites_combined_database <- sites_combined_database |> filter(!Database == "APD/Neotoma")
 sites_combined_database <- sites_combined_database |> mutate(Database = ifelse(Database == "Received from authors", "Received", Database))
+
 
 # Reshape data to long format for ggplot
 sites_long_database <- sites_combined_database |> 
@@ -144,6 +144,14 @@ sites_long_database <- sites_combined_database |>
                values_to = "Count")
 
 sites_long_database <- sites_long_database |> na.omit()
+
+# Define the order
+order <- c("APD", "Neotoma","APD/Neotoma", "Received")
+
+# Convert `Period` into a factor with the specified order
+sites_long_database$Database <- factor(sites_long_database$Database, levels = order)
+
+
 # Create the grouped bar plot
 database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fill = `Pollen Type`)) +
   geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
@@ -158,6 +166,7 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
         plot.title = element_text(size = 22, face = "bold"),
         legend.title = element_text(size = 16),  
         legend.text = element_text(size = 14))
+
 # Save the plot
 ggsave(normalizePath("outputs/graphs/database_barplot.png"), 
        database_barplot, 
@@ -170,7 +179,7 @@ database_barplot
 
 # 4) Number of dated records per time interval----
 
-sites_temporal <- sites_filtered |>  select(Site_name_machine_readable, "Minimum mean cal BP", "Maximum mean cal BP")
+sites_temporal <- sites |>  select(Site_name_machine_readable,`Biogeographic area`, "Minimum mean cal BP", "Maximum mean cal BP")
 sites_temporal$`Maximum mean cal BP`  <- sites_temporal$`Maximum mean cal BP` |>  as.numeric()
 sites_temporal$`Minimum mean cal BP`  <- sites_temporal$`Minimum mean cal BP` |>  as.numeric()
 
@@ -196,25 +205,25 @@ dated_records_binned$year_bin <- as.numeric(as.character(dated_records_binned$ye
 dated_records_binned <- na.omit(dated_records_binned)
 
 # Omit dates older than 32.000 years BP
-dated_records_binned <- dated_records_binned[-c(23:30),]
+dated_records_binned <- dated_records_binned[-c(24:31),]
 
 # Create the bar plot
 dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_bin, y = n)) +
-  geom_bar(stat = "identity", fill = "black", color = "black") +
+  geom_bar(stat = "identity", fill = `Biogeographic area`, color = "black") +
   theme_minimal() +
-  labs(x = "Years BP", y = "Number of sites") +
+  labs(x = "Years BP", y = "Number of sites", fill+ "Biogeographic region") +
   scale_x_reverse() +  # Reverse x-axis to show recent years on the right
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  
-        axis.text.y = element_text(size = 14),  
-        axis.title.x = element_text(size = 16), 
-        axis.title.y = element_text(size = 16),
-        plot.title = element_text(size = 18), legend.position = "none") + 
-  geom_vline(xintercept = c(5000, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
+        axis.text.y = element_text(size = 12),  
+        axis.title.x = element_text(size = 12), 
+        axis.title.y = element_text(size = 12),
+        plot.title = element_text(size = 14), legend.position = "none") + 
+  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
 
 ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), 
        dated_records_temporal_distribution, 
-       width = 8,   
-       height = 6,  
+       width = 6,   
+       height = 3,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
@@ -314,6 +323,10 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
     fill = "Archive Type",
   ) +
   theme_minimal() +
+  scale_fill_manual(values = c("skyblue", "darkblue", "darkorange", "black", "lightgreen", 
+                               "gold", "purple", "turquoise", "blue", "violet", 
+                               "yellow", "grey", "tomato", "darkgreen", 
+                               "darkcyan", "chocolate3", "red", "pink", "steelblue", "chartreuse3","darkred","blueviolet","coral2","azure1","aquamarine","brown3","chartreuse1","burlywood2")) + # 28
   theme(
     legend.position = "top", 
     legend.text = element_text(size = 10),  
@@ -385,54 +398,56 @@ ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"),
 )
 barplot_altitude_biogeography
 
-# 8) Number of harmonised pollen taxa per phytogeographical affinity (proportion)----
+# 8) Number of harmonised pollen taxa per phytogeographic affinity (proportion)----
 
 # Reshape data into long format
 phyto_aff_long <- phyto_aff %>%
   pivot_longer(cols = -Pollen_type_SM_morphological, # Keep Pollen_type_SM_morphological
-               names_to = "Phytogeographical_Affinity", # Affinities become a new column
+               names_to = "phytogeographic_Affinity", # Affinities become a new column
                values_to = "Presence") %>%  # Presence/absence info
   filter(Presence == "x")  # Keep only rows where the pollen type is associated with the affinity
 
-# Count the occurrences of each phytogeographical affinity
+# Count the occurrences of each phytogeographic affinity
 affinity_counts <- phyto_aff_long %>%
-  count(Phytogeographical_Affinity) %>%
+  count(phytogeographic_Affinity) %>%
   arrange(desc(n))  # Sort in descending order
 
 # Calculate proportions 
 affinity_percentages <- affinity_counts %>%
 mutate(percentage = n / sum(n) * 100)
 
-# Plotting the proportion of pollen types per phyto aff
-phyto_aff_proportions_chart <- ggplot(affinity_percentages, aes(x = "Number of harmonised pollen taxa", y = n, fill = Phytogeographical_Affinity)) +
-  geom_bar(stat = "identity", width = 1) +  
-  coord_polar(theta = "y") +  # Convert to pie chart
-  labs(x= "", y = "", fill= "Phytogeographical affinity") +  
+phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = "", y = percentage, fill = phytogeographic_Affinity)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, 
+            size = 6) +
   theme_minimal() +
-  theme(axis.text.x = element_blank(),  
-        axis.ticks = element_blank(), 
-        axis.text.y = element_blank(),  
-        legend.position = "right",       
-        legend.title = element_text(size = 12, face = "bold"),  
-        legend.key.size = unit(1, "cm"),  
-        plot.margin = margin(10, 10, 10, 10)) +  
+  labs(x = "",
+       y = "",
+       fill = "Phytogeographic affinity") +
   scale_fill_manual(values = c("skyblue", "darkblue", "darkorange", "darkred", "lightgreen", 
-                               "gold", "purple", "turquoise", "red", "violet", 
-                               "yellow", "grey", "tomato", "darkgreen", 
-                               "darkcyan", "indianred", "blue", "pink", "steelblue", "green"))  +
-  geom_text(aes(label = paste0(round(percentage, 1), "%")), position = position_stack(vjust = 0.5), color = "black", size = 2.8)  +
-  guides(fill = guide_legend(ncol = 2))  # Divide legend into two columns
+                              "gold", "purple", "turquoise", "red", "violet", 
+                              "yellow", "grey", "tomato", "darkgreen", 
+                              "darkcyan", "indianred", "blue", "pink", "steelblue", "green")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
+        axis.text.y = element_text(size = 18),
+        axis.title.x = element_text(size = 20),
+        axis.title.y = element_text(size = 18),
+        legend.title = element_text(size = 18),  
+        legend.text = element_text(size = 18),
+        legend.position = "bottom")
 
 
 # Save the plot
-ggsave(normalizePath("outputs/graphs/phyto_aff_proportions_chart.png"), 
-       phyto_aff_proportions_chart, 
-       width = 8,   
-       height = 5,  
+ggsave(normalizePath("outputs/graphs/phyto_aff_proportions.png"), 
+       phyto_aff_barplot, 
+       width = 15,   
+       height = 8,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
-phyto_aff_proportions_chart
+phyto_aff_barplot
 
 # 9) Number of taxa (divided by family, genus and species) per plant functional trait ----
 

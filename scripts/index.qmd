@@ -135,7 +135,10 @@ Different sections (folders) of the project are structured as follows:
         -   `/mapping_data`: Contains the WWF terrestrial ecoregions of
             the world shapefile in the folder `/EcoregionsWWF_2017`
             (retrieved from
-            https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world)
+            https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world),
+            the phytoregions defined by White (1983) in the folder
+            `/Africa_Vegetation_White_1983` (retrieved from
+            https://www.miramon.cat/mmr/examples/miombo/docs/database/white/index.htm)
             and the elevation raster file (*elevation.tiff*) obtained
             from Lazagabaster *et al.* (2024).
 
@@ -665,7 +668,7 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
 
 # 3) Number of dated records per time interval----
 
-sites_temporal <- sites |>  select(Site_name_machine_readable, "Minimum mean cal BP", "Maximum mean cal BP")
+sites_temporal <- sites |>  select(Site_name_machine_readable,`Biogeographic area`, "Minimum mean cal BP", "Maximum mean cal BP")
 sites_temporal$`Maximum mean cal BP`  <- sites_temporal$`Maximum mean cal BP` |>  as.numeric()
 sites_temporal$`Minimum mean cal BP`  <- sites_temporal$`Minimum mean cal BP` |>  as.numeric()
 
@@ -695,9 +698,9 @@ dated_records_binned <- dated_records_binned[-c(24:31),]
 
 # Create the bar plot
 dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_bin, y = n)) +
-  geom_bar(stat = "identity", fill = "black", color = "black") +
+  geom_bar(stat = "identity", fill = `Biogeographic area`, color = "black") +
   theme_minimal() +
-  labs(x = "Years BP", y = "Number of sites") +
+  labs(x = "Years BP", y = "Number of sites", fill+ "Biogeographic region") +
   scale_x_reverse() +  # Reverse x-axis to show recent years on the right
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Increase font size of x-axis labels
         axis.text.y = element_text(size = 14),  # Increase font size of y-axis labels
@@ -933,7 +936,7 @@ barplot_altitude_biogeography
 ```
 
 ```{r}
-#| fig-cap: "Figure 9. Proportion of harmonised pollen types per phytogeographic region"
+#| fig-cap: "Figure 9. Proportion of harmonised pollen types per phytogeographic affinity"
 phyto_aff_barplot
 ```
 

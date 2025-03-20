@@ -2,7 +2,7 @@
 
 
 # 0. Load libraries and functions ----
-source("scripts/functions.R")
+source("functions.R")
 
 libraries <- c("readr", "tidyr", "dplyr", "readxl", "openxlsx")
 
