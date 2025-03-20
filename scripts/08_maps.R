@@ -15,26 +15,31 @@ lapply(libraries, require, character.only = TRUE)
 
 # 1) Read data----
 
-# Biomes
-biomes <- sf::st_read(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/wwf_terr_ecos.shp"))
-biomes <- sf::st_make_valid(biomes)
+# Ecoregions Olson (2001)
+ecoregions_Olson <- sf::st_read(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/wwf_terr_ecos.shp"))
+ecoregions_Olson <- sf::st_make_valid(ecoregions_Olson)
 
-biomes_crop <- sf::st_crop(biomes, ext(c(-19,70,0,50)))
-biomes_crop$ECO_NAME <- as.factor(biomes_crop$ECO_NAME)
-biomes_crop$BIOME <- as.factor(biomes_crop$BIOME)
+ecoregions_Olson_crop <- sf::st_crop(ecoregions_Olson, ext(c(-19,70,0,50)))
+ecoregions_Olson_crop$ECO_NAME <- as.factor(ecoregions_Olson_crop$ECO_NAME)
+ecoregions_Olson_crop$BIOME <- as.factor(ecoregions_Olson_crop$BIOME)
 
 biome_definitions <- read.csv(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/Biome_definitions.csv"))
 colnames(biome_definitions) <- c("BIOME","BIOME_definition")
 
+## Biomes
 # Merge the biome definitions with the shapefile 
-biomes_crop <- merge(biomes_crop, biome_definitions, by = "BIOME", all.x = TRUE)
-
-plot(sf::st_geometry(biomes_crop), col = biomes_crop$BIOME, border = "black")
-
+biomes <- merge(ecoregions_Olson_crop, biome_definitions, by = "BIOME", all.x = TRUE)
 # Filter out rows where BIOME is 98 and BIOME_definition is NA or empty
-biomes_crop <- biomes_crop[!(biomes_crop$BIOME == 98 &  (is.na(biomes_crop$BIOME_definition) | biomes_crop$BIOME_definition == "")), ]
+biomes <- biomes[!(biomes$BIOME == 98 &  (is.na(biomes$BIOME_definition) | biomes$BIOME_definition == "")), ]
+
+## Phytogeographical regions 
+ecoregions_Olson_crop <- ecoregions_Olson_crop$ECO_NAME
+
+
 
 # African vegetation White (1983)
+phytogeographic_regions_White <- sf::st_read(normalizePath("data/raw_data/mapping_data/Africa_Vegetation_White_1983/afwhite_2.shp"))
+phytogeographic_regions_White <- sf::st_make_valid(phytogeographic_regions_White)
 
 
 

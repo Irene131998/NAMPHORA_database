@@ -205,8 +205,8 @@ dated_records_binned$year_bin <- as.numeric(as.character(dated_records_binned$ye
 # Remove NA values
 dated_records_binned <- na.omit(dated_records_binned)
 
-# Omit dates older than 32,000 years BP
-dated_records_binned <- filter(dated_records_binned, year_bin <= 32000)
+# Omit dates older than 20,000 years BP
+dated_records_binned <- filter(dated_records_binned, year_bin <= 20000)
 
 # Create the bar plot with color per Biogeographic area
 dated_records_temporal_distribution <- ggplot(dated_records_binned, 
@@ -219,7 +219,9 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
         axis.text.y = element_text(size = 12),  
         axis.title.x = element_text(size = 12), 
         axis.title.y = element_text(size = 12),
-        plot.title = element_text(size = 14)) + 
+        plot.title = element_text(size = 14),
+        legend.title = element_text(size = 8), 
+        legend.text = element_text(size = 8)) + 
   geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add AHP interval markers
 
 
