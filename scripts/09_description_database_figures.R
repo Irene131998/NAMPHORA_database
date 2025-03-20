@@ -179,7 +179,7 @@ database_barplot
 
 # 4) Number of dated records per time interval----
 
-sites_temporal <- sites |>  select(Site_name_machine_readable,`Biogeographic area`, "Minimum mean cal BP", "Maximum mean cal BP")
+sites_temporal <- sites |>  select(Site_name_machine_readable,"Biogeographic area", "Minimum mean cal BP", "Maximum mean cal BP")
 sites_temporal$`Maximum mean cal BP`  <- sites_temporal$`Maximum mean cal BP` |>  as.numeric()
 sites_temporal$`Minimum mean cal BP`  <- sites_temporal$`Minimum mean cal BP` |>  as.numeric()
 
@@ -189,36 +189,39 @@ bin_width <- 1000
 # Create bins based on both `Minimum mean cal BP` and `Maximum mean cal BP`
 dated_records_binned <- sites_temporal %>%
   mutate(
-    # Create bins based on the minimum and maximum cal BP range
     year_bin = cut(
       `Minimum mean cal BP`, 
       breaks = seq(0, max(`Maximum mean cal BP`, na.rm = TRUE) + bin_width, by = bin_width),
-      labels = FALSE,  # Do not specify labels here, let `cut()` handle it
+      labels = FALSE,
       include.lowest = TRUE
     )
   ) %>%
-  count(year_bin)  # Count the number of records per bin
+  group_by(year_bin, `Biogeographic area`) %>%  # Group by both bins and Biogeographic area
+  summarise(n = n(), .groups = "drop")  # Count occurrences
 
-# Convert 'year_bin' back to a meaningful numeric label
+# Convert 'year_bin' back to numeric for plotting
 dated_records_binned$year_bin <- as.numeric(as.character(dated_records_binned$year_bin)) * bin_width
 
+# Remove NA values
 dated_records_binned <- na.omit(dated_records_binned)
 
-# Omit dates older than 32.000 years BP
-dated_records_binned <- dated_records_binned[-c(24:31),]
+# Omit dates older than 32,000 years BP
+dated_records_binned <- filter(dated_records_binned, year_bin <= 32000)
 
-# Create the bar plot
-dated_records_temporal_distribution<- ggplot(dated_records_binned, aes(x = year_bin, y = n)) +
-  geom_bar(stat = "identity", fill = `Biogeographic area`, color = "black") +
+# Create the bar plot with color per Biogeographic area
+dated_records_temporal_distribution <- ggplot(dated_records_binned, 
+                                              aes(x = year_bin, y = n, fill = `Biogeographic area`)) +
+  geom_bar(stat = "identity", color = "black", position = "stack") +  # Stack bars per Biogeographic area
   theme_minimal() +
-  labs(x = "Years BP", y = "Number of sites", fill+ "Biogeographic region") +
-  scale_x_reverse() +  # Reverse x-axis to show recent years on the right
+  labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
+  scale_x_reverse() +  # Reverse x-axis for chronological representation
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
         axis.text.y = element_text(size = 12),  
         axis.title.x = element_text(size = 12), 
         axis.title.y = element_text(size = 12),
-        plot.title = element_text(size = 14), legend.position = "none") + 
-  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add vertical lines for the AHP interval
+        plot.title = element_text(size = 14)) + 
+  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add AHP interval markers
+
 
 ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), 
        dated_records_temporal_distribution, 
