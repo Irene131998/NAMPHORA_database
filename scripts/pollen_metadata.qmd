@@ -1,0 +1,167 @@
+---
+title: "Pollen records metadata"
+author: "Irene Solano"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Description
+
+The ***NaAMPHoRA*** (*Northern Africa, Arabian, and Mediterranean Pollen Holocene Records Archive*) is an open-access database that compiles fossil and modern pollen records from North Africa, Arabia, and the Mediterranean. The database includes fossil and modern pollen records, both raw and harmonised, as well as un-calibrated and recalibrated radiocarbon dates.
+
+Details on the geographical, temporal and other relevant information of all the pollen records has been compiled in the “*database.csv*” file, which contains the following metadata:
+
+# Spatial coverage
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+# Load libraries and functions ----
+source("functions.R")
+
+library <- c("knitr", "dplyr","readr","leaflet","leaflet.extras","quarto","htmlwidgets")
+
+# Install missing packages
+invisible(lapply(library, install_if_missing))
+
+# Load the library
+lapply(library, require, character.only = TRUE)
+
+```
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+
+# Read sites data
+sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
+sites$Latitude <- as.numeric(sites$Latitude)
+sites$Longitude <- as.numeric(sites$Longitude)
+
+# Eliminate na rows
+sites <- sites |>
+  filter(!is.na(Dated))
+
+# Define the boundaries
+lat_min <- min(sites$Latitude)   # Minimum latitude of the quadrat
+lat_max <- max(sites$Latitude)   # Maximum latitude of the quadrat
+long_min <- min(sites$Longitude)  # Minimum longitude of the quadrat
+long_max <- max(sites$Longitude)  # Maximum longitude of the quadrat
+
+# Create leaflet map with defined boundaries
+spatial_coverage_map <- leaflet(sites) %>%
+  addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
+  # Add a rectangle representing the defined boundaries
+  addRectangles(
+    lng1 = long_min, lat1 = lat_min, 
+    lng2 = long_max, lat2 = lat_max,
+    color = "blue", weight = 2, fillOpacity = 0.1, fillColor = "blue"
+  )  
+
+```
+
+```{r}
+#| echo: false
+spatial_coverage_map
+```
+
+# Temporal coverage
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+
+# Temporal extent
+sites$`Minimum mean cal BP` <- as.numeric(sites$`Minimum mean cal BP` )
+sites$`Maximum mean cal BP` <- as.numeric(sites$`Maximum mean cal BP`)
+
+temporal_extent <- data.frame(Begin = max(sites$`Maximum mean cal BP`, na.rm = TRUE),
+                              End = min(sites$`Minimum mean cal BP`, na.rm = TRUE))
+
+temporal_extent <- data.frame(
+  Variable = c("Begin", "End"),
+  Value = c(
+    max(sites$`Maximum mean cal BP`, na.rm = TRUE),
+    min(sites$`Minimum mean cal BP`, na.rm = TRUE)
+  )
+)
+colnames(temporal_extent) <- NULL  # Remove column names
+
+```
+
+```{r}
+#| echo: false
+kable(temporal_extent)
+
+```
+
+```{r}
+#| echo: false
+#| output: false
+#| message: false
+# Define Attributes
+
+# Create a dataframe with variable names, descriptions, and units
+site_metadata <- data.frame(
+  Name = c("Biogeographic area", "Country", "Site", "Site_name_machine_readable", 
+                   "Archive type", "Latitude", "Longitude", "Altitude", "Database", "Pollen", 
+                   "Published", "Data received (from authors)", "Link to database", "dataset_id", 
+                   "Dated", "Recalibrated", "Period", "African Humid Period", 
+                   "Minimum mean cal BP", "Maximum mean cal BP", "Observations", 
+                   "Concentration (Lycopodium, Eucalyptus, Spikes)", 
+                   paste0("Reference ", 1:16)),
+  
+  Description = c("Biogeographical region to which the site belongs", 
+                  "Country where the site is located", 
+                  "The name of the site", 
+                  "Machine-readable name of the site", 
+                  "Type of core (i.e. marine, terrestrial, lacustrine, archaeological, etc.)", 
+                  "Exact latitude (in decimal degrees) where the site is located", 
+                  "Exact longitude (in decimal degrees) where the site is located", 
+                  "Altitude of the site in meters", 
+                  "Database from which the site was retrieved", 
+                  "Specifies whether the pollen record is modern or fossil. Modern if the pollen grains were obtained from a modern sediment or fossil if pollen grains are preserved in older sediments", 
+                  "The site has been published in a database repository", 
+                  "Data received from authors, not included in a publicly available database", 
+                  "Link to the exact repository of the database from which the site was extracted", 
+                  "ID of Neotoma dataset", 
+                  "The site includes a calendar chronology or radiocarbon dates", 
+                  "Site radiocarbon dates have been updated to calendar years", 
+                  "Geological time period of the site, including Late Holocene (Meghalayan: 0 to 4.2 ka BP), Mid Holocene (Northgrippian: 4.2 to 8.2 ka BP), Early Holocene (Greenlandian: 8.2 to 11.7 ka BP), Pre-Holocene (11.7 to 240 ka BP), Holocene (0 to 11.7 ka BP), and Holocene-Pre-Holocene (present to 240 ka BP)", 
+                  "Indicates whether the site coincides fully or partially with the African Humid Period (14.8 to 5.5 ka BP)", 
+                  "Minimum mean age (Before Present) of the site", 
+                  "Maximum mean age (Before Present) of the site", 
+                  "Observations about the chronology of the site", 
+                  "Indicates whether the site includes Lycopodium (or Eucalyptus) tablet counts for concentration calculation", 
+                  rep("Reference of the site", 16)),
+  
+  Unit = c("Categorical", "Categorical", "Categorical", "Categorical", "Categorical", 
+               "decimalDegree", "decimalDegree", "meters", 
+               "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", 
+               "Categorical", "Categorical", "Categorical", "Categorical", 
+               "years BP", "years BP", "Categorical", 
+               "Categorical", rep("Categorical", 16)),
+  
+  stringsAsFactors = FALSE
+)
+
+
+# Save attributes metadata as CSV
+write_csv(site_metadata, normalizePath("../metadata/pollen_data/pollen_metadata.csv"))
+
+```
+
+# Metadata
+
+```{r}
+#| echo: false
+# Display table in HTML
+kable(site_metadata)
+```
