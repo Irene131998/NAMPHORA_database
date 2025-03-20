@@ -15,24 +15,28 @@ lapply(libraries, require, character.only = TRUE)
 
 # 1) Read data----
 
-# Phytogeographic_regions
-Phytogeographic_regions <- sf::st_read(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/wwf_terr_ecos.shp"))
-Phytogeographic_regions <- sf::st_make_valid(Phytogeographic_regions)
+# Biomes
+biomes <- sf::st_read(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/wwf_terr_ecos.shp"))
+biomes <- sf::st_make_valid(biomes)
 
-Phytogeographic_regions_crop <- sf::st_crop(Phytogeographic_regions, ext(c(-19,70,0,50)))
-Phytogeographic_regions_crop$ECO_NAME <- as.factor(Phytogeographic_regions_crop$ECO_NAME)
-Phytogeographic_regions_crop$BIOME <- as.factor(Phytogeographic_regions_crop$BIOME)
+biomes_crop <- sf::st_crop(biomes, ext(c(-19,70,0,50)))
+biomes_crop$ECO_NAME <- as.factor(biomes_crop$ECO_NAME)
+biomes_crop$BIOME <- as.factor(biomes_crop$BIOME)
 
 biome_definitions <- read.csv(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/Biome_definitions.csv"))
 colnames(biome_definitions) <- c("BIOME","BIOME_definition")
 
 # Merge the biome definitions with the shapefile 
-Phytogeographic_regions_crop <- merge(Phytogeographic_regions_crop, biome_definitions, by = "BIOME", all.x = TRUE)
+biomes_crop <- merge(biomes_crop, biome_definitions, by = "BIOME", all.x = TRUE)
 
-plot(sf::st_geometry(Phytogeographic_regions_crop), col = Phytogeographic_regions_crop$BIOME, border = "black")
+plot(sf::st_geometry(biomes_crop), col = biomes_crop$BIOME, border = "black")
 
 # Filter out rows where BIOME is 98 and BIOME_definition is NA or empty
-Phytogeographic_regions_crop <- Phytogeographic_regions_crop[!(Phytogeographic_regions_crop$BIOME == 98 &  (is.na(Phytogeographic_regions_crop$BIOME_definition) | Phytogeographic_regions_crop$BIOME_definition == "")), ]
+biomes_crop <- biomes_crop[!(biomes_crop$BIOME == 98 &  (is.na(biomes_crop$BIOME_definition) | biomes_crop$BIOME_definition == "")), ]
+
+# African vegetation White (1983)
+
+
 
 
 # Sites
@@ -94,7 +98,7 @@ saveWidget(fossil_sites_map,normalizePath("outputs/maps/fossil_sites_interactive
 fossil_sites_plot <- ggplot() +
   geom_raster(data = elevation_df, aes(x = x, y = y, fill = value)) +
   scale_fill_gradientn(colors = terrain.colors(100)) +  # Terrain color scale
-  geom_sf(data = Phytogeographic_regions_crop, aes(geometry = geometry), fill = NA, color = "black", lwd = 0.5) +
+  geom_sf(data = biomes_crop, aes(geometry = geometry), fill = NA, color = "black", lwd = 0.5) +
   geom_point(data = fossil_sites, mapping = aes(x = Longitude, y = Latitude, color = as.factor(Dated)), size = 2) +
   theme_minimal() +
   labs(fill = "Elevation (m)", color = "Dated") +
@@ -176,7 +180,7 @@ saveWidget(modern_sites_map,normalizePath("outputs/maps/modern_sites_interactive
 modern_sites_plot <- ggplot() +
   geom_raster(data = elevation_df, aes(x = x, y = y, fill = value)) +
   scale_fill_gradientn(colors = terrain.colors(100)) +  # Terrain color scale
-  geom_sf(data = Phytogeographic_regions_crop, aes(geometry = geometry), fill = NA, color = "black", lwd = 0.5) +
+  geom_sf(data = biomes_crop, aes(geometry = geometry), fill = NA, color = "black", lwd = 0.5) +
   geom_point(data = modern_sites, mapping = aes(x = Longitude, y = Latitude, color = as.factor(Dated)), size = 2) +
   theme_minimal() +
   labs(fill = "Elevation (m)", color = "Dated") +
@@ -202,7 +206,7 @@ plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
 plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE,axes = FALSE, add = TRUE)
 
 # Overlay the shapefile
-#plot(sf::st_geometry(Phytogeographic_regions), add = TRUE, col = "transparent", border = "black")
+#plot(sf::st_geometry(biomes), add = TRUE, col = "transparent", border = "black")
 
 # Add the points
 points(modern_sites$Longitude,  
@@ -216,20 +220,20 @@ dev.off()
 png(normalizePath("outputs/maps/phytogeographical_regions_map.png"), width = 1600, height = 1800, res = 300)
 
 # Number of unique BIOME categories
-n <- length(unique(Phytogeographic_regions_crop$BIOME))
+n <- length(unique(biomes_crop$BIOME))
 
 # Generate a color palette with enough colors for the categories
 my_colors <- brewer.pal(n, "Set3")  
 
 # Assign the colors to each BIOME category correctly
 # Ensure that the levels of the factor align with the colors
-Phytogeographic_regions_crop$col <- my_colors[as.factor(Phytogeographic_regions_crop$BIOME)]
+biomes_crop$col <- my_colors[as.factor(biomes_crop$BIOME)]
 
 # Plot the data with the assigned colors
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  # Base raster layer
 
-plot(sf::st_geometry(Phytogeographic_regions_crop), 
-     col = Phytogeographic_regions_crop$col, 
+plot(sf::st_geometry(biomes_crop), 
+     col = biomes_crop$col, 
      add = TRUE,
      border = "black")
 dev.off()
@@ -275,13 +279,22 @@ png(normalizePath("outputs/maps/combined_maps.png"),
     pointsize = 10)  # Adjust text size for better readability
 
 # Define a layout with 2 rows and 2 columns
-layout(matrix(1:4, nrow = 2, byrow = TRUE), 
+layout(matrix(1:3, nrow = 3, byrow = FALSE), 
        widths = c(2, 2),      
        heights = c(2, 2))  # Increase first row, shrink legend row
 
 # Reduce margins to decrease space between plots
 par(mar = c(2, 2, 2, 2),  # Smaller plot margins
     oma = c(0, 0, 0, 0))  # Remove outer margins
+
+
+### Plot 1: Pollen records ####
+### Plot 2: Phytogeographic regions ####
+### Plot 3: Biomes ####
+
+
+
+
 
 ### Plot 1: Fossil Sites ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
@@ -302,14 +315,14 @@ points(modern_sites$Longitude,
        col = "black", pch = 19, cex = 0.5)
 mtext("(b)", side = 3, line = -1, at = -15, cex = 1)
 
-### Plot 3: Phytogeographic Regions ###
-n <- length(unique(Phytogeographic_regions_crop$BIOME))
+### Plot 3: Biomes ###
+n <- length(unique(biomes_crop$BIOME))
 my_colors <- brewer.pal(n, "Set3")  
-Phytogeographic_regions_crop$col <- my_colors[as.factor(Phytogeographic_regions_crop$BIOME)]
+biomes_crop$col <- my_colors[as.factor(biomes_crop$BIOME)]
 
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
-plot(sf::st_geometry(Phytogeographic_regions_crop), 
-     col = Phytogeographic_regions_crop$col, 
+plot(sf::st_geometry(biomes_crop), 
+     col = biomes_crop$col, 
      add = TRUE,
      border = "black")
 mtext("(c)", side = 3, line = -1, at = -15, cex = 1)
@@ -318,7 +331,7 @@ mtext("(c)", side = 3, line = -1, at = -15, cex = 1)
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("top", 
-       legend = unique(Phytogeographic_regions_crop$BIOME_definition),  
+       legend = unique(biomes_crop$BIOME_definition),  
        fill = my_colors,  
        border = "black", 
        cex = 0.8,  # Slightly larger text
