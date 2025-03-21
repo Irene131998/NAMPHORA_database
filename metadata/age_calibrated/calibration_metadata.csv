@@ -10,7 +10,7 @@ Radiocarbon dates,Whether the record had raw radiocarbon dates with its associat
 Depths,Whether the record reports depths along with the radicarbon dates,Categorical
 Material dated,"Material used for dating (e.g., wood, sediment)",Categorical
 Dating method (Conventional/AMS),Method used for radiocarbon dating (Conventional or AMS),Categorical
-Calibration curve,Calibration curve used in the dating process,Categorical
+Calibration curve,Calibration curve used in the calibration process,Categorical
 Hiatus,Whether there was a hiatus in the record,Categorical
 Post-bomb curve,Whether there was a post-bomb dated and the corresponding Post-bomb curve used in calibration,Categorical
 Reservoir effect,Whether there was an effect of reservoir on radiocarbon dating,Categorical

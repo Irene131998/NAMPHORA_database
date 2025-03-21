@@ -10,10 +10,10 @@ Reference_taxonomy_2,Reference for taxonomic identification,Categorical
 Reference_taxonomy_3,Reference for taxonomic identification,Categorical
 Reference_taxonomy_4,Reference for taxonomic identification,Categorical
 Observations_SM,Observations on the pollen type harmonisation (by Saúl Manzano (SM)),Categorical
-Fossil_Sequences_dated,Number of fossil sequences with chronology,count
-Fossil_Sequences_not_dated,Number of fossil sequences without chronology,count
-Modern_Sequences,Number of modern sequences,count
-Total_Sequences,Total number of sequences,count
+Fossil_Sequences_dated,Number of dated fossil records in which the original pollen type is present,count
+Fossil_Sequences_not_dated,Number of undated fossil records in which the original pollen type is present,count
+Modern_Sequences,Number of modern records in which the original pollen type is present,count
+Total_Sequences,Total number of records in which the original pollen type is present,count
 Phytogeographical_affinity,Phytogeographical affinity of the pollen type,Categorical
 Phytogeographical_affinity_summarised,Summarised phytogeographical affinity category,Categorical
 Reference_phytogeographical_affinity_1,Reference for phytogeographical affinity,Categorical
@@ -29,7 +29,7 @@ Phytogeographical_affinity_GBIF,Phytogeographical affinity based on Global Biodi
 Link_GBIF,Link to GBIF record,Categorical
 Phytogeographical_affinity_POWO,Phytogeographical affinity based on Plants of the World Online (POWO: https://powo.science.kew.org/) website,Categorical
 Link_POWO,Link to POWO record,Categorical
-Habit_life_form,Growth form or life habit of the plant,Categorical
+Habit_life_form,Life form or life habit of the plant,Categorical
 Habit_summarised,Summarised habit category for percentage calculations,Categorical
 Reference_habit_1,Reference for plant habit classification,Categorical
 Reference_habit_2,Reference for plant habit classification,Categorical
@@ -40,13 +40,13 @@ Reference_habit_6,Reference for plant habit classification,Categorical
 Reference_habit_7,Reference for plant habit classification,Categorical
 Reference_habit_8,Reference for plant habit classification,Categorical
 Observation_habit,Observations on plant habit,Categorical
-Pollen_type_Lezine_2009,Pollen type classification from Lézine et al. (2009) [1],Categorical
+Pollen_type_Lezine_2009,Pollen type classification from Lézine et al. (2009),Categorical
 Pollen_habit_Lezine_2009,Pollen habit classification from Lézine et al.(2009),Categorical
-Pollen_type_Mottl_2020,Pollen type classification from Mottl et al.(2020)[2],Categorical
+Pollen_type_Mottl_2020,Pollen type classification from Mottl et al.(2020),Categorical
 Pollen_type_APD,Pollen type classification from APD,Categorical
 Pollen_habit_APD,Pollen habit classification from APD,Categorical
 Plant_habit_APD,Plant habit classification from APD,Categorical
-No_spp_Vincens_2007,Number of species in Vincens et al. (2007)[3],Categorical
+No_spp_Vincens_2007,Number of species in Vincens et al. (2007),Categorical
 Habit_Vincens_2007,Habit classification from Vincens et al. (2007),Categorical
 Phytogeographical_affinity_Vincens_2007,Phytogeographical affinity from Vincens et al. (2007),Categorical
 Habitat_Vincens_2007,Habitat classification from Vincens et al. (2007),Categorical

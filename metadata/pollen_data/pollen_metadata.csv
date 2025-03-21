@@ -6,19 +6,19 @@ Site_name_machine_readable,Machine-readable name of the site,Categorical
 Archive type,"Type of core (i.e. marine, terrestrial, lacustrine, archaeological, etc.)",Categorical
 Latitude,Exact latitude (in decimal degrees) where the site is located,decimalDegree
 Longitude,Exact longitude (in decimal degrees) where the site is located,decimalDegree
-Altitude,Altitude of the site,meters
-Database,Database where the site was extracted from,Categorical
-Pollen,Modern if the pollen grains were obtained from a modern sediment or fossil if fossilized pollen grains are preserved in older sediments,Categorical
+Altitude,Altitude of the site in meters,meters
+Database,Database from which the site was retrieved,Categorical
+Pollen,Specifies whether the pollen record is modern or fossil. Modern if the pollen grains were obtained from a modern sediment or fossil if pollen grains are preserved in older sediments,Categorical
 Published,The site has been published in a database repository,Categorical
 Data received (from authors),"Data received from authors, not included in a publicly available database",Categorical
 Link to database,Link to the exact repository of the database from which the site was extracted,Categorical
 dataset_id,ID of Neotoma dataset,Categorical
 Dated,The site includes a calendar chronology or radiocarbon dates,Categorical
 Recalibrated,Site radiocarbon dates have been updated to calendar years,Categorical
-Period,"Geological time period of the site, including Late Holocene (Meghalayan: 0 to 4.2 ka BP), Mid Holocene (Northgrippian: 4.2 to 8.2 ka BP), Early Holocene (Greenlandian: 8.2 to 11.7 ka BP), Pre-Holocene (11.7 to MA BP), Holocene (0 to 11.7 ka BP), and Holocene-Pre-Holocene (present to MA BP)",Categorical
-African Humid Period,Indicates whether the site or part of the site coincides with all or part of the African Humid Period (14.8 to 5 ka BP),Categorical
-Minimum mean cal BP,Minimum mean age (Before Present),years BP
-Maximum mean cal BP,Maximum mean age (Before Present),years BP
+Period,"Geological time period of the site, including Late Holocene (Meghalayan: 0 to 4.2 ka BP), Mid Holocene (Northgrippian: 4.2 to 8.2 ka BP), Early Holocene (Greenlandian: 8.2 to 11.7 ka BP), Pre-Holocene (11.7 to 240 ka BP), Holocene (0 to 11.7 ka BP), and Holocene-Pre-Holocene (present to 240 ka BP)",Categorical
+African Humid Period,Indicates whether the site coincides fully or partially with the African Humid Period (14.8 to 5.5 ka BP),Categorical
+Minimum mean cal BP,Minimum mean age (Before Present) of the site,years BP
+Maximum mean cal BP,Maximum mean age (Before Present) of the site,years BP
 Observations,Observations about the chronology of the site,Categorical
 "Concentration (Lycopodium, Eucalyptus, Spikes)",Indicates whether the site includes Lycopodium (or Eucalyptus) tablet counts for concentration calculation,Categorical
 Reference 1,Reference of the site,Categorical

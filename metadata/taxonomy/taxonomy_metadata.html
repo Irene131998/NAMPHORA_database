@@ -8,7 +8,7 @@
 
 <meta name="author" content="Irene Solano">
 
-<title>Plant functional traits metadata</title>
+<title>Harmonised taxonomy metadata</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,16 +24,16 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="pfts_metadata_html_files/libs/clipboard/clipboard.min.js"></script>
-<script src="pfts_metadata_html_files/libs/quarto-html/quarto.js"></script>
-<script src="pfts_metadata_html_files/libs/quarto-html/popper.min.js"></script>
-<script src="pfts_metadata_html_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="pfts_metadata_html_files/libs/quarto-html/anchor.min.js"></script>
-<link href="pfts_metadata_html_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="pfts_metadata_html_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="pfts_metadata_html_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="pfts_metadata_html_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="pfts_metadata_html_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="taxonomy_metadata_files/libs/clipboard/clipboard.min.js"></script>
+<script src="taxonomy_metadata_files/libs/quarto-html/quarto.js"></script>
+<script src="taxonomy_metadata_files/libs/quarto-html/popper.min.js"></script>
+<script src="taxonomy_metadata_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="taxonomy_metadata_files/libs/quarto-html/anchor.min.js"></script>
+<link href="taxonomy_metadata_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="taxonomy_metadata_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="taxonomy_metadata_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="taxonomy_metadata_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="taxonomy_metadata_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -46,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Plant functional traits metadata</h1>
+<h1 class="title">Harmonised taxonomy metadata</h1>
 </div>
 
 
@@ -71,8 +71,34 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="description" class="level1">
 <h1>Description</h1>
-<p>The <strong>NaAMPHoRA</strong> database compiles plant functional traits sourced from two trait databases: the <strong>Botanical Information and Ecology Network (BIEN)</strong> and the <strong>TRY Plant Trait Database (TRY)</strong>. Trait data from the <strong>BIEN</strong> database were accessed and processed using the associated <strong>Bien R package (v. 1.2.7)</strong> (Maitner, 2025), with results stored in the <code>processed_data</code> folder. In contrast, the <strong>TRY</strong> database does not provide an R package for direct data access, so trait data, specifically for leaf type, were manually extracted from the <strong>TRY website</strong> (Kattge et al., 2020).</p>
-<p>The final list of plant functional traits (PFTs) is stored in the <code>processed_data/plant_functional_types</code> folder. Additional metadata for these traits is provided in the <strong>pfts_metadata.csv</strong> and <strong>pfts_metadata.html</strong> files.</p>
+<p>The NaAMPHoRA database compiles fossil and modern pollen records from multiple sources, including the African Pollen Database (APD: https://africanpollendatabase.ipsl.fr/#/home), Neotoma Paleoecology Database (https://www.neotomadb.org/), and direct contributions from authors. However, due to differences in taxonomic nomenclature across these sources, a taxonomic harmonisation process was implemented to ensure consistency and comparability.</p>
+<p>The pollen taxonomical harmonisation followed these key steps:</p>
+<ol type="1">
+<li><p><strong>Harmonisation of taxonomic names</strong></p>
+<ul>
+<li><p>Each pollen type was categorised at the most precise possible taxonomic rank (family, genus, species, or morphotype), following morphological studies and monographs.</p></li>
+<li><p>Cases where species-level identification was not possible were assigned to higher taxonomic levels.</p></li>
+<li><p>Pollen types were also cross-referenced with published harmonisation tables:</p>
+<ul>
+<li><p>Lézine <em>et al</em>. (2009)</p></li>
+<li><p>Mottl <em>et al</em>. (2021)</p></li>
+<li><p>APD taxonomy list (https://africanpollendatabase.ipsl.fr/#/taxon-dict)</p></li>
+</ul></li>
+<li><p>Synonyms and outdated classifications were updated to match current botanical taxonomy following the Global Biodiversity Information Facility (GBIF, <a href="https://www.gbif.org/">https://www.gbif.org</a>) and International Plant Names Index (IPNI, <a href="https://www.ipni.org" class="uri">https://www.ipni.org</a>).</p></li>
+</ul></li>
+<li><p><strong>Incorporation of habit and phytogeographical affinity information</strong></p>
+<ul>
+<li><p>Taxa were assigned plant habit (growth form) categories following Plants of the World online website (POWO; <a href="https://powo.science.kew.org/" class="uri">https://powo.science.kew.org/</a>) &amp; several references.</p></li>
+<li><p>Taxa were assigned phytogeographic affinities following GBIF, POWO &amp; several references.</p></li>
+<li><p>Phytogeographic affinities were linked to GBIF &amp; POWO.</p></li>
+<li><p>Habit and phytogeograhic affinities were also cross-referenced with the pollen inventory of Vincens <em>et al.</em> (2007).</p></li>
+</ul></li>
+<li><p><strong>Final harmonisation list</strong></p>
+<ul>
+<li>The harmonised taxonomy list was compiled into <em>harmonised_taxonomy_list.csv</em>, which serves as the reference list for all pollen records compiled in the NaAMPHoRA database.</li>
+<li>Metadata for the <em>harmonised_taxonomy_list.csv</em> file is provided here:</li>
+</ul></li>
+</ol>
 </section>
 <section id="metadata" class="level1">
 <h1>Metadata</h1>
@@ -80,9 +106,9 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 55%">
-<col style="width: 16%">
+<col style="width: 23%">
+<col style="width: 68%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -93,128 +119,258 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Pollen_type_SM_morphological</td>
-<td style="text-align: left;">Taxonomical harmonised pollen type</td>
+<td style="text-align: left;">Palaeo_Modern</td>
+<td style="text-align: left;">Indicates whether the data is from fossil (Palaeo) or modern (Modern) records</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Original_taxa</td>
+<td style="text-align: left;">Original taxonomic name as recorded in the dataset</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Family</td>
-<td style="text-align: left;">Family of the plant species</td>
+<td style="text-align: left;">Family of the taxon</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">Genus</td>
-<td style="text-align: left;">Genus of the plant species</td>
-<td style="text-align: left;">Categorical</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Taxa</td>
-<td style="text-align: left;">Name of the taxon (at species, genus or family level) from which the trait has been retrieved</td>
+<td style="text-align: left;">Genus of the taxon</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">URL_source</td>
-<td style="text-align: left;">URL linking to the data source</td>
-<td style="text-align: left;">URL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Project_pi</td>
-<td style="text-align: left;">Principal investigator of the original project in which the trait was measured</td>
-<td style="text-align: left;">Categorical</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Project_pi_contact</td>
-<td style="text-align: left;">Contact information for the project PI of the original project in which the trait was measured</td>
+<td style="text-align: left;">Species_pollen_type</td>
+<td style="text-align: left;">Species name of the pollen type</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Whole_plant_height_m</td>
-<td style="text-align: left;">Trait 1: Height of the whole plant in meters</td>
-<td style="text-align: left;">Meters</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Seed_mass_mg</td>
-<td style="text-align: left;">Trait 2: Seed mass in milligrams</td>
-<td style="text-align: left;">Milligrams</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Leaf_area_mm2</td>
-<td style="text-align: left;">Trait 3: Leaf area in square millimeters</td>
-<td style="text-align: left;">Millimeters squared</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Longest_whole_plant_longevity_years</td>
-<td style="text-align: left;">Trait 4: Longevity of the whole plant in years</td>
-<td style="text-align: left;">Years</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Plant_flowering_begin_month</td>
-<td style="text-align: left;">Trait 5: Month when flowering begins</td>
-<td style="text-align: left;">Month</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Plant_flowering_begin_date</td>
-<td style="text-align: left;">Trait 6: Specific date when flowering begins</td>
-<td style="text-align: left;">Date</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Leaf_dry_mass_g</td>
-<td style="text-align: left;">Trait 7: Leaf dry mass in grams</td>
-<td style="text-align: left;">Grams</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Leaf_life_span_months</td>
-<td style="text-align: left;">Trait 8: Leaf lifespan in months</td>
-<td style="text-align: left;">Months</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1</td>
-<td style="text-align: left;">Trait 9: Leaf nitrogen content per unit of leaf dry mass</td>
-<td style="text-align: left;">Milligrams per gram</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Whole_plant_dispersal_syndrome</td>
-<td style="text-align: left;">Trait 10: Dispersal syndrome of the whole plant</td>
-<td style="text-align: left;">Categorical</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Whole_plant_vegetative_phenology</td>
-<td style="text-align: left;">Trait 11: Vegetative phenology of the whole plant</td>
+<td style="text-align: left;">Pollen_type_SM_morphological</td>
+<td style="text-align: left;">Morphological harmonisation of the pollen type (carried out by Saúl Manzano (SM))</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Whole_plant_growth_form_diversity</td>
-<td style="text-align: left;">Trait 12: Diversity of the plant’s growth form</td>
+<td style="text-align: left;">Reference_taxonomy_1</td>
+<td style="text-align: left;">Reference for taxonomic identification</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Whole_plant_sexual_system</td>
-<td style="text-align: left;">Trait 13: Sexual system of the whole plant</td>
+<td style="text-align: left;">Reference_taxonomy_2</td>
+<td style="text-align: left;">Reference for taxonomic identification</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Flower_pollination_syndrome</td>
-<td style="text-align: left;">Trait 14: Pollination syndrome of the flowers</td>
+<td style="text-align: left;">Reference_taxonomy_3</td>
+<td style="text-align: left;">Reference for taxonomic identification</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Leaf_dry_mass_per_area_g_mm_2</td>
-<td style="text-align: left;">Trait 15: Leaf dry mass per unit area</td>
-<td style="text-align: left;">Grams per millimeter squared</td>
+<td style="text-align: left;">Reference_taxonomy_4</td>
+<td style="text-align: left;">Reference for taxonomic identification</td>
+<td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Try_dataset</td>
-<td style="text-align: left;">Trait 16: Dataset in which the plant is included</td>
+<td style="text-align: left;">Observations_SM</td>
+<td style="text-align: left;">Observations on the pollen type harmonisation (by Saúl Manzano (SM))</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Leaf_type</td>
-<td style="text-align: left;">Trait 17: Type of leaf (e.g., deciduous, evergreen)</td>
+<td style="text-align: left;">Fossil_Sequences_dated</td>
+<td style="text-align: left;">Number of dated fossil records in which the original pollen type is present</td>
+<td style="text-align: left;">count</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fossil_Sequences_not_dated</td>
+<td style="text-align: left;">Number of undated fossil records in which the original pollen type is present</td>
+<td style="text-align: left;">count</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Modern_Sequences</td>
+<td style="text-align: left;">Number of modern records in which the original pollen type is present</td>
+<td style="text-align: left;">count</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total_Sequences</td>
+<td style="text-align: left;">Total number of records in which the original pollen type is present</td>
+<td style="text-align: left;">count</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Phytogeographical_affinity</td>
+<td style="text-align: left;">Phytogeographical affinity of the pollen type</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Try_reference</td>
-<td style="text-align: left;">Reference for the type of leaf trait retrieved from TRY database</td>
+<td style="text-align: left;">Phytogeographical_affinity_summarised</td>
+<td style="text-align: left;">Summarised phytogeographical affinity category</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_phytogeographical_affinity_1</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_phytogeographical_affinity_2</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_phytogeographical_affinity_3</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_phytogeographical_affinity_4</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_phytogeographical_affinity_5</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_phytogeographical_affinity_6</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_phytogeographical_affinity_7</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_phytogeographical_affinity_8</td>
+<td style="text-align: left;">Reference for phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Observations_phytogeographical_affinity</td>
+<td style="text-align: left;">Observations on phytogeographical affinity</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Phytogeographical_affinity_GBIF</td>
+<td style="text-align: left;">Phytogeographical affinity based on Global Biodiversity Information Facility (GBIF: https://www.gbif.org/) website</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Link_GBIF</td>
+<td style="text-align: left;">Link to GBIF record</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Phytogeographical_affinity_POWO</td>
+<td style="text-align: left;">Phytogeographical affinity based on Plants of the World Online (POWO: https://powo.science.kew.org/) website</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Link_POWO</td>
+<td style="text-align: left;">Link to POWO record</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Habit_life_form</td>
+<td style="text-align: left;">Life form or life habit of the plant</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Habit_summarised</td>
+<td style="text-align: left;">Summarised habit category for percentage calculations</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_habit_1</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_habit_2</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_habit_3</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_habit_4</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_habit_5</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_habit_6</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reference_habit_7</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reference_habit_8</td>
+<td style="text-align: left;">Reference for plant habit classification</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Observation_habit</td>
+<td style="text-align: left;">Observations on plant habit</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pollen_type_Lezine_2009</td>
+<td style="text-align: left;">Pollen type classification from Lézine et al.&nbsp;(2009)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pollen_habit_Lezine_2009</td>
+<td style="text-align: left;">Pollen habit classification from Lézine et al.(2009)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pollen_type_Mottl_2020</td>
+<td style="text-align: left;">Pollen type classification from Mottl et al.(2020)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pollen_type_APD</td>
+<td style="text-align: left;">Pollen type classification from APD</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pollen_habit_APD</td>
+<td style="text-align: left;">Pollen habit classification from APD</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Plant_habit_APD</td>
+<td style="text-align: left;">Plant habit classification from APD</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">No_spp_Vincens_2007</td>
+<td style="text-align: left;">Number of species in Vincens et al.&nbsp;(2007)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Habit_Vincens_2007</td>
+<td style="text-align: left;">Habit classification from Vincens et al.&nbsp;(2007)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Phytogeographical_affinity_Vincens_2007</td>
+<td style="text-align: left;">Phytogeographical affinity from Vincens et al.&nbsp;(2007)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Habitat_Vincens_2007</td>
+<td style="text-align: left;">Habitat classification from Vincens et al.&nbsp;(2007)</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 </tbody>
@@ -225,8 +381,9 @@ ul.task-list li input[type="checkbox"] {
 <section id="references" class="level1">
 <h1>References</h1>
 <ol type="1">
-<li><p>Maitner, B. <em>BIEN: Tools for Accessing the Botanical Information and Ecology Network Database</em> (Version 1.2.7) [R package]. CRAN. <a href="https://doi.org/10.32614/CRAN.package.BIEN" class="uri">https://doi.org/10.32614/CRAN.package.BIEN</a> (2025).</p></li>
-<li><p>Kattge, J., Boenisch, G., Diaz, S., et al.&nbsp;TRY plant trait database - enhanced coverage and open access. <em>Global Change Biology, 26</em>, 119–188. <a href="https://doi.org/10.1111/gcb.14904" class="uri">https://doi.org/10.1111/gcb.14904</a> (2020).</p></li>
+<li><p>Lézine, A. M., Watrin, J., Vincens, A., &amp; Hély, C. Are modern pollen data representative of West African vegetation? <em>Review of Palaeobotany and Palynology, 156</em>, 265–276. (2009).</p></li>
+<li><p>Mott, O., et al.&nbsp;Global acceleration in rates of vegetation change over the past 18,000 years. <em>Science, 372</em>, 860–864. (2021).</p></li>
+<li><p>Vincens, A., Lézine, A. M., Buchet, G., Lewden, D., &amp; Le Thomas, A. African pollen database inventory of tree and shrub pollen types. <em>Review of Palaeobotany and Palynology, 145</em>, 135–141. (2007).</p></li>
 </ol>
 </section>
 
