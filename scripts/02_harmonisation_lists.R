@@ -2,7 +2,7 @@
 
 
 # 0. Load libraries and functions ----
-source("functions.R")
+source("scripts/functions.R")
 
 libraries <- c("readr", "tidyr", "dplyr", "readxl", "openxlsx")
 
@@ -104,17 +104,17 @@ sequences_final <- sequences_final[!unnecessary_rows, , drop = FALSE]
 ## 1.4) Add to harmonisation list ----
 
 # Read taxonomy database
-taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
+taxonomy_pollen_taxa <- readr::read_csv((normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv")),locale = locale(encoding = "latin1"))
 
 # Insert columns of number of sequences to taxonomy database
 taxonomy_pollen_taxa <- left_join(taxonomy_pollen_taxa, sequences_final, by = "Original_taxa")
 
 # Replace NAs with 0
 taxonomy_pollen_taxa <- taxonomy_pollen_taxa %>%
-  mutate(across(c(Fossil_Sequences,Fossil_Sequences_not_dated,Modern_Sequences), ~ tidyr::replace_na(.x, 0)))
+  mutate(across(c(Fossil_Sequences,Modern_Sequences), ~ tidyr::replace_na(.x, 0)))
 
 # Create new column with total number of sequences
-taxonomy_pollen_taxa <- taxonomy_pollen_taxa %>% mutate(Total_Sequences = Fossil_Sequences + Fossil_Sequences_not_dated + Modern_Sequences) 
+taxonomy_pollen_taxa <- taxonomy_pollen_taxa %>% mutate(Total_Sequences = Fossil_Sequences + Modern_Sequences) 
 
 names(taxonomy_pollen_taxa)
 
@@ -197,5 +197,11 @@ taxonomy_pollen_taxa <- taxonomy_pollen_taxa |>
 
 ## 2.5) Save taxonomy with harmonisation lists and number of pollen sequences per pollen type ----
 
-openxlsx::write.xlsx(taxonomy_pollen_taxa, file =normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx", rowNames = TRUE))
+write.table(
+  taxonomy_pollen_taxa, 
+  file = normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv", mustWork = FALSE),
+  sep = ",",         
+  row.names = FALSE, 
+  fileEncoding = "latin1"  # Ensures special characters like "á, é, ñ" are correctly saved
+)
 

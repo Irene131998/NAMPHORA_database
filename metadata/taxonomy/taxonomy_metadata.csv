@@ -10,8 +10,7 @@ Reference_taxonomy_2,Reference for taxonomic identification,Categorical
 Reference_taxonomy_3,Reference for taxonomic identification,Categorical
 Reference_taxonomy_4,Reference for taxonomic identification,Categorical
 Observations_SM,Observations on the pollen type harmonisation (by Saúl Manzano (SM)),Categorical
-Fossil_Sequences_dated,Number of dated fossil records in which the original pollen type is present,count
-Fossil_Sequences_not_dated,Number of undated fossil records in which the original pollen type is present,count
+Fossil_Sequences,Number of fossil records in which the original pollen type is present,count
 Modern_Sequences,Number of modern records in which the original pollen type is present,count
 Total_Sequences,Total number of records in which the original pollen type is present,count
 Phytogeographical_affinity,Phytogeographical affinity of the pollen type,Categorical
