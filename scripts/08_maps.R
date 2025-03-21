@@ -15,7 +15,7 @@ lapply(libraries, require, character.only = TRUE)
 
 # 1) Read data----
 
-# Biomes Olson (2001)
+## Biomes Olson (2001)----
 biomes <- sf::st_read(normalizePath("data/raw_data/mapping_data/EcoregionsWWF_2017/wwf_terr_ecos.shp"))
 biomes <- sf::st_make_valid(biomes)
 biomes <- sf::st_crop(biomes, ext(c(-19,62,0,46.5)))
@@ -30,37 +30,84 @@ biomes <- merge(biomes, biome_definitions, by = "BIOME", all.x = TRUE)
 # Filter out rows where BIOME is 98 and BIOME_definition is NA or empty
 biomes <- biomes[!(biomes$BIOME == 98 &  (is.na(biomes$BIOME_definition) | biomes$BIOME_definition == "")), ]
 
-# Regions (modified from Olson 2001)
+## Regions (modified from Olson 2001)----
 regions <- sf::st_read(normalizePath("data/raw_data/mapping_data/Regions_WWF_2017/Ecoregions_Europe_Arabian_Peninsula.shp"))
 regions <- sf::st_make_valid(regions)
 regions <- sf::st_crop(regions, ext(c(-19,62,0,46.5)))
 regions$Reg_names <- as.factor(regions$Reg_names)
 
-# African vegetation White (1983)
+##  African vegetation White (1983)----
 phytogeographic_regions_White <- sf::st_read(normalizePath("data/raw_data/mapping_data/Africa_Vegetation_White_1983/afwhite_2.shp"))
 phytogeographic_regions_White <- sf::st_make_valid(phytogeographic_regions_White)
-phytogeographic_regions_White <- sf::st_crop(phytogeographic_regions_White, ext(c(-19,55,0,35)))
+
+# Check if the crop extent is in the same CRS
+crs_phytogeographic <- crs(phytogeographic_regions_White)
+crs_extent <- st_crs(4326)  # Assuming the extent is in WGS84
+if (!identical(crs_phytogeographic, crs_extent)) {
+  phytogeographic_regions_White <- st_transform(phytogeographic_regions_White, crs = crs_extent)
+}
+
+phytogeographic_regions_White <- sf::st_crop(phytogeographic_regions_White, ext(c(-19,55,0,40)))
 phytogeographic_regions_White$PHYTOCHO_1 <- as.factor(phytogeographic_regions_White$PHYTOCHO_1)
 
-phytogeographic_regions_White <- phytogeographic_regions_White %>%
-  filter(!if_all(starts_with("PHYTOCHO_1"), is.na))
 
-# Sites
+# Change names
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("^[IVXLCDM]+\\.\\s*", "", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Mediterranean Region", "Mediterranean Africa", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("VIII and IX. Afromontane and Afroalpine Regions", "Afromontane and Afroalpine Regions", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Guinca-Congolia/Zambczia Regional Transition Zone", "Guinea-Congolia/Zambezia Regional Transition Zone", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Sahara Regional TransitionZone", "Sahara Regional Transition", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Guinea-Congolia/Zambezia Regional Transition Zone", "Guineo-Congolian/Zambezian Transition ", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Guinea-Congolia/Sudania Regional Transition Zone", "Guineo-Congolian/Sudanian Transition", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Mediterranean/Sahara Regional Transition Zone", "Mediterranean/Sahara Transition", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Zanzibar-Inhambane Regional Mosaic", "Zanzibar-Inhambane Mosaic", phytogeographic_regions_White$PHYTOCHO_1)
+
+
+##  Combine regions into one shapefile
+# Check the CRS of both shapefiles
+crs_regions <- st_crs(regions)
+crs_phytogeographic <- st_crs(phytogeographic_regions_White)
+
+# If the CRS are different, transform one to match the other
+if (!identical(crs_regions, crs_phytogeographic)) {
+  # Transform phytogeographic_regions_White CRS to match regions CRS
+  phytogeographic_regions_White <- st_transform(phytogeographic_regions_White, crs = crs_regions)
+}
+
+# Ensure both shapefiles have matching columns
+colnames(phytogeographic_regions_White)[colnames(phytogeographic_regions_White) == "PHYTOCHO_1"] <- "Region_Name"
+colnames(regions)[colnames(regions) == "Reg_names"] <- "Region_Name"
+
+phytogeographic_regions_White <- phytogeographic_regions_White |> select(Region_Name,geometry)
+regions <- regions |>  select(Region_Name,geometry)
+
+#  Merge both shapefiles
+merged_phytogeographic_regions <- rbind(regions, phytogeographic_regions_White)
+
+##  Sites----
 sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
 sites$Latitude <- as.numeric(sites$Latitude)
 
-## Fossil sites
+### Fossil sites
 fossil_sites <- sites |> filter(Pollen=="Fossil")  |>  select(Site_name_machine_readable,Longitude, Latitude,Dated, `Link to database`)
 fossil_sites <- na.omit(fossil_sites)
 
-## Modern sites
+### Modern sites
 modern_sites <- sites |> filter(Pollen=="Modern") |>  select(Site_name_machine_readable,Longitude, Latitude,Dated,`Link to database`)
 
-# Elevation
+## Elevation----
 elevation <- rast(normalizePath("data/raw_data/mapping_data/elevation.tiff"))
 elevation_crop <- crop(elevation,ext(c(-19,62,0,46.5)))
 
-## Calculate hillshade for further plotting
+### Calculate hillshade for further plotting
 slopes <- terrain(elevation_crop, "slope", unit = "radians")
 aspect <- terrain(elevation_crop, "aspect", unit = "radians")
 hs <- shade(slopes, aspect) # base shade for elevation plotting
@@ -276,8 +323,116 @@ saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html
 
 ## 5.2) Static ----
 
+##### 5.2.1) Pollen records + Regions + Biomes -----
+
 # Define output file
 png(normalizePath("outputs/maps/combined_maps.png"),  
+    width = 21,  
+    height = 15,  
+    units = "cm",  
+    res = 3000,  # High resolution
+    pointsize = 12)  # Adjust text size for better readability
+
+# Define a layout with 3 rows and 2 columns
+layout(matrix(1:6, nrow = 3, ncol = 2, byrow = TRUE), 
+       widths = c(0.7, 1),  #  column widths
+       heights = c(2, 2, 2))  # Adjust heights to fit all plots
+
+# Reduce margins to decrease space between plots
+par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
+
+### Plot 1: Pollen Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Modern"],  
+       sites$Latitude[sites$Dated == "Modern"],  
+       col = "black", pch = 19, cex = 0.3) 
+points(sites$Longitude[sites$Dated == "Yes"],  
+       sites$Latitude[sites$Dated == "Yes"],  
+       col = "blue", pch = 19, cex = 0.3)  
+points(sites$Longitude[sites$Dated == "No"],  
+       sites$Latitude[sites$Dated == "No"],  
+       col = "red", pch = 19, cex = 0.3)  
+
+
+mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
+
+### Plot 2: Sites legend ###
+par(mar = c(0, 0, 0, 0))  # Remove margins
+plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
+legend("left", 
+       legend = round(seq(min(elevation_crop[], na.rm = TRUE), max(elevation_crop[], na.rm = TRUE), length.out = 10),3),
+       fill = adjustcolor(terrain.colors(10)),  # Adjust color transparency
+       title = "Elevation",
+       bty = "n", 
+       cex = 1)
+
+legend("center", 
+       legend = c("Dated fossil pollen", "Undated fossil pollen", "Modern pollen"), 
+       fill = c("blue", "red", "black"), 
+       border = "black", 
+       cex = 1, 
+       title = "Pollen records", 
+       bty = "n", 
+       xpd = TRUE)
+### Plot 3: Phytogeographic Regions ###
+
+# Define colors
+n <- length(unique(merged_phytogeographic_regions$Region_Name))
+colors_regions <- colorRampPalette(brewer.pal(12, "Set3"))(n)
+
+plot(elevation_crop, col = terrain.colors(25), alpha = 0, legend = FALSE, axes = TRUE)
+plot(st_geometry(merged_phytogeographic_regions), 
+     col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
+     , border = "black", main = "", add = TRUE)
+
+mtext("(b)", side = 3, line = -1, at = -15, cex = 0.8)
+
+### Plot 4: Legend Phytogeographic Regions ###
+par(mar = c(0, 0, 0, 0))  # Remove margins
+plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
+legend("left", 
+       legend = levels(merged_phytogeographic_regions$Region_Name),
+       fill = colors_regions, 
+       border = "black", 
+       cex = 1, 
+       title = NULL, 
+       bty = "n",  
+       xpd = TRUE,
+       ncol=2)
+mtext("Phytogeographic regions                   ", side = 3, line = -1, cex = 0.6, col = "black")
+
+
+### Plot 5: Biomes ###
+n <- length(unique(biomes$BIOME))
+my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
+biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
+
+plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
+plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
+
+mtext("(c)", side = 3, line = -1, at = -15, cex = 0.8)
+
+### Plot 6: Legend biomes ###
+par(mar = c(0, 0, 0, 0))  # Remove margins
+plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
+legend("left", 
+       legend = unique(biomes$BIOME_definition),  
+       fill = my_colors,  
+       border = "black", 
+       cex = 1,  
+       title = "Biomes", 
+       bty = "n", 
+       xpd = TRUE)
+
+dev.off()
+
+
+
+##### 5.2.2) Pollen records + Biomes -----
+# Define output file
+png(normalizePath("outputs/maps/combined_maps_2.png"),  
     width = 15,  
     height = 10,  
     units = "cm",  
@@ -285,78 +440,12 @@ png(normalizePath("outputs/maps/combined_maps.png"),
     pointsize = 10)  # Adjust text size for better readability
 
 # Define a layout with 2 rows and 2 columns
-layout(matrix(1:3, nrow = 3, byrow = FALSE), 
-       widths = c(2, 2),      
-       heights = c(2, 2))  # Increase first row, shrink legend row
+layout(matrix(1:4, nrow = 2, ncol = 2, byrow = TRUE), 
+       widths = c(1),  # Equal column widths
+       heights = c(2, 2))  # Adjust heights to fit all plots
 
 # Reduce margins to decrease space between plots
-par(mar = c(2, 2, 2, 2),  # Smaller plot margins
-    oma = c(0, 0, 0, 0))  # Remove outer margins
-
-
-### Plot 1: Pollen records ####
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
-points(sites$Longitude[sites$Dated == "Modern"],  
-       sites$Latitude[sites$Dated == "Modern"],  
-       col = "black", pch = 19, cex = 0.5) 
-points(sites$Longitude[sites$Dated == "Yes"],  
-       sites$Latitude[sites$Dated == "Yes"],  
-       col = "blue", pch = 19, cex = 0.5)  
-points(sites$Longitude[sites$Dated == "No"],  
-       sites$Latitude[sites$Dated == "No"],  
-       col = "red", pch = 19, cex = 0.5)  
-legend("bottom", 
-       legend = c("Dated fossil pollen", "Undated fossil pollen", "Modern pollen"), 
-       fill = c("blue", "red", "black"), 
-       border = "black", 
-       cex = 0.8, 
-       title = "Site categories", 
-       bty = "n", 
-       xpd = TRUE)
-mtext("(a)", side = 3, line = -1, at = -15, cex = 1)  # Adjust label closer
-
-
-### Plot 2: Phytogeographic regions ####
-
-# ggplot with raster + shapefile overlay
-ggplot() +
-  geom_sf(data = regions, aes(fill = Reg_names), color = "black", alpha = 0.6) +
-  theme_minimal() +
-  labs(title = "Elevation & Regions Overlay", fill = "Elevation / Regions") + 
-  geom_sf(data = phytogeographic_regions_White, aes(fill = PHYTOCHO_1), color = "black") +
-  theme_minimal() +
-  labs(title = "Phytogeographic Regions", fill = "Category") +
-  scale_fill_viridis_d()  # Use a distinct color palette for categorie
-
-mtext("(b)", side = 3, line = -1, at = -15, cex = 1)
-
-
-### Plot 3: Biomes ####
-n <- length(unique(biomes$BIOME))
-my_colors <- brewer.pal(n, "Set3")  
-biomes$col <- my_colors[as.factor(biomes$BIOME)]
-
-plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
-plot(sf::st_geometry(biomes), 
-     col = biomes$col, 
-     add = TRUE,
-     border = "black")
-
-legend("top", 
-       legend = unique(biomes_crop$BIOME_definition),  
-       fill = my_colors,  
-       border = "black", 
-       cex = 0.8,  # Slightly larger text
-       title = "Biomes", 
-       bty = "n", 
-       xpd = TRUE)
-
-mtext("(c)", side = 3, line = -1, at = -15, cex = 1)
-
-
-
-# PAST WAY: 
+par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
 
 ### Plot 1: Fossil Sites ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
@@ -378,13 +467,20 @@ points(modern_sites$Longitude,
 mtext("(b)", side = 3, line = -1, at = -15, cex = 1)
 
 ### Plot 3: Biomes ###
+n <- length(unique(biomes$BIOME))
+my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
+biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 
+plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
+plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
+
+mtext("(c)", side = 3, line = -1, at = -15, cex = 1)
 
 ### Plot 4: Legends ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("top", 
-       legend = unique(biomes_crop$BIOME_definition),  
+       legend = unique(biomes$BIOME_definition),  
        fill = my_colors,  
        border = "black", 
        cex = 0.8,  # Slightly larger text
@@ -394,11 +490,11 @@ legend("top",
 
 # Second legend (Site Categories)
 legend("bottom", 
-       legend = c("Dated", "Not dated", "Modern"), 
+       legend = c("Dated fossil pollen", "Undated fossil pollen", "Modern pollen"), 
        fill = c("blue", "red", "black"), 
        border = "black", 
        cex = 0.8, 
-       title = "Site categories", 
+       title = "Pollen records", 
        bty = "n", 
        xpd = TRUE)
 
