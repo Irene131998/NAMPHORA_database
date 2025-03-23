@@ -203,5 +203,11 @@ colnames(raw_taxa) <- "Original_taxa"
 unnecessary_rows <- grepl("Fossilva|MADCAP|BP|Depth|depth|sample_name|C14|Age|Calendar|Volume|volume|Cuticles|Counted|diatoms|error|element|Chronology|Protist|grammi|Lab|Layer|lithology|Licopods|Mark|concentration|accumulation|lycopodium|Mass|name|Lycopod|Markers|Burial|sample|Sample|added|Sedimentation|Site|flux|spike|Spike|Sum|Taxonomic|gram|Year|Total|year|weight|code|sum|SUM|COUNTS|thickness|Thickness|code|shrubs|trees|herbs", raw_taxa$Original_taxa)# Identify rows containing "BP" in their names
 raw_taxa <- raw_taxa[!unnecessary_rows, , drop = FALSE]
 
-# Save raw taxa list
-write.csv(raw_taxa, file = normalizePath("data/raw_data/taxonomy/raw_taxa_list/raw_pollen_types.csv"), row.names = TRUE)
+# Save csv so the tildes are written correctly
+write.table(
+  raw_taxa, 
+  file = normalizePath("data/raw_data/taxonomy/raw_taxa_list/raw_pollen_types.csv", mustWork = FALSE),
+  sep = ",",         
+  row.names = FALSE, 
+  fileEncoding = "latin1"  # Ensures special characters like "á, é, ñ" are correctly saved
+)
