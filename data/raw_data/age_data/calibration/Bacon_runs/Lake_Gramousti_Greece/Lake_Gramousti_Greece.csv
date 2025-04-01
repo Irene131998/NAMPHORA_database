@@ -1,5 +1,3 @@
-labID,age,error,depth,cc
-gram_1,1930,380,225,1
-gram_2,6330,180,850,1
-gram_3,7490,110,1180,1
-gram_4,9260,170,1380,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:eba1cae4010ad19cf92abb7b947875e35305e775ec2f215c491d0ba3c120b6d6
+size 120

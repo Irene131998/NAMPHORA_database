@@ -1,8 +1,3 @@
-labID,age,error,depth,cc
-Beta 295772,5590,40,5,1
-Beta 295773,5980,40,15,1
-Beta 295774,5980,40,20,1
-KIA 39298,6085,25,40,1
-KIA 39299,6400,90,75,1
-Beta 295779,6740,50,80,1
-Erl 12419,7451,56,90,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:ecf03260fa92bec88706b4ade1b4f73c9aa1d25eede868c5b383978942686a17
+size 201

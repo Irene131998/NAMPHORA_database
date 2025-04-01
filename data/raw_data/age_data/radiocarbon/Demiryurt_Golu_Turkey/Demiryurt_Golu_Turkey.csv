@@ -1,2 +1,3 @@
-sampleid,geochrontype,agetype,depth,thickness,age,errorolder,erroryounger,infinite,delta13c,labnumber,materialdated,notes
-419713,Carbon-14,Radiocarbon years BP,340.5,7,1940,60,60,FALSE,,GrN- 12792,,
+version https://git-lfs.github.com/spec/v1
+oid sha256:b3cd6a5e43f68dd6d9cfb403834247187f6bd43fc40c6e1ce6ab98e317b75753
+size 201

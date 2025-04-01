@@ -1,8 +1,3 @@
-sample_name,depth,age,materialdated,labnumber,Method,Depth (cm),thickness,14C age (yr BP),notes,error
-,,,Organic sediment,LGQ 343,C,5.0,10.0,0.0,Modern,nan
-,,,Organic sediment,LGQ 736,C,45.0,10.0,0.0,Modern,nan
-,,,Organic sediment,LHGI 545,C,59.0,2.0,560.0,nan,120.0
-,,,Organic sediment,LGQ 342,C,86.0,9.0,590.0,nan,220.0
-,,,Organic sediment,LGQ 737,C,125.0,10.0,2050.0,nan,200.0
-,,,Organic sediment,LGQ 284,C,175.0,10.0,1560.0,nan,284.0
-,,,Organic sediment,LGQ 738,C,195.0,10.0,2920.0,nan,240.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:bafefe969db79a4df1eb2963b46bd381f3428cc2cd450061d3c719d2b5add869
+size 504

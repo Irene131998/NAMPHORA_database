@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-uaf1,8000,100,5,1
-uaf2,8330,100,15,1
-uaf3,8765,105,75,1
-uaf4,9765,105,100,1
-uaf5,9245,270,100,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:4606b77eda2d9e55c16ea5b041c6ee92c8058692c65286a473bf690ade00d828
+size 127

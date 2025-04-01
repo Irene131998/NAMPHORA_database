@@ -1,3 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-536707,Carbon-14,Radiocarbon years BP,165,10,2725,35,35,false,,GrN-16961,bulk gyttja,
-536708,Carbon-14,Radiocarbon years BP,515,10,6870,100,100,false,,GrN-16962,bulk gyttja,
+version https://git-lfs.github.com/spec/v1
+oid sha256:b27d46500c493f3a94033d7511212af96184840ff15f07553f0f08403791ba4b
+size 321

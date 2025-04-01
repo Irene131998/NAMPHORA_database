@@ -1,7 +1,3 @@
-labID,age,error,depth,cc
-ETH-28746,9500,70,1151,1
-ETH-23540,9515,70,1153,1
-ETH-28745,9150,70,1160,1
-ETH-27142,9635,75,1172,1
-ETH-27143,9365,70,1176,1
-ETH-27144,9590,70,1218,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:dcbccc1489e7223da9af7ae0b8606a7ab7ba60b89fac317131111a536a3e43d8
+size 182

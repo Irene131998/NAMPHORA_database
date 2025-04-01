@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-Ua-3075,3445,70,45,1
-Ua-3076,5725,90,105,1
-Ua-3077,12665,115,150,1
-Ua-3078,18360,195,200,1
-Ua-3079,20700,295,230,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:66e2fda0f7af16dbd9d470fee99d640ef6751d78fc68d40c25093f556bdcbc78
+size 146

@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-Beta 56673,3330,70,271,1
-SRR-5180,4900,75,336.5,1
-SRR-5181,6305,50,539,1
-SRR-5182,8015,60,614,1
-SRR-5183,8605,45,694.5,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:f9b2a39c60a68cf152fb46a33ab7acb21a2f43c314f84e9e36555a9cf79e49d4
+size 152

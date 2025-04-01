@@ -1,22 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-265679,Carbon-14,Radiocarbon years BP,14,1,1980,60,60,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265680,Carbon-14,Radiocarbon years BP,54,1,3216,37,37,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265681,Carbon-14,Radiocarbon years BP,96,1,4275,41,41,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265682,Carbon-14,Radiocarbon years BP,178,1,5652,42,42,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265683,Carbon-14,Radiocarbon years BP,238,1,6870,50,50,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265684,Carbon-14,Radiocarbon years BP,298,1,8530,47,47,false,,,Foram. (N. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265685,Carbon-14,Radiocarbon years BP,348,1,9200,60,60,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265686,Carbon-14,Radiocarbon years BP,418,1,9970,50,50,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265687,Carbon-14,Radiocarbon years BP,487,1,10560,60,60,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265688,Carbon-14,Radiocarbon years BP,512,1,10750,60,60,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265689,Carbon-14,Radiocarbon years BP,588,1,11590,60,60,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265690,Carbon-14,Radiocarbon years BP,595,1,11880,80,80,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265691,Carbon-14,Radiocarbon years BP,682,1,12790,90,90,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265692,Carbon-14,Radiocarbon years BP,708,1,13100,90,90,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265693,Carbon-14,Radiocarbon years BP,758,1,14350,110,110,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265694,Carbon-14,Radiocarbon years BP,802,1,15440,90,90,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265695,Carbon-14,Radiocarbon years BP,858,1,18260,120,120,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265696,Carbon-14,Radiocarbon years BP,958,1,22450,160,160,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265697,Carbon-14,Radiocarbon years BP,1044,1,24840,280,280,false,,,Foram. (G. bulloides),Analysed in Utrecht University, reservoir effect 400 yrs
-265698,Carbon-14,Radiocarbon years BP,1077,1,26220,240,240,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
-265699,Carbon-14,Radiocarbon years BP,1324,1,32600,400,400,false,,,Foram. (N. paquiderma),Analysed in Utrecht University, reservoir effect 400 yrs
+version https://git-lfs.github.com/spec/v1
+oid sha256:61eacf2f1098a8347bfe9439c64cc7cfd11ee2268c0810804cc1ef152673d87b
+size 3165

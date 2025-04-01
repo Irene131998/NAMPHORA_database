@@ -1,8 +1,3 @@
-labID,age,error,depth,cc
-halos1,2920,70,96.5,1
-halos2,2890,70,207.5,1
-halos3,4320,70,207.5,1
-halos4,5150,100,356.5,1
-halos5,7780,100,356.5,1
-halos6,6520,100,631.5,1
-halos7,8850,100,631.5,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:642998c840ad8afba8351d99cbc0f5b1675d45b0af9ce98a8b9f16da55effae1
+size 197

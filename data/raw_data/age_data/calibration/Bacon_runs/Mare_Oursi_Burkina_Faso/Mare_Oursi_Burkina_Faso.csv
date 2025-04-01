@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-UtC 2921,610,40,58,1
-UtC 2211,2850,50,159,1
-UtC 2922,3130,80,178,1
-UtC 3198,8870,70,224,1
-UtC 2311,7720,80,275,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:7ecb639860eab67d4a1f4cae1785d16c7222396652d39d4181eb9eb2ee67fb09
+size 144

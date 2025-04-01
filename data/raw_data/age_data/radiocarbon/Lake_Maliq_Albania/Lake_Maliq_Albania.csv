@@ -1,17 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-236683,Carbon-14,Radiocarbon years BP,222.5,5,2560,55,55,false,,Lyon-502,organic matter,1999
-236684,Carbon-14,Radiocarbon years BP,279,4,2416,45,45,false,,Lyon-828,organic matter,1999
-236685,Carbon-14,Radiocarbon years BP,300,,3730,30,30,false,,SacA 5298,organic matter,2008
-236686,Carbon-14,Radiocarbon years BP,324,8,4245,90,90,false,,Ly-8143,organic matter,1999
-236687,Carbon-14,Radiocarbon years BP,412.5,5,4420,70,70,false,,Lyon-503,organic matter,1999
-236688,Carbon-14,Radiocarbon years BP,440,,5405,30,30,false,,SacA 5299,organic matter,2008
-236689,Carbon-14,Radiocarbon years BP,515,,6155,30,30,false,,SacA 5300,organic matter,2008
-236690,Carbon-14,Radiocarbon years BP,562.5,5,7210,90,90,false,,Lyon-504,organic matter,1999
-236691,Carbon-14,Radiocarbon years BP,620,,8415,35,35,false,,SacA 5301,organic matter,2008
-236692,Carbon-14,Radiocarbon years BP,642.5,5,8350,70,70,false,,Lyon-671,organic matter,1999
-236693,Carbon-14,Radiocarbon years BP,665,,9310,40,40,false,,SacA 5302,organic matter,2008
-236694,Carbon-14,Radiocarbon years BP,690,,9995,45,45,false,,SacA 5303,organic matter,2008
-236695,Carbon-14,Radiocarbon years BP,705,10,10065,100,100,false,,Lyon-505,organic matter,1999
-236696,Carbon-14,Radiocarbon years BP,785,,10715,40,40,false,,SacA 5304,organic matter,2008
-236697,Carbon-14,Radiocarbon years BP,847.5,5,11475,100,100,false,,Lyon-670,organic matter,1999
-236698,Carbon-14,Radiocarbon years BP,925,,13560,50,50,false,,SacA 5305,organic matter,2008
+version https://git-lfs.github.com/spec/v1
+oid sha256:7dbe58d69585870de5f65c9ff458879f8b99bfcc23ca2983b35f712c42a75372
+size 1621

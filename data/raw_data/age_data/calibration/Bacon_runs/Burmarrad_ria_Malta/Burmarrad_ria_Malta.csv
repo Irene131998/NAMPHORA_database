@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-SacA-11663,4563,30,845,1
-Poz-42441,5410,40,1005,1
-SacA-11668,6115,30,1117.5,1
-SacA-11669,6500,30,1215,1
-Poz-42439,6650,60,1415,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:5bc95ea778711974cc9a07598e18cf3361f1f42dcd534a0b8dc1681b3c75b270
+size 160

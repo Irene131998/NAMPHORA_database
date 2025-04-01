@@ -1,18 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-650654,Carbon-14,Radiocarbon years BP,17.5,15,4450,60,60,false,,Gif-6209,Clay,
-650664,Carbon-14,Radiocarbon years BP,505,10,13200,150,150,false,,Gif-6007,Clay,
-650655,Carbon-14,Radiocarbon years BP,95,10,5460,70,70,false,,Gif-6210,Clay,
-650668,Carbon-14,Radiocarbon years BP,665.5,30,19800,220,220,false,,Gif-6389,Lacustrine marl,
-650656,Carbon-14,Radiocarbon years BP,125,10,5980,70,70,false,,Gif-6394,Clay,
-650667,Carbon-14,Radiocarbon years BP,612.5,25,19100,160,160,false,,Gif-6714,Lacustrine marl,
-650657,Carbon-14,Radiocarbon years BP,415,30,12080,180,180,false,,Gif-6391,Clay,
-650665,Carbon-14,Radiocarbon years BP,530,10,15200,180,180,false,,Gif-6008,Clay,
-650660,Carbon-14,Radiocarbon years BP,245,10,8200,80,80,false,,Gif-6393,Clay,
-650661,Carbon-14,Radiocarbon years BP,305,10,9300,90,90,false,,Gif-6392,Clay,
-650658,Carbon-14,Radiocarbon years BP,155,10,6340,70,70,false,,Gif-6211,Clay,
-650662,Carbon-14,Radiocarbon years BP,355,10,10000,110,110,false,,Gif-6212,Clay,
-650666,Carbon-14,Radiocarbon years BP,585,30,18300,300,300,false,,Gif-6390,Lacustrine marl,
-650659,Carbon-14,Radiocarbon years BP,195,10,7840,100,100,false,,Gif-6005,Clay,
-650670,Carbon-14,Radiocarbon years BP,790,30,29300,600,600,false,,Gif-6388,Clay,
-650663,Carbon-14,Radiocarbon years BP,395,10,9930,110,110,false,,Gif-6006,Lacustrine marl,
-650669,Carbon-14,Radiocarbon years BP,715,10,23600,500,500,false,,Gif-6009,Clay,
+version https://git-lfs.github.com/spec/v1
+oid sha256:d0bfc2a9f2f52302caa5c191eef0767596e294c53c84c5b1c6b7c496967cca6c
+size 1552

@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-CNA-701,175,30,20,1
-Beta-276175,460,40,30,1
-Beta-276174,690,40,39,1
-Ua-21941,1030,45,65,1
-Ua-21942,1585,40,95,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:261ccf406cfa4d36ed4098bdc07f8f5e0915ed7325427b7de7056ec0ff7ac997
+size 143

@@ -1,8 +1,3 @@
-labID,"	age","	error","	depth","	cc",delta.R,delta.STD
-Beta-72194,2830,60,88,1,-25.1,0
-Beta-67373,7400,60,165,1,-25.8,0
-Beta-70900,7660,50,175,1,-27,0
-Beta-62417,8570,70,271,1,,
-Beta-67374,8800,60,344,1,-25.7,0
-Beta-70899,10120,60,430,1,-27.6,0
-Beta-90850,11500,110,510,1,-27.3,0
+version https://git-lfs.github.com/spec/v1
+oid sha256:51cda2410eef2d5b2bff481e378f176420e03bda4736d243f6a5b111926a6e47
+size 288

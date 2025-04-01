@@ -1,5 +1,3 @@
-labID,age,error,depth,cc
-CSIC-1767,522,27,39.5,1
-CSIC-1768,1664,35,82.5,1
-Ua-21490,1895,45,91,1
-CSIC-1938,1938,35,102.5,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:0816eab4a356415660e6a4fadc42f613cc4cef1366628c881691688ee765a91c
+size 127

@@ -1,6 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-330799,Carbon-14,Radiocarbon years BP,845,,4563,30,30,false,,SacA-11663,charcoal,
-330800,Carbon-14,Radiocarbon years BP,1005,,5410,40,40,false,,Poz-42441,charcoal,
-330801,Carbon-14,Radiocarbon years BP,1117.5,,6115,30,30,false,,SacA-11668,peat,
-330802,Carbon-14,Radiocarbon years BP,1215,,6500,30,30,false,,SacA-11669,charcoal,
-330803,Carbon-14,Radiocarbon years BP,1415,,6650,60,60,false,,Poz-42439,charcoal,
+version https://git-lfs.github.com/spec/v1
+oid sha256:a40e9083cb1850d9d3d309c88f3df5adcf16f236bb40e3389c5e1289091cd4bd
+size 557

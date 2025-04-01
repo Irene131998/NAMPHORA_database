@@ -1,5 +1,3 @@
-,"Depth (cm) [cm]","radiocarbon [radiocarbon BP]","14C uncertainty [undefined]","thickness (cm) [undefined]","lab number [undefined]","Material dated [undefined]"
-,Depth (cm),14C age (yr BP),error,thickness (cm),lab number,Material dated
-,55.0,940.0,80.0,,Gif 5114,charcoal
-,60.0,790.0,100.0,,Ly 2034,charcoal
-,285.0,1020.0,90.0,,Gif 4530,charcoal
+version https://git-lfs.github.com/spec/v1
+oid sha256:9c2b56d3385876d3a682d61350f7518f16d5be960e154ab76b0533c364028657
+size 351

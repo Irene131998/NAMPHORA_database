@@ -1,3 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-638872,Carbon-14,Radiocarbon years BP,267.5,7,1134,32,32,false,,KIA 9337,pollen concentrate,
-638873,Carbon-14,Radiocarbon years BP,259.5,7,1016,55,55,false,,KIA 9913,pollen concentrate,
+version https://git-lfs.github.com/spec/v1
+oid sha256:dd9adf4734d3c4ed712e7fa49f4715028caf20e1979b79d02b68dc99c5e3fddc
+size 333

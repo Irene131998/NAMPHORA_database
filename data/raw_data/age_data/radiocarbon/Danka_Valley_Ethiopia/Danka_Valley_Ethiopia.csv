@@ -1,2 +1,3 @@
-"sampleid","geochrontype","agetype","depth","thickness","age","errorolder","erroryounger","infinite","delta13c","labnumber","materialdated","notes"
-349136,Carbon-14,Radiocarbon years BP,240,10,7920,80,80,false,,Q-1362,bulk sediment,
+version https://git-lfs.github.com/spec/v1
+oid sha256:6504fae0e0566defc46e16e4ac103ca3346b2c84e708b639f14c5c616e865c7a
+size 232

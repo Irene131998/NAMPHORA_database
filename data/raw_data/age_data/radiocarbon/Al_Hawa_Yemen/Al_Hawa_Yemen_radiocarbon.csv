@@ -1,16 +1,3 @@
-Method [undefined],Depth (cm) [undefined],thickness [undefined],Material dated [undefined],14C age (yr BP) [undefined],error [undefined],Lab number [undefined],deltac13 [undefined],notes [undefined]
-14C,7.5,,Bellamya,6850,115,Pa 1996,,
-14C,59.5,5,Organic matter,6920,60,P24AA32161,,AMS
-14C,288,6,Organic matter,7372,81,P26AA32163,,AMS
-14C,326.5,9,Organic matter,7317,80,P28AA32165,,AMS
-14C,337,,Melanoides,7700,82,P29AA32166,,AMS
-14C,428.7,,Bellamya,7866,74,P328A50810,,AMS
-14C,634.9,,Shell fragment,7851,49,P370A10...,,AMS
-14C,641.7,,Shell fragment,8105,60,Pa 2146,,
-14C,649.7,,Melanoides,8150,60,Pa 2091,,
-14C,682.7,,Melanoides,8809,52,P368A10...,,AMS
-14C,688.7,,Melanoides,8834,54,P369A10...,,AMS
-14C,705.2,,Melanoides,9280,55,P364A10...,,AMS
-14C,716.9,,Melanoides,9327,54,P365A10...,,AMS
-C,723.1,,Bellamya,9340,53,P363A10...,,
-C,726.7,,Melanoides,9656,54,P366A10...,,
+version https://git-lfs.github.com/spec/v1
+oid sha256:aff2527997eb63008655ffab8c0a08c69938052794fce14112a738a82191ce27
+size 888

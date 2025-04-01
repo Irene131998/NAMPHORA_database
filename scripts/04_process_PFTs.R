@@ -115,7 +115,7 @@ names(species_categorical_variables) <- categorical_traits# Assign results to va
 #### 2.1.1) Citations----
 
 
-temp_dir <- file.path(normalizePath(here::here("docs/supplementary_info/references/references_BIEN_database")))
+temp_dir <- file.path(normalizePath(here::here("docs/references/pfts_references/references_BIEN_database")))
 # family
 for (i in seq_along(family_categorical_variables)) {  # For every item of the list
   BIEN_metadata_citation(
@@ -188,7 +188,7 @@ Species_continuous_traits <- lapply(Species_continuous_variables, process_specie
 #### 2.2.1) Citations----
 
 
-temp_dir <- file.path(normalizePath(here::here("docs/supplementary_info/references/references_BIEN_database")))
+temp_dir <- file.path(normalizePath(here::here("docs/references/pfts_references/references_BIEN_database")))
 
 # family
 for (i in seq_along(family_continuous_traits)) {  # For every item of the list

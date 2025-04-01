@@ -212,9 +212,16 @@ Different sections (folders) of the project are structured as follows:
 
 -   `docs/`
 
-    -   `/references`: Contains the *pollen_records_references.bib,
-        phytogeographic_affinity_references.bib, habit_references.bib,
-        pfts_references.bib & taxonomy_references.bib* files.
+    -   `/references`: Contains the following:
+
+        -   `/pollen_records_references`: includes the references of the
+            pollen records in .bib format.
+
+        -   `/pfts_references`: includes the references of each trait
+            retrieved from BIEN database in .bib format.
+
+        -   `/taxonomy_references`: includes the references used for
+            pollen taxonomy harmonisation in .bib format.
 
     -   `/supplementary_info`: Includes additional resources, organised
         into:
@@ -276,8 +283,7 @@ Different sections (folders) of the project are structured as follows:
 
     -   `/references`: Contains the *database_references.csv* file,
         which lists references for each dataset (i.e. pollen records/age
-        data, taxonomy, habit, phytogeographic affinity and plant
-        functional traits).
+        data, taxonomy, habit, and phytogeographic affinity).
 
     -   `/taxonomy`: Contains the following:
 
@@ -508,52 +514,54 @@ hs <- shade(slopes, aspect) # base shade for elevation plotting
 ```{r}
 #| echo: false
 #| output: true
-#| fig-cap: "Figure 2. Map of fossil and modern pollen records (a) compiled in the *NAAMPHoRA* database, the phytogeographical regions from White (1983) and Olson et al. (2001) (b) the biome map (c) from Olson et al. (2001)."
+#| fig-cap: "Figure 2. Map of dated fossil (a), undated fossil (b) and modern pollen records (c) compiled in the *NAAMPHoRA* database, the phytogeographical regions from White (1983) and Olson et al. (2001) (c) the biome map (d) from Olson et al. (2001)."
 
-# Define a layout with 3 rows and 2 columns
-layout(matrix(1:6, nrow = 3, ncol = 2, byrow = TRUE), 
-       widths = c(0.7, 1),  #  column widths
-       heights = c(2, 2, 2))  # Adjust heights to fit all plots
+# Define the layout matrix
+layout_matrix <- matrix(c(
+  1, 2, 3,  # First row: 3 columns
+  4, 5, 5, # Second row: 2 columns
+  6, 7, 7  # Third row: 2 columns
+), nrow = 3, byrow = TRUE)
+
+
+layout(layout_matrix)  # Apply layout here
 
 # Reduce margins to decrease space between plots
 par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
 
-### Plot 1: Pollen Records ###
+### Plot 1: Fossil dated Records ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
 plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
 
-points(sites$Longitude[sites$Dated == "Modern"],  
-       sites$Latitude[sites$Dated == "Modern"],  
-       col = "black", pch = 19, cex = 0.3) 
 points(sites$Longitude[sites$Dated == "Yes"],  
        sites$Latitude[sites$Dated == "Yes"],  
-       col = "blue", pch = 19, cex = 0.3)  
-points(sites$Longitude[sites$Dated == "No"],  
-       sites$Latitude[sites$Dated == "No"],  
-       col = "red", pch = 19, cex = 0.3)  
-
+       col = "black",   # Outline color
+       bg = "blue",    # Fill color
+       pch = 21, cex = 1.2)  
 
 mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
 
-### Plot 2: Sites legend ###
-par(mar = c(0, 0, 0, 0))  # Remove margins
-plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
-legend("left", 
-       legend = round(seq(min(elevation_crop[], na.rm = TRUE), max(elevation_crop[], na.rm = TRUE), length.out = 10),3),
-       fill = adjustcolor(terrain.colors(10)),  # Adjust color transparency
-       title = "Elevation",
-       bty = "n", 
-       cex = 0.8)
 
-legend("center", 
-       legend = c("Dated fossil pollen", "Undated fossil pollen", "Modern pollen"), 
-       fill = c("blue", "red", "black"), 
-       border = "black", 
-       cex = 0.8, 
-       title = "Pollen records", 
-       bty = "n", 
-       xpd = TRUE)
-### Plot 3: Phytogeographic Regions ###
+### Plot 2: Fossil not dated Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
+points(sites$Longitude[sites$Dated == "No"],  
+       sites$Latitude[sites$Dated == "No"],  
+       col = "black", bg = "red", pch = 21, cex = 1.2)  
+
+mtext("(b)", side = 3, line = 1, at = -15, cex = 0.8)
+
+### Plot 3: Modern Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Modern"],  
+       sites$Latitude[sites$Dated == "Modern"],  
+       col = "black", bg = "green", pch = 21, cex = 1.2) 
+
+mtext("(c)", side = 3, line = 1, at = -15, cex = 0.8)
+
+### Plot 4: Phytogeographic Regions ###
 
 # Define colors
 n <- length(unique(merged_phytogeographic_regions$Region_Name))
@@ -564,24 +572,25 @@ plot(st_geometry(merged_phytogeographic_regions),
      col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
      , border = "black", main = "", add = TRUE)
 
-mtext("(b)", side = 3, line = -1, at = -15, cex = 0.8)
+mtext("(d)", side = 3, line = 1, at = -15, cex = 0.8)
 
-### Plot 4: Legend Phytogeographic Regions ###
+### Plot 5: Legend Phytogeographic Regions ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
        legend = levels(merged_phytogeographic_regions$Region_Name),
        fill = colors_regions, 
        border = "black", 
-       cex = 0.8, 
+       cex = 1, 
        title = NULL, 
        bty = "n",  
        xpd = TRUE,
        ncol=2)
-mtext("Phytogeographic regions              ", side = 3, line = -2, cex = 0.6, col = "black")
+mtext("Phytogeographic regions                                                                   ", side = 3, line = -1, cex = 0.6, col = "black")
 
 
-### Plot 5: Biomes ###
+
+### Plot 6: Biomes ###
 n <- length(unique(biomes$BIOME))
 my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
 biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
@@ -589,7 +598,7 @@ biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
 plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
 
-mtext("(c)", side = 3, line = -1, at = -15, cex = 0.8)
+mtext("(e)", side = 3, line = -1, at = -15, cex = 0.8)
 
 ### Plot 6: Legend biomes ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
@@ -598,10 +607,11 @@ legend("left",
        legend = unique(biomes$BIOME_definition),  
        fill = my_colors,  
        border = "black", 
-       cex = 0.8,  
+       cex = 1,  
        title = "Biomes", 
        bty = "n", 
        xpd = TRUE)
+
 
 ```
 
@@ -744,7 +754,8 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
   theme_minimal() +
   labs(x = "Database", 
        y = "Number of sites", 
-       fill = "Pollen type") +  # Ensure legend title is explicitly set
+       fill = "Pollen type") +  
+    scale_fill_manual(values = c("#56B4E9", "#A3B96C", "#E69F00")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
         axis.text.y = element_text(size = 16),
         axis.title.x = element_text(size = 18),
@@ -799,7 +810,12 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
         plot.title = element_text(size = 14),
         legend.title = element_text(size = 8), 
         legend.text = element_text(size = 8)) + 
-  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add AHP interval markers
+  geom_segment(aes(x = 5500, xend = 14800, y = 30, yend = 30), color = "black", size = 1) +  # Horizontal line from x = 5500 to x = 14800 at y = 60
+  # Small vertical lines at both ends
+  geom_segment(aes(x = 5500, xend = 5500, y = 28, yend = 32), color = "black", size = 1) +  # Left end vertical
+  geom_segment(aes(x = 14800, xend = 14800, y = 28, yend = 32), color = "black", size = 1) +  # Right end vertical
+  annotate("text", x = (5500 + 14800) / 2, y = 35, label = "AHP", color = "black", size = 5, fontface = "bold", hjust = 0.5)  # Add text "AHP" at the center of the line
+
 
 
 # 4) Latitudinal distribution of records according to their archive type----
@@ -901,6 +917,12 @@ affinity_counts <- phyto_aff_long %>%
 # Calculate proportions 
 affinity_percentages <- affinity_counts %>%
 mutate(percentage = n / sum(n) * 100)
+
+affinity_percentages <- affinity_percentages |> arrange(desc(percentage))
+order <- affinity_percentages$phytogeographic_Affinity
+
+# Ensure the phytogeographic_Affinity is a factor with the desired order
+affinity_percentages$phytogeographic_Affinity <- factor(affinity_percentages$phytogeographic_Affinity, levels = order)
 
 # Plotting the proportion of pollen types per phyto aff
 phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = "", y = percentage, fill = phytogeographic_Affinity)) +
@@ -1013,7 +1035,7 @@ database_barplot
 ```
 
 ```{r}
-#| fig-cap: "Figure 5. Number of dated pollen records per time period in years before present. The red dashed lines indicate the African Humid Period (14,800 to 5,000 years Before Present)"
+#| fig-cap: "Figure 5. Number of dated pollen records per time period in years before present. The horizontal line indicates the African Humid Period (14,800 to 5,000 years Before Present)"
 dated_records_temporal_distribution
 ```
 

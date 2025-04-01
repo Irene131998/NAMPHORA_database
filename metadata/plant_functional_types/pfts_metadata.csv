@@ -1,26 +1,3 @@
-Name,Description,Unit
-Pollen_type_SM_morphological,Taxonomical harmonised pollen type,Categorical
-Family,Family of the plant species,Categorical
-Genus,Genus of the plant species,Categorical
-Taxa,"Name of the taxon (at species, genus or family level) from which the trait has been retrieved",Categorical
-URL_source,URL linking to the data source,URL
-Project_pi,Principal investigator of the original project in which the trait was measured,Categorical
-Project_pi_contact,Contact information for the project PI of the original project in which the trait was measured,Categorical
-Whole_plant_height_m,Trait 1: Height of the whole plant in meters,Meters
-Seed_mass_mg,Trait 2: Seed mass in milligrams,Milligrams
-Leaf_area_mm2,Trait 3: Leaf area in square millimeters,Millimeters squared
-Longest_whole_plant_longevity_years,Trait 4: Longevity of the whole plant in years,Years
-Plant_flowering_begin_month,Trait 5: Month when flowering begins,Month
-Plant_flowering_begin_date,Trait 6: Specific date when flowering begins,Date
-Leaf_dry_mass_g,Trait 7: Leaf dry mass in grams,Grams
-Leaf_life_span_months,Trait 8: Leaf lifespan in months,Months
-Leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1,Trait 9: Leaf nitrogen content per unit of leaf dry mass,Milligrams per gram
-Whole_plant_dispersal_syndrome,Trait 10: Dispersal syndrome of the whole plant,Categorical
-Whole_plant_vegetative_phenology,Trait 11: Vegetative phenology of the whole plant,Categorical
-Whole_plant_growth_form_diversity,Trait 12: Diversity of the plant’s growth form,Categorical
-Whole_plant_sexual_system,Trait 13: Sexual system of the whole plant,Categorical
-Flower_pollination_syndrome,Trait 14: Pollination syndrome of the flowers,Categorical
-Leaf_dry_mass_per_area_g_mm_2,Trait 15: Leaf dry mass per unit area,Grams per millimeter squared
-Try_dataset,Trait 16: Dataset in which the plant is included,Categorical
-Leaf_type,"Trait 17: Type of leaf (e.g., deciduous, evergreen)",Categorical
-Try_reference,Reference for the type of leaf trait retrieved from TRY database,Categorical
+version https://git-lfs.github.com/spec/v1
+oid sha256:597e3d1ca41f9b885e8a1a329a39d1de5b46462a0fa8364471b91e923f29d25f
+size 2044

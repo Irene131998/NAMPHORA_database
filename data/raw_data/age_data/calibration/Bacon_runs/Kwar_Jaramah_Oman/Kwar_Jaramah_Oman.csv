@@ -1,8 +1,3 @@
-labID,age,error,depth,cc
-SacA 7217,1445,30,70.5,2
-SacA 7219,2245,30,149.5,2
-SacA 7220,2415,30,205.5,2
-SacA 7221,2480,30,249.5,2
-SacA 7222,3270,30,299.5,2
-SacA 7223,3760,40,345.5,2
-SacA 7224,5010,35,399.5,2
+version https://git-lfs.github.com/spec/v1
+oid sha256:224ca91662eb72dfd81976be1a35b2a5e2cb537dd6d8d448d45cf6b45783aa53
+size 214

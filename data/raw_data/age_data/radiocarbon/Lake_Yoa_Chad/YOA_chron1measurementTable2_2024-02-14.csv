@@ -1,18 +1,3 @@
-,"Depth (cm) [undefined]","14C age (yr BP) [undefined]","error [undefined]","thickness (cm) [undefined]","lab number [undefined]","Material dated [undefined]"
-,16.0,1980.0,30.0,,Poz-8729,Typha rhizome
-,35.0,2160.0,35.0,,Poz-8739,bulk organic matter
-,35.0,1900.0,50.0,,Poz-8730,Typha rhizome
-,36.0,315.0,30.0,,Poz-8730,grass charcoal
-,59.0,1675.0,30.0,,Poz-8733,Typha rhizome
-,75.0,2200.0,100.0,,Poz-8734,Typha rhizome
-,79.0,2905.0,30.0,,Poz-8738,bulk organic matter
-,79.0,2020.0,40.0,,Poz-8735,Typha rhizome
-,87.0,670.0,30.0,,Poz-8736,grass charcoal
-,89.0,2225.0,30.0,,Poz-5065,bulk organic matter
-,118.5,1930.0,30.0,,Poz-5122,bulk organic matter
-,289.5,3460.0,40.0,,Poz-5066,bulk organic matter
-,367.5,3695.0,35.0,,Poz-5067,bulk organic matter
-,403.5,6535.0,40.0,,GrA-32023,bulk organic matter
-,495.5,5065.0,35.0,,GrA-32258,bulk organic matter
-,583.5,5725.0,40.0,,GrA-32086,bulk organic matter
-,729.5,6420.0,40.0,,GrA-32027,bulk organic matter
+version https://git-lfs.github.com/spec/v1
+oid sha256:cc7b129145193341dc60fa830a6325355a2bce3b317597c32fb76c7bef3d6403
+size 961

@@ -1,32 +1,3 @@
-,Burial label [undefined],14C age (yr BP) [undefined],error [undefined],thickness (cm) [undefined],lab number [undefined],Material dated [undefined],,,,Sample Age (cal yr BP) [cal yr BP],depth,sample id,Sample name [undefined],Burial label [undefined]
-,G3B5,4990,40,,P-540,bone,,,,5712,G3-B5,1,1a,G3-B5
-,G3B6,,,,,,,,,5712,G3-B6,2,1b,G3-B5
-,G1B8,4590,40,,P-594,bone,(mean median G1-B8),,,,G3-B6,3,2a,G3-B6
-,G1B8,4090,40,,P-589,bone,(mean median G1-B8),,,,G3-B7,4,2b,G3-B7
-,G1B18,,,,,,,,,,G3-B8,5,2c,G3-B8
-,G3B21,,,,,,,,,,G3-B9,6,2d,G3-B9
-,G3B29,,,,,,,,,4956,G1B8,7,3a,G1B8
-,G3B36,4710,40,,P-543,bone,,,,4956,G1B9,8,3b,G1B9
-,G3B41,4860,40,,P-545,bone,,,,4956,G1B10,9,3c,G1B10
-,G3B42,,,,,,,,,,G1-B18,10,4a,G1-B18
-,G3B8,8470,40,,P-583,bone,(mean median G3-B8),,,,G1-B19,11,4b,G1-B19
-,G3B8,8420,40,,P-584,bone,(mean median G3-B8),,,,G1-B20,12,4c,G1-B20
-,G3B8,8220,40,,P-582,bone,(mean median G3-B8),,,,G1-B21,13,4d,G1-B21
-,G3B9,8570,40,,P-542,bone,,,,,G1-B22,14,4e,G1-B22
-,G3B15,,,,,,,,,,G3-B21,15,5,G3-B21
-,G3B17,8620,40,,P-590,bone,,,,,G3-B29,16,6,G3-B29
-,G3B40,,,,,,,,,5418,G3-B36,17,7a,G3-B36
-,,,,,,,,,,5418,G3-B37,18,7b,G3-B36
-,,,,,,,,,,5418,G3-B38,19,7c,G3-B36
-,,,,,,,,,,5418,G3-B39,20,7d,G3-B36
-P-589,4090,40,G1B8,4600.6,4621.2,4513,4657,(mean median G1-B8),,5418,G3-B40,21,7e,G3-B36
-P-594,4590,40,G1B8,5306.9,5725.2,5266,5333,(mean median G1-B8),,5592,G3-B41,22,8,G3-B41
-P-543,4710,40,G3B36,5414.9,5431.9,5321,5421,,,,G3-B42,23,9,G3-B42
-P-545,4860,40,G3B41,5588.7,5582.4,5547,5660,,,9379,G3-B8,24,10a,G3-B8
-P-540,4990,40,G3B5,5708.1,5725.2,5600,5760,,,9379,G3-B8,25,10b,G3-B8
-P-582,8220,40,G3B8,9181.9,9182.1,9024,9300,(mean median G3-B8),,9536,G3-B9,26,11a,G3-B9
-P-584,8420,40,G3B8,9453.2,9444.6,9404,9531,(mean median G3-B8),,9536,G3-B9,27,11b,G3-B9
-P-583,8470,40,G3B8,9490.9,9489.8,9435,9536,(mean median G3-B8),,,G3-B15,28,12a,G3-B15
-P-542,8570,40,G3B9,9532.8,9535.5,9477,9560,,,,G3-B15,29,12b,G3-B15
-P-590,8620,40,G3B17,9580.9,9591,9532,9681,,,9584,G3-B17,30,13,G3-B17
-,,,,,,,,,,,G3 B40,31,14,G3 B40
+version https://git-lfs.github.com/spec/v1
+oid sha256:aa8036fb5dc61dd85df351a175ff50531fd602c360e4cb8f96436ab36cabf438
+size 2040

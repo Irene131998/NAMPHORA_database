@@ -1,10 +1,3 @@
-labID,age,error,depth,cc
-tabu1,3810,60,0,1
-tabu2,8720,110,15,1
-tabu3,8640,70,25,1
-tabu4,8600,90,25,1
-tabu5,8690,50,53,1
-tabu6,8850,110,115,1
-tabu7,8800,100,115,1
-tabu8,8880,100,125,1
-tabu9,9350,70,160,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:124b8b0c4c62c4f1d16b1d3b2ec0aa0f689f9f07db7bcc93499a162d5cc1fd04
+size 213

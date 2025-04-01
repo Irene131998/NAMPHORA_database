@@ -1,7 +1,3 @@
-labID,age,error,depth,cc
-Meteor_1,6610,250,70,2
-Meteor_2,7030,190,90,2
-Meteor_3,7140,410,90,2
-Meteor_4,9510,320,130,2
-Meteor_5,13670,430,190,2
-Meteor_6,14220,440,190,2
+version https://git-lfs.github.com/spec/v1
+oid sha256:e3444324d0b3fd86a9eccdfa4c860d209a75ad6ada2cbf9b9f8a97b2aa911d55
+size 175

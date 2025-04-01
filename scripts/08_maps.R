@@ -272,23 +272,36 @@ dev.off()
 
 png(normalizePath("outputs/maps/phytogeographical_regions_map.png"), width = 1600, height = 1800, res = 300)
 
-# Number of unique BIOME categories
-n <- length(unique(biomes_crop$BIOME))
+layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
+       widths = c(0.7, 1),  #  column widths
+       heights = c(2, 2, 2))  # Adjust heights to fit all plots
 
-# Generate a color palette with enough colors for the categories
-my_colors <- brewer.pal(n, "Set3")  
+### Plot 1: Phytogeographic Regions ###
 
-# Assign the colors to each BIOME category correctly
-# Ensure that the levels of the factor align with the colors
-biomes_crop$col <- my_colors[as.factor(biomes_crop$BIOME)]
+# Define colors
+n <- length(unique(merged_phytogeographic_regions$Region_Name))
+colors_regions <- colorRampPalette(brewer.pal(12, "Set3"))(n)
 
-# Plot the data with the assigned colors
-plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  # Base raster layer
+plot(elevation_crop, col = terrain.colors(25), alpha = 0, legend = FALSE, axes = TRUE)
+plot(st_geometry(merged_phytogeographic_regions), 
+     col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
+     , border = "black", main = "", add = TRUE)
 
-plot(sf::st_geometry(biomes_crop), 
-     col = biomes_crop$col, 
-     add = TRUE,
-     border = "black")
+
+### Plot 2: Legend Phytogeographic Regions ###
+par(mar = c(0, 0, 0, 0))  # Remove margins
+plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
+legend("left", 
+       legend = levels(merged_phytogeographic_regions$Region_Name),
+       fill = colors_regions, 
+       border = "black", 
+       cex = 1, 
+       title = NULL, 
+       bty = "n",  
+       xpd = TRUE,
+       ncol=2)
+mtext("Phytogeographic regions                   ", side = 3, line = -1, cex = 0.6, col = "black")
+
 dev.off()
 
 # 5) Combined map (fossil + modern) ----
@@ -327,56 +340,59 @@ saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html
 
 # Define output file
 png(normalizePath("outputs/maps/combined_maps.png"),  
-    width = 21,  
+    width = 25.5,  
     height = 15,  
     units = "cm",  
     res = 3000,  # High resolution
-    pointsize = 12)  # Adjust text size for better readability
+    pointsize = 13)  # Adjust text size for better readability
 
-# Define a layout with 3 rows and 2 columns
-layout(matrix(1:6, nrow = 3, ncol = 2, byrow = TRUE), 
-       widths = c(0.7, 1),  #  column widths
-       heights = c(2, 2, 2))  # Adjust heights to fit all plots
+
+# Define the layout matrix
+layout_matrix <- matrix(c(
+  1, 2, 3,  # First row: 3 columns
+  4, 5, 5, # Second row: 2 columns
+  6, 7, 7  # Third row: 2 columns
+), nrow = 3, byrow = TRUE)
+
+
+layout(layout_matrix)  # Apply layout here
 
 # Reduce margins to decrease space between plots
 par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
 
-### Plot 1: Pollen Records ###
+### Plot 1: Fossil dated Records ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
 plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
 
-points(sites$Longitude[sites$Dated == "Modern"],  
-       sites$Latitude[sites$Dated == "Modern"],  
-       col = "black", pch = 19, cex = 0.3) 
 points(sites$Longitude[sites$Dated == "Yes"],  
        sites$Latitude[sites$Dated == "Yes"],  
-       col = "blue", pch = 19, cex = 0.3)  
-points(sites$Longitude[sites$Dated == "No"],  
-       sites$Latitude[sites$Dated == "No"],  
-       col = "red", pch = 19, cex = 0.3)  
-
+       col = "black",   # Outline color
+       bg = "blue",    # Fill color
+       pch = 21, cex = 1)  
 
 mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
 
-### Plot 2: Sites legend ###
-par(mar = c(0, 0, 0, 0))  # Remove margins
-plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
-legend("left", 
-       legend = round(seq(min(elevation_crop[], na.rm = TRUE), max(elevation_crop[], na.rm = TRUE), length.out = 10),3),
-       fill = adjustcolor(terrain.colors(10)),  # Adjust color transparency
-       title = "Elevation",
-       bty = "n", 
-       cex = 1)
 
-legend("center", 
-       legend = c("Dated fossil pollen", "Undated fossil pollen", "Modern pollen"), 
-       fill = c("blue", "red", "black"), 
-       border = "black", 
-       cex = 1, 
-       title = "Pollen records", 
-       bty = "n", 
-       xpd = TRUE)
-### Plot 3: Phytogeographic Regions ###
+### Plot 2: Fossil not dated Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
+points(sites$Longitude[sites$Dated == "No"],  
+       sites$Latitude[sites$Dated == "No"],  
+       col = "black", bg = "red", pch = 21, cex = 1)  
+
+mtext("(b)", side = 3, line = 1, at = -15, cex = 0.8)
+
+### Plot 3: Modern Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Modern"],  
+       sites$Latitude[sites$Dated == "Modern"],  
+       col = "black", bg = "green", pch = 21, cex = 1) 
+
+mtext("(c)", side = 3, line = 1, at = -15, cex = 0.8)
+
+### Plot 4: Phytogeographic Regions ###
 
 # Define colors
 n <- length(unique(merged_phytogeographic_regions$Region_Name))
@@ -387,9 +403,9 @@ plot(st_geometry(merged_phytogeographic_regions),
      col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
      , border = "black", main = "", add = TRUE)
 
-mtext("(b)", side = 3, line = -1, at = -15, cex = 0.8)
+mtext("(d)", side = 3, line = 1, at = -15, cex = 0.8)
 
-### Plot 4: Legend Phytogeographic Regions ###
+### Plot 5: Legend Phytogeographic Regions ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
@@ -401,10 +417,10 @@ legend("left",
        bty = "n",  
        xpd = TRUE,
        ncol=2)
-mtext("Phytogeographic regions                   ", side = 3, line = -1, cex = 0.6, col = "black")
+mtext("Phytogeographic regions                                                                                         ", side = 3, line = -2, cex = 0.6, col = "black")
 
 
-### Plot 5: Biomes ###
+### Plot 6: Biomes ###
 n <- length(unique(biomes$BIOME))
 my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
 biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
@@ -412,7 +428,7 @@ biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
 plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
 
-mtext("(c)", side = 3, line = -1, at = -15, cex = 0.8)
+mtext("(e)", side = 3, line = -1, at = -15, cex = 0.8)
 
 ### Plot 6: Legend biomes ###
 par(mar = c(0, 0, 0, 0))  # Remove margins

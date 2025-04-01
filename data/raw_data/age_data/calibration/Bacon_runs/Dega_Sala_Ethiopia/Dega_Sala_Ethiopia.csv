@@ -1,8 +1,3 @@
-labID,age,error,depth,cc
-LGQ 343,0,1,5,1
-LGQ 736,0,1,45,1
-LHGI 545,560,120,59,1
-LGQ 342,590,220,86,1
-LGQ 737,2050,200,125,1
-LGQ 284,1560,284,175,1
-LGQ 738,2920,240,195,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:876b68c5f8f9fb1f1851df8178cf54372ff11b78adf6900b3170adf86070da38
+size 178

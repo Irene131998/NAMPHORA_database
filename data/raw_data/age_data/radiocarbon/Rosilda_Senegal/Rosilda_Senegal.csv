@@ -1,5 +1,3 @@
-sample_name,depth,age,material dated,depth (cm),14C age BP,method,Lab number,error
-,,,shell,50.0,4900.0,14C,UQ1255,200.0
-,,,shell,300.0,11060.0,14C,UQ1256,200.0
-,,,OM,350.0,11920.0,14C,Gif,200.0
-,,,shell,420.0,10250.0,14C,UQ1257,600.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:8a797a079cc865adab7c2b2e93dcb0853241c60b872c14119fdf30c0688858d5
+size 240

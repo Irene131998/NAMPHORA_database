@@ -1,4 +1,3 @@
-labID,age,error,depth,cc
-CAN_703,560,30,20,1
-CAN_704,2050,30,30,1
-CAN_705,2965,35,50,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:ad0621e8c651cc83d43d3dde68ba68ffcbc64d1a7656ff9da35ec5baf7cc8bfd
+size 91

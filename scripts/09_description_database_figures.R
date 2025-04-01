@@ -156,10 +156,11 @@ sites_long_database$Database <- factor(sites_long_database$Database, levels = or
 database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fill = `Pollen Type`)) +
   geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
   theme_minimal() +
-  labs(x = "Database", 
+  labs(x = "", 
        y = "Number of sites", 
-       fill = "Pollen type") +  # Ensure legend title is explicitly set
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
+       fill = "Pollen type") +  
+  scale_fill_manual(values = c("#56B4E9", "#A3B96C", "#E69F00")) +
+theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
         axis.text.y = element_text(size = 16),
         axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
@@ -176,6 +177,8 @@ ggsave(normalizePath("outputs/graphs/database_barplot.png"),
        units = "in" 
 )
 database_barplot
+
+
 
 # 4) Number of dated records per time interval----
 
@@ -222,7 +225,11 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
         plot.title = element_text(size = 14),
         legend.title = element_text(size = 8), 
         legend.text = element_text(size = 8)) + 
-  geom_vline(xintercept = c(5500, 14800), linetype = "dashed", color = "red", size = 1)  # Add AHP interval markers
+  geom_segment(aes(x = 5500, xend = 14800, y = 30, yend = 30), color = "black", size = 1) +  # Horizontal line from x = 5500 to x = 14800 at y = 60
+  # Small vertical lines at both ends
+  geom_segment(aes(x = 5500, xend = 5500, y = 28, yend = 32), color = "black", size = 1) +  # Left end vertical
+  geom_segment(aes(x = 14800, xend = 14800, y = 28, yend = 32), color = "black", size = 1) +  # Right end vertical
+  annotate("text", x = (5500 + 14800) / 2, y = 35, label = "AHP", color = "black", size = 5, fontface = "bold", hjust = 0.5)  # Add text "AHP" at the center of the line
 
 
 ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), 
@@ -337,7 +344,7 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
     legend.text = element_text(size = 10),  
     legend.title = element_text(size = 16, face = "bold"),  
     axis.text.x = element_text(size = 10), 
-    axis.text.y = element_text(size = 8), 
+    axis.text.y = element_text(size = 10), 
     axis.title.x = element_text(size = 16, face = "bold"),  
     axis.title.y = element_text(size = 16, face = "bold"),  
     plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
@@ -346,7 +353,7 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
 ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"), 
        barplot_archive_type, 
        width = 10,   
-       height = 6,  
+       height = 8.5,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
@@ -388,7 +395,7 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
     legend.text = element_text(size = 10),  
     legend.title = element_text(size = 16, face = "bold"),  
     axis.text.x = element_text(size = 10), 
-    axis.text.y = element_text(size = 8), 
+    axis.text.y = element_text(size = 10), 
     axis.title.x = element_text(size = 16, face = "bold"),  
     axis.title.y = element_text(size = 16, face = "bold"),  
     plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
@@ -397,7 +404,7 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
 ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"), 
        barplot_altitude_biogeography, 
        width = 10,   
-       height = 6,  
+       height = 8,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
@@ -420,6 +427,12 @@ affinity_counts <- phyto_aff_long %>%
 # Calculate proportions 
 affinity_percentages <- affinity_counts %>%
 mutate(percentage = n / sum(n) * 100)
+
+affinity_percentages <- affinity_percentages |> arrange(desc(percentage))
+order <- affinity_percentages$phytogeographic_Affinity
+
+# Ensure the phytogeographic_Affinity is a factor with the desired order
+affinity_percentages$phytogeographic_Affinity <- factor(affinity_percentages$phytogeographic_Affinity, levels = order)
 
 phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = "", y = percentage, fill = phytogeographic_Affinity)) +
   geom_bar(stat = "identity", position = "dodge") +

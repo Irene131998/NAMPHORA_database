@@ -1,9 +1,3 @@
-mean depth (cm) [cm],14C age BP [undefined],error [undefined],Laboratory number [undefined],Material dated [undefined]
-5,101.63 pMC +/- 0.38[SG1],,Beta-564997,Bulk organic
-95,1790,30,Beta-564998,Bulk organic
-205,6340,30,Beta-564999,Shells
-245,6850,30,Beta-616716,Shells
-285,7710,30,Beta-616717,Shells
-305,8640,30,Beta-565000,Shells
-325,9160,30,Beta-616718,Shells
-345,9680,30,Beta-565001,Shells
+version https://git-lfs.github.com/spec/v1
+oid sha256:656fb99248aee6367e283b83be0f2dfe1b82c0037ee141aef51f652c9e442bfc
+size 403

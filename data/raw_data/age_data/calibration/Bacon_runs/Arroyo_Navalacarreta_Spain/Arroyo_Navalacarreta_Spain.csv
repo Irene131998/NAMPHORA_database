@@ -1,6 +1,3 @@
-labID,age,error,depth,cc
-UBA-26705,480,25,80,1
-UBA-25292,610,30,121.5,1
-UBA-26706,680,30,126.5,1
-UBA-29825,5150,35,132,1
-UBA-25293,2350,30,133.5,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:1ca82712445d615292cca13a419f788e4684754070360674ff7fe65e81cd989e
+size 153

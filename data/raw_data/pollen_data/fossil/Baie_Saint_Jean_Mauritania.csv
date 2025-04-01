@@ -1,21 +1,3 @@
-Depth (cm) [cm],Acacia,Aerva javanica-type,Aerva lanata-type,Aeschynomene afraspera-type,Aizoaceae,Alchornea,Anacardium,Artemisia,Avicennia,Balanites aegyptiaca,Boerhavia-type,Boscia-type,Calligonum polygonoides,Capparis fascicularis-type,Caryophyllaceae,Cassia-type,Celosia trigyna,Celtis,Centaurea perrotettii,Chenopodiaceae-Amaranthaceae,Cleome,Coccinia-type,Cocculus pendulus-type,Combretum,Combretum aculeatum-type,Combretum molle-type,Commelina forskalei-type,Commiphora,Compositae liguliflorae,Compositae tubuliflorae,Cruciferae,Cynoglossum,Cynomorium,Cyperaceae,Diospyros,Echium,Ephedra,Euphorbia grande taille,Euphorbia petite taille,Fagonia,Geraniaceae,Gramineae,Grewia,Gynandropsis gynandra,Heliotropium strigosum-type,Hibiscus-type,Ixoratype brachypoda,Juniperus,Labiatae,Maerua,Maytenus-type,Mimosa pigra,Mimosaceae,Mitracarpus villosus,Moltiokpsis-type,Olea africana-type,Oleaceae,Oxalis,Papilionaceae,Pavetta-type,Phyllanthus niruri-type,Pinus,Plantago,Polycarpaea-type,Potamogeton-type,Quercus,Resedaceae,Rhizophora,Rumex,Salacia-type,Sesbania sesban,Spermacoce radiata-type,Suaeda-type,Tamarix,Teucrium-type,Tinospora bakis,Tribulus,Typha,Umbelliferae,Unknown type 1,Unknown type 2,Unknown type 3,Veronica,Zaleya-type,Zygophyllum
-30,1,,,,,,,,,,,,1,,,3,,,,10,1,,,,,1,,3,,13,,,,135,,,1,30,4,,,91,,,1,,,,4,,,,,,,,,,,,,1,1,,,,,,,,,,,1,,,1,,,,,,,7,
-40,,,1,,3,,,2,,1,,1,1,,,,,,,6,,,,,,,,1,1,8,3,,,113,,,1,8,,,,54,,,,,,,,1,,,,1,,,,,,,,3,,,,,,,,,,,,,,,,,,4,,,1,,
-50,,,,,1,,,2,,,,,7,,,,,,,10,,,,,,,,1,,8,,,,103,,,,9,,,,70,,,,,1,1,,,,,,,,,,,,,,3,2,,,2,,,1,,,,,,1,,,2,,4,,1,,,
-70,,,,,,,,,,,1,,,,,,2,,,,,,,,,,,1,2,3,,,1,76,,,,2,,,,20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-80,,,,,,,,,,,,,,,1,,,,,11,,,,,,,,2,1,,,,,69,,,,2,1,,1,32,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,1,,,,,,,,,,1,
-90,5,2,2,,2,,,,,1,,,1,,,5,1,,1,52,3,,,,,2,,7,,21,1,,1,304,,,3,5,1,,,175,,,,,,,4,5,,,,1,,,,3,1,,,1,,,,,,,,,,1,19,,,,1,,,1,1,,,,
-100,3,,7,,,,,4,,1,,,,,2,,,,1,56,,,,,,,,11,1,14,3,,,326,,,,9,,,,128,,1,3,,,,3,2,,,,1,,,,,,,,2,,,,,,,,,,,15,7,,,1,,1,,2,,,,
-110,5,,19,,,,1,1,,,,,,,,5,2,,,86,2,1,4,,,,,6,,9,1,,,175,,1,,3,,,,56,,3,1,,,,,2,,,,2,,,,,,,1,,,,,,,1,,,,,26,4,,1,,,,,1,,,2,
-120,,,6,,,,,,,,,,,,,,,1,,18,,,1,1,,1,,1,,6,,,,95,,,,1,,,,48,,1,,,,,,3,,,,,,,,,,,,,,1,,,1,,,,,,23,3,,,,,,1,1,,,,
-130,12,,18,,,,,2,,,,1,,,2,2,,,,34,2,,,,1,4,,4,,6,1,,,180,,,,1,,1,,83,,1,,1,,,,3,,,,,,,,,,,,,,1,,,1,,,,,,17,,,1,,,,1,,,,1,1
-140,22,,10,,,,,1,,,,,3,,2,,,,,40,3,,,,,,,2,,1,7,,,199,,,,4,1,,,53,,,,,,,,6,,,1,1,1,,,,,,,,1,2,,,,,,,,,14,3,,,,,,,1,,,,
-150,12,1,6,,,1,,1,,,,,,,3,4,,,,38,,,1,1,,2,,5,,7,1,1,,231,,,1,,,,,135,1,,,,,,1,7,1,,,1,,,,,,,,1,1,,,,,2,,,,,16,,,,,,,,1,,,,1
-160,,,10,,2,,,1,,,,,1,,,3,1,,1,41,,,1,,,1,,5,1,3,2,,,160,,,,2,,,1,43,,,,,,,,2,,1,,4,,,,,1,,,,,,,,,,,,,,23,,,,,,,2,2,,,,
-170,5,1,3,,1,,,1,1,,,,,2,3,2,,,,77,1,,,,,1,,2,,9,7,,,129,,,,4,,,,53,,1,,,,,,4,,,,4,2,1,,,,,,1,,1,,,,,,,,,39,,,,,,,2,,,,2,
-180,1,,9,,1,,,1,,,,,,2,2,3,,,,54,1,,,,,,,2,,14,3,,,109,,,1,4,,,,92,,3,,,,,,9,,,,1,1,1,,,,,,,,2,,,,,,,1,,36,,,,,,,,1,,,,
-190,3,3,4,,4,,,2,,,,,1,,2,,,,,56,,,,1,,,,4,,4,2,,,252,,,1,3,,,,49,,1,,,,1,,13,,,,,1,,,,,,,,,,,,,,,,,,17,2,,,,,,,5,,,,
-200,6,,15,,,,,1,,,,,1,1,4,2,1,,,69,,,,4,,,,10,,8,4,,,359,1,,,2,,,,185,,,,,,,,8,,,,1,,,,,,,,1,,,1,,2,,,,,,19,2,,,,,,,7,1,,1,
-210,5,2,2,,,,,3,,,,,,,2,1,,,,71,,,,1,,1,,3,,20,5,,,139,,,,,,,,99,,2,,,,,,6,,,,2,,,1,,,,,,,,,,,,,,,,28,1,,,,,,3,10,,,,
-220,10,1,3,1,1,,,1,,,,,,,6,2,,,,59,,,,,2,,1,7,,11,2,,,102,,,,2,,,,80,,,,,,,,3,,,,1,,,,,,1,,,,,,,,,,1,,,22,2,,,,2,1,2,,,,1,
-240,13,1,6,,,1,,1,,,,,1,1,1,3,1,,,60,,,,,1,4,,1,1,6,3,,,204,,,,5,1,1,,120,,,,,,,1,3,,,,5,,,2,,,,,1,,1,,1,1,,,,,1,13,1,,,1,1,1,2,6,3,,,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:ae2f859482f0b6f2ea39141d9473e71d4b9d00c7925a63bf8160ae050da9b6d2
+size 3638

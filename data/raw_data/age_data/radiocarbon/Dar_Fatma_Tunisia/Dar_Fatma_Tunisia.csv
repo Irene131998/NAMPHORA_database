@@ -1,8 +1,3 @@
-labID,"	age","	error","	depth","	cc"
-GrN-26378,2220,100,75,1
-GrN-26379,4290,110,90,1
-GrN-25903,5180,80,120,1
-GrN-23194,8170,70,180,1
-GrN-26380,24430,640,230,1
-GrN-25904,28540,480,405,1
-GrN-25905,41600,2100,495,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:b7f87c0dfcf4987afdd3067943304dbace17f25d58970453fd45168aa8a8c766
+size 220

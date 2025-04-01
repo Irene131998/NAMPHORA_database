@@ -1,10 +1,3 @@
-,"Depth (cm) raw [cm]","Depth (cm) [cm]","14C (yr BP) [yr BP]","14C (yr BP) raw [undefined]","error [undefined]","sample name [undefined]","null [undefined]"
-,Depth (cm) raw,Depth (cm),14C (yr BP),14C (yr BP) raw,error,sample name,
-,1159-1185,1172,9635,9785.0,70.0,OUN.M0304-40,Contact HA2d/HA3A
-,,,,9510.0,70.0,OUN.M05-5,HA2 d
-,,,,9610.0,70.0,OUN.M05-4,HA3 Aa
-,1218.0,1218.0,9590.0,9590.0,70.0,OUN.0001-M15,HA3 Aa
-,1153.0,1153.0,9515.0,9515.0,70.0,OUN.M0304-31,HA3 Aa
-,1151.0,1151.0,9500.0,9500.0,75.0,OUN.M03-10,HA3 BC
-,1170-1182,1176,9365.0,9365.0,70.0,OUN.M03-17,HA3 BC
-,1160.0,1160.0,9150.0,9150.0,70.0,OUN.M03-28,HA3 BC
+version https://git-lfs.github.com/spec/v1
+oid sha256:afb13bcfcc770efdc9161ed3851672cecac629fb04f1891b0f70fda9638bb99f
+size 634

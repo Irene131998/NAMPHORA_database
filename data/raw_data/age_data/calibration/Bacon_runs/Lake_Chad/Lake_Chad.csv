@@ -1,7 +1,3 @@
-labID,age,error,depth,cc
-Beta-277995,3420,40,1.75,1
-Beta-277996,4400,40,7.75,1
-Beta-285575,4660,40,25.75,1
-Beta-267361,4800,40,40.25,1
-Beta-267362,5140,40,55.25,1
-Beta-267363,5790,20,90.25,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:15cfc3ef90bf88782a1394ee3a135366b7c416f14eea57381cba6b7521e06c26
+size 198

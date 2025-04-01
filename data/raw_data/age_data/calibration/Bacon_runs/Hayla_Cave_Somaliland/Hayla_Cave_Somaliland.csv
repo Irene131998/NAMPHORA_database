@@ -1,5 +1,3 @@
-labID,age,error,depth,cc
-HL1,0,1,5,0
-HL13,10000,1520,10,1
-HL8,11800,400,15,1
-HL9,176500,27000,20,1
+version https://git-lfs.github.com/spec/v1
+oid sha256:6dd6729aba8518f613cf083e6fcf162960d536e022d2a7e1aecfd6b52651bc0c
+size 104

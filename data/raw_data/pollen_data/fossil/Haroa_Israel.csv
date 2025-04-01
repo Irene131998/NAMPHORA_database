@@ -1,9 +1,3 @@
-Lab ID,Depth,Total pollen,Undetectable,Spores,Total palynomorphs,Lycopodium,Concentrations (gram/sediment),Weight (gram),Clumps of Chenopodiaceae,Acacia,Apiaceae,Artemisia,Asteraceae Asteroideae type (Aster-like),Asteraceae Cichorioideae type (dandelion-like),Atriplex,Brassicaceae,Caryophyllaceae,Centaurea,Chenopodiaceae other,Crocus,Cupressus/Juniperus,Cyperaceae,Daphne/Thymelaea,Dipsacaceae,Ephedra fragilis type,Fabaceae,Geraniaceae,Gundelia,Helianthemum,Liliaceae,Malvaceae,Noaea,Olea europaea,Pinus,Poaceae (cereals),Poaceae (grasses),Scabiosa,Tamarix,Urticaceae,Vicia,Xanthium
-P32,0,406,7,2,415,323,3830,3.1,29,,1,1,24,2,61,2,5,7,2,,,4,,,,,1,2,,,,259,,,,,3,,1,,31
-P35,0,414,8,11,433,212,4840,3.9,2,,,15,69,68,111,9,12,,20,,1,1,2,1,,,14,1,,1,,86,1,2,,,,,,,1
-P36,0,243,44,399,686,509,4151,3,5,,,11,35,10,43,46,2,,5,,,,,,2,2,15,,,,39,3,2,25,,,,,,,3
-P37,10,280,1,123,404,15,88890,2.8,12,,,8,12,6,155,37,,,5,2,,,,,,,,,,2,36,1,3,13,,,,,,,
-P38,20,287,11,97,395,39,25999,3.6,11,2,,,42,5,188,,3,,3,,,,,,2,,,,,,1,41,,,,,,,,,
-P39,30,308,19,60,387,66,14259,3.8,20,,,6,29,28,77,25,22,,55,1,,,1,,5,,1,,1,1,14,32,2,3,,,1,,,,4
-P40,40,324,9,15,348,44,19234,3.8,35,5,,9,2,31,143,17,1,,11,,,,1,,,,,,2,2,6,85,,2,,4,1,,1,,1
-P41,50,418,29,44,491,36,36011,3.5,13,,,36,71,22,111,19,2,,20,,,,,,,,,,8,3,,114,,2,4,,,,,1,5
+version https://git-lfs.github.com/spec/v1
+oid sha256:aa62b9cc99ab6c6777d70671e6083aaf3c193116f05e0994c0b02e142656035b
+size 1313
