@@ -30,13 +30,18 @@ file_paths <- list.files(path=folder_path, full.names = TRUE)
 # Directory to save the files
 output_dir <- normalizePath("data/processed_data/pollen_data/fossil/harmonised_counts")
 
+# Create the directory if it does not exist
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
+
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"))
   
   # Clean taxa names
   colnames(df) <- colnames(df) %>% 
-    trimws() %>%  # Trim leading/trailing whitespace
+    trimws() %>%  # Trim whitespace
     gsub("\\s{2,}", " ", .) # Remove double spaces (replace with a single space)
   
   # Transpose df so the taxa names are in the same column, in order to join with harmonised list
@@ -48,7 +53,7 @@ for (file_path in file_paths) {
   
   # Move harmonised names to first column
   harmonised_df <- harmonised_df %>%
-    select(last_col(), everything())  # Moves last column to first position
+    select(last_col(), everything())
   
   # Fill missing taxa names using "Original_taxa" (get depth/sample/age columns back)
   harmonised_df <- harmonised_df %>%
@@ -108,13 +113,18 @@ file_paths <- file_paths[!basename(file_paths) %in% "desktop.ini"]
 # Directory to save the files
 output_dir <- normalizePath("data/processed_data/pollen_data/modern/harmonised_counts")
 
+# Create the directory if it does not exist
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
+
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"))
   
   # Clean taxa names
   colnames(df) <- colnames(df) %>% 
-    trimws() %>%  # Trim leading/trailing whitespace
+    trimws() %>%  # Trim  whitespace
     gsub("\\s{2,}", " ", .) # Remove double spaces (replace with a single space)
   
   # Eliminate column with BP (here is collection date & we do not need it)
@@ -287,13 +297,18 @@ file_paths <- list.files(path=folder_path, full.names = TRUE)
 # Directory to save the files
 output_dir <- normalizePath("data/processed_data/pollen_data/fossil/harmonised_percentages")
 
+# Create the directory if it does not exist
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
+
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"))
   
   # Clean taxa names
   colnames(df) <- colnames(df) %>% 
-    trimws() %>%  # Trim leading/trailing whitespace
+    trimws() %>%  # Trim whitespace
     gsub("\\s{2,}", " ", .) # Remove double spaces (replace with a single space)
   
   # Remove the Pollen Sum column if it exists in the original dataframe.
@@ -420,13 +435,18 @@ file_paths <- list.files(path=folder_path, full.names = TRUE)
 # Directory to save the files
 output_dir <- normalizePath("data/processed_data/pollen_data/modern/harmonised_percentages")
 
+# Create the directory if it does not exist
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
+
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"))
   
   # Clean taxa names
   colnames(df) <- colnames(df) %>% 
-    trimws() %>%  # Trim leading/trailing whitespace
+    trimws() %>%  # Trim  whitespace
     gsub("\\s{2,}", " ", .) # Remove double spaces (replace with a single space)
   
   # Remove the Pollen Sum column if it exists in the original dataframe.

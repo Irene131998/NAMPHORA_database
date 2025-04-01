@@ -27,9 +27,9 @@ neotoma_sites_list <- list()
 
 # Loop over ids to download every site
 for (i in seq_len(nrow(datasets_ids_df))) {
-  dataset_id <- datasets_ids_df$dataset_id[i]  # Corrected column name
-  site_name <- datasets_ids_df$Site_name_machine_readable[i]  # Corrected column name
-  pollen_type <- datasets_ids_df$Pollen[i]  # Extract pollen type
+  dataset_id <- datasets_ids_df$dataset_id[i]  
+  site_name <- datasets_ids_df$Site_name_machine_readable[i]  
+  pollen_type <- datasets_ids_df$Pollen[i]  
   
   print(paste("Processing Site:", site_name, " (ID:", dataset_id, ", Pollen:", pollen_type, ")"))  # Track progress
   
@@ -42,7 +42,7 @@ for (i in seq_len(nrow(datasets_ids_df))) {
   
   neotoma_sample <- samples(neotoma_site)  # Extract samples
   
-  # Store in list using site name as key, also keeping pollen type
+  # Store in list using site name as key
   neotoma_sites_list[[site_name]] <- list(
     samples = neotoma_sample,
     pollen_type = pollen_type
@@ -52,14 +52,14 @@ for (i in seq_len(nrow(datasets_ids_df))) {
 ## 1.2) Modify neotoma files to match APD structure and save it in their corresponding folder (modern/fossil) -----
 # Reshape dataframes
 df_list <- lapply(names(neotoma_sites_list), function(site_name) {
-  site_data <- neotoma_sites_list[[site_name]]  # Extract the nested list
-  pollen_type <- site_data$pollen_type         # Extract pollen type
+  site_data <- neotoma_sites_list[[site_name]]  
+  pollen_type <- site_data$pollen_type         
   
-  df <- site_data$samples  # Extract the samples dataframe
+  df <- site_data$samples  
   
   # Select important columns
   df <- df |> select(age, agetype, ageolder, ageyounger, variablename, depth, value)
-  df$value <- as.numeric(df$value)  # Ensure value is numeric
+  df$value <- as.numeric(df$value)  
   
   # Extract unique agetype value
   unique_agetype <- unique(df$agetype)
@@ -68,11 +68,11 @@ df_list <- lapply(names(neotoma_sites_list), function(site_name) {
   neotoma_wide <- df %>%
     pivot_wider(
       names_from = variablename,  # Make each pollen type a column
-      values_from = value,        # Use the "value" column for new values
+      values_from = value,        
     ) %>%
-    select(-agetype)  # Remove agetype column after use
+    select(-agetype)  
   
-  # Rename "age" column to include `agetype`
+  # Rename "age" column
   colnames(neotoma_wide)[colnames(neotoma_wide) == "age"] <- paste0("age_", gsub(" ", "_", unique_agetype))
   
   # Rename "ageolder" and "ageyounger" columns
@@ -88,19 +88,19 @@ modern_list <- list()
 
 # Loop through each dataframe in df_list
 for (i in seq_along(df_list)) {
-  site_data <- df_list[[i]]  # Extract the list containing data and pollen type
-  df <- site_data$data         # Extract the dataframe
-  site_name <- site_data$site_name # extract site
-  pollen_type <- site_data$pollen  # Extract pollen type from the list
+  site_data <- df_list[[i]]  
+  df <- site_data$data        
+  site_name <- site_data$site_name 
+  pollen_type <- site_data$pollen  
   
   # Convert to lowercase to avoid case mismatches
   pollen_type <- tolower(pollen_type)
   
   # Assign to fossil or modern based on pollen_type
   if (pollen_type == "fossil") {
-    fossil_list[[site_name]] <- df  # Use site_name instead of i
+    fossil_list[[site_name]] <- df  
   } else if (pollen_type == "modern") {
-    modern_list[[site_name]] <- df  # Use site_name instead of i
+    modern_list[[site_name]] <- df  
   }
 }
 
@@ -112,7 +112,7 @@ for (name in names(fossil_list)) {
   
   # Convert list-type columns to character to prevent write.csv() errors
   df <- df %>%
-    mutate(across(where(is.list), ~ sapply(., toString)))  # Convert lists to comma-separated strings
+    mutate(across(where(is.list), ~ sapply(., toString)))  
   
   # Save the dataframe as a CSV file
   write.csv(df, file = file.path(fossil_folder_path, paste0(name, ".csv")), row.names = FALSE)
@@ -124,7 +124,7 @@ for (name in names(modern_list)) {
   
   # Convert list-type columns to character to prevent write.csv() errors
   df <- df %>%
-    mutate(across(where(is.list), ~ sapply(., toString)))  # Convert lists to comma-separated strings
+    mutate(across(where(is.list), ~ sapply(., toString)))  
   
   # Save the dataframe as a CSV file
   write.csv(df, file = file.path(modern_folder_path, paste0(name, ".csv")), row.names = FALSE)
@@ -151,7 +151,7 @@ for (file in file_list) {
   raw_taxa <- colnames(df)
   
   # Clean names
-  raw_taxa <- trimws(raw_taxa)  # Trim leading/trailing whitespace
+  raw_taxa <- trimws(raw_taxa)  # Trim whitespace
   raw_taxa <- gsub(" {2,}", " ", raw_taxa)  # Remove double spaces (replace with a single space)
   
   # Add names to list
@@ -180,7 +180,7 @@ for (file in file_list) {
   raw_taxa <- colnames(df)
   
   # Clean names
-  raw_taxa <- trimws(raw_taxa)  # Trim leading/trailing whitespace
+  raw_taxa <- trimws(raw_taxa)  # Trim whitespace
   
   raw_taxa <- gsub(" {2,}", " ", raw_taxa)  # Remove double spaces (replace with a single space)
   
@@ -209,5 +209,5 @@ write.table(
   file = normalizePath("data/raw_data/taxonomy/raw_taxa_list/raw_pollen_types.csv", mustWork = FALSE),
   sep = ",",         
   row.names = FALSE, 
-  fileEncoding = "latin1"  # Ensures special characters like "á, é, ñ" are correctly saved
+  fileEncoding = "latin1"  # Ensures special characters are correctly saved
 )

@@ -22,7 +22,7 @@ folder_path <- normalizePath("data/raw_data/pollen_data/fossil")
 # Get a list of all CSV files in the directory
 file_list <- list.files(path = folder_path, pattern = "\\.csv$", full.names = TRUE)
 
-# Initialize a list to store taxa and their counts
+# Initialise a list to store taxa and their counts
 taxa_counts <- list()
 
 # Loop through each file and obtain taxa names
@@ -34,7 +34,7 @@ for (file in file_list) {
   raw_taxa <- colnames(df)
   
   # Clean names
-  raw_taxa <- trimws(raw_taxa)  # Trim leading/trailing whitespace
+  raw_taxa <- trimws(raw_taxa)  # Trim whitespace
   raw_taxa <- gsub(" {2,}", " ", raw_taxa)  # Remove double spaces (replace with a single space)
   
   # Update the count of files for each taxa
@@ -51,7 +51,6 @@ for (file in file_list) {
 sequences_df <- data.frame(Original_taxa = names(taxa_counts), Fossil_Sequences = unlist(taxa_counts), stringsAsFactors = FALSE)
 
 
-
 ## 1.2) Modern sequences ----
 
 
@@ -61,10 +60,10 @@ folder_path <- normalizePath("data/raw_data/pollen_data/modern")
 # Get a list of all CSV files in the directory
 file_list <- list.files(path = folder_path, pattern = "\\.csv$", full.names = TRUE)
 
-# Initialize a list to store taxa
+# Initialise a list to store taxa
 raw_taxa_list_modern <- list()
 
-# Initialize a list to store taxa and their counts
+# Initialise a list to store taxa and their counts
 taxa_counts <- list()
 
 # Loop through each file and obtain taxa names
@@ -76,7 +75,7 @@ for (file in file_list) {
   raw_taxa <- colnames(df)
   
   # Clean names
-  raw_taxa <- trimws(raw_taxa)  # Trim leading/trailing whitespace
+  raw_taxa <- trimws(raw_taxa)  # Trim whitespace
   raw_taxa <- gsub(" {2,}", " ", raw_taxa)  # Remove double spaces (replace with a single space)
   
   # Update the count of files for each taxa
@@ -202,6 +201,6 @@ write.table(
   file = normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv", mustWork = FALSE),
   sep = ",",         
   row.names = FALSE, 
-  fileEncoding = "latin1"  # Ensures special characters like "á, é, ñ" are correctly saved
+  fileEncoding = "latin1"  # Ensures special characters are correctly saved
 )
 

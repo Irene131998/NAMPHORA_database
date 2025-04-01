@@ -318,7 +318,7 @@ color_palette <- colorFactor(palette =  c("green", "red","blue"), domain = sites
 sites_map <- leaflet(sites) %>%
   addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
   addCircleMarkers(
-    lng = ~Longitude, lat = ~Latitude,  # Coordinates
+    lng = ~Longitude, lat = ~Latitude,
     color = ~color_palette(Dated),  # Color based on "Dated"
     radius = 2, fillOpacity = 0.8,
     popup = ~paste( "<b>Name:</b>", Site_name_machine_readable, "<br>",
@@ -422,7 +422,7 @@ mtext("Phytogeographic regions                                                  
 
 ### Plot 6: Biomes ###
 n <- length(unique(biomes$BIOME))
-my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
+my_colors <- brewer.pal(min(n, 12), "Set3")  
 biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
@@ -453,12 +453,12 @@ png(normalizePath("outputs/maps/combined_maps_2.png"),
     height = 10,  
     units = "cm",  
     res = 3000,  # High resolution
-    pointsize = 10)  # Adjust text size for better readability
+    pointsize = 10)  
 
 # Define a layout with 2 rows and 2 columns
 layout(matrix(1:4, nrow = 2, ncol = 2, byrow = TRUE), 
-       widths = c(1),  # Equal column widths
-       heights = c(2, 2))  # Adjust heights to fit all plots
+       widths = c(1),  
+       heights = c(2, 2))  
 
 # Reduce margins to decrease space between plots
 par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
@@ -472,7 +472,7 @@ points(fossil_sites$Longitude[fossil_sites$Dated == "Yes"],
 points(fossil_sites$Longitude[fossil_sites$Dated == "No"],  
        fossil_sites$Latitude[fossil_sites$Dated == "No"],  
        col = "red", pch = 19, cex = 0.5)  
-mtext("(a)", side = 3, line = -1, at = -15, cex = 1)  # Adjust label closer
+mtext("(a)", side = 3, line = -1, at = -15, cex = 1)  
 
 ### Plot 2: Modern Sites ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
@@ -484,7 +484,7 @@ mtext("(b)", side = 3, line = -1, at = -15, cex = 1)
 
 ### Plot 3: Biomes ###
 n <- length(unique(biomes$BIOME))
-my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
+my_colors <- brewer.pal(min(n, 12), "Set3")  
 biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  

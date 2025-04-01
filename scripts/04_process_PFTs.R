@@ -97,19 +97,18 @@ categorical_traits <- c("whole plant dispersal syndrome",
 family_categorical_variables <- lapply(categorical_traits, function(trait) {
   BIEN_trait_traitbyfamily(trait = trait, family = families)
 })
-names(family_categorical_variables) <- categorical_traits# Assign results to variables dynamically
-
+names(family_categorical_variables) <- categorical_traits
 # Loop through each trait and get the corresponding trait for each genus
 genus_categorical_variables <- lapply(categorical_traits, function(trait) {
   BIEN_trait_traitbygenus(trait = trait, genus = genera)
 })
-names(genus_categorical_variables) <- categorical_traits# Assign results to variables dynamically
+names(genus_categorical_variables) <- categorical_traits
 
 # Loop through each trait and get the corresponding trait for each species
 species_categorical_variables <- lapply(categorical_traits, function(trait) {
   BIEN_trait_traitbyspecies(trait = trait, species = species)
 })
-names(species_categorical_variables) <- categorical_traits# Assign results to variables dynamically
+names(species_categorical_variables) <- categorical_traits
 
 
 #### 2.1.1) Citations----
@@ -159,7 +158,7 @@ continuous_traits <- c("whole plant height",
 family_continuous_variables <- lapply(continuous_traits, function(trait) {
   BIEN_trait_traitbyfamily(trait = trait, family = families)
 })
-names(family_continuous_variables) <- continuous_traits# Assign results to variables dynamically
+names(family_continuous_variables) <- continuous_traits
 
 # Calculate mean for each trait for family
 family_continuous_traits <- lapply(family_continuous_variables, process_family)
@@ -169,7 +168,7 @@ family_continuous_traits <- lapply(family_continuous_variables, process_family)
 Genus_continuous_variables <- lapply(continuous_traits, function(trait) {
   BIEN_trait_traitbygenus(trait = trait, genus = genera)
 })
-names(Genus_continuous_variables) <- continuous_traits# Assign results to variables dynamically
+names(Genus_continuous_variables) <- continuous_traits
 
 # Calculate mean for each trait for Genus
 Genus_continuous_traits <- lapply(Genus_continuous_variables, process_genus)
@@ -179,7 +178,7 @@ Genus_continuous_traits <- lapply(Genus_continuous_variables, process_genus)
 Species_continuous_variables <- lapply(continuous_traits, function(trait) {
   BIEN_trait_traitbyspecies(trait = trait, species = species)
 })
-names(Species_continuous_variables) <- continuous_traits# Assign results to variables dynamically
+names(Species_continuous_variables) <- continuous_traits
 
 # Calculate mean for each trait for Species
 Species_continuous_traits <- lapply(Species_continuous_variables, process_species)
