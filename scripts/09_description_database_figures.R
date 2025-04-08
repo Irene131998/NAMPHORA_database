@@ -134,7 +134,7 @@ sites_combined_database <- total_counts |>
   left_join(fossil_counts, by = "Database") |> 
   left_join(modern_counts, by = "Database")
 
-sites_combined_database <- sites_combined_database |> mutate(Database = ifelse(Database == "Received from authors", "Received", Database))
+sites_combined_database <- sites_combined_database |> mutate(Database = ifelse(Database == "Received from authors", "From authors", Database))
 
 
 # Reshape data to long format for ggplot
@@ -146,7 +146,7 @@ sites_long_database <- sites_combined_database |>
 sites_long_database <- sites_long_database |> na.omit()
 
 # Define the order
-order <- c("APD", "Neotoma","APD/Neotoma", "Received")
+order <- c("APD", "Neotoma","APD/Neotoma", "From authors")
 
 # Convert `Period` into a factor with the specified order
 sites_long_database$Database <- factor(sites_long_database$Database, levels = order)
@@ -331,7 +331,7 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
   geom_col() +  # Creates bars for each latitude
   labs(
     x = "Number of sites",
-    y = "Latitude",
+    y = "Latitude (degrees)",
     fill = "Archive Type",
   ) +
   theme_minimal() +
@@ -362,7 +362,9 @@ barplot_archive_type
 
 # 7) Altitudinal distribution of records according to the biogeographic area----
 
-sites_altitude_type <- sites |> select(Site_name_machine_readable,Altitude,"Biogeographic area")
+sites_altitude_type <- sites |> select(Site_name_machine_readable,Altitude,"Biogeographic area","Archive type")
+
+sites_altitude_type <- sites_altitude_type |> rename(Archive_type = "Archive type")
 
 sites_altitude_type$Altitude <- as.numeric(sites_altitude_type$Altitude)
 
@@ -371,8 +373,8 @@ sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
 
 names(sites_altitude_type)[3] <- "Biogeographic_area"
 
-# Eliminate Atlantic ocean
-sites_altitude_type <- sites_altitude_type |> filter(Biogeographic_area !="Atlantic ocean")
+# Exclude marine cores
+sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
 
 # Count the number of sites per altitude and biogeographic area
 sites_altitude_type_count <- sites_altitude_type %>%
@@ -386,7 +388,7 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
   geom_col() +  # Creates bars for each altitude
   labs(
     x = "Number of sites",
-    y = "Altitude",
+    y = "Altitude (meters)",
     fill = "Biogeographic area",
   ) +
   theme_minimal() +
@@ -428,33 +430,28 @@ affinity_counts <- phyto_aff_long %>%
 affinity_percentages <- affinity_counts %>%
 mutate(percentage = n / sum(n) * 100)
 
+affinity_percentages$phytogeographic_Affinity <- gsub("_", " ", affinity_percentages$phytogeographic_Affinity) # removes the underscore in the names
+
 affinity_percentages <- affinity_percentages |> arrange(desc(percentage))
 order <- affinity_percentages$phytogeographic_Affinity
 
 # Ensure the phytogeographic_Affinity is a factor with the desired order
 affinity_percentages$phytogeographic_Affinity <- factor(affinity_percentages$phytogeographic_Affinity, levels = order)
 
-phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = "", y = percentage, fill = phytogeographic_Affinity)) +
-  geom_bar(stat = "identity", position = "dodge") +
+
+phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = phytogeographic_Affinity, y = percentage)) +
+  geom_bar(stat = "identity", fill = "grey") + # fill all the bars in grey
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
-            position = position_dodge(width = 0.9), 
             vjust = -0.5, 
             size = 6) +
   theme_minimal() +
   labs(x = "",
-       y = "",
-       fill = "Phytogeographic affinity") +
-  scale_fill_manual(values = c("skyblue", "darkblue", "darkorange", "darkred", "lightgreen", 
-                              "gold", "purple", "turquoise", "red", "violet", 
-                              "yellow", "grey", "tomato", "darkgreen", 
-                              "darkcyan", "indianred", "blue", "pink", "steelblue", "green")) +
+       y = "") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
         axis.text.y = element_text(size = 18),
         axis.title.x = element_text(size = 20),
         axis.title.y = element_text(size = 18),
-        legend.title = element_text(size = 18),  
-        legend.text = element_text(size = 18),
-        legend.position = "bottom")
+        legend.position = "none")  # removes the legend
 
 
 # Save the plot
@@ -503,26 +500,35 @@ pfts_counts_long <- pfts_counts_combined %>%
   pivot_longer(cols = -row_name, names_to = "category", values_to = "count")
 
 # Define the order
-order <- c( 
-  "seed_mass_mg", 
-  "whole_plant_height_m", 
-  "leaf_area_mm2", 
-  "leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1", 
-  "Leaf_dry_mass_per_area_g_mm_2", 
-  "plant_flowering_begin_month", 
-  "longest_whole_plant_longevity_years", 
-  "leaf_life_span_months", 
-  "plant_flowering_begin_date", 
-  "whole_plant_growth_form_diversity", 
-  "Leaf_type", 
-  "whole_plant_dispersal_syndrome",  
-  "whole_plant_vegetative_phenology", 
-  "whole_plant_sexual_system",  
-  "flower_pollination_syndrome"
+pfts_counts_long <- pfts_counts_long |> arrange(desc(count))
+order <- unique(pfts_counts_long$row_name)
+
+# Modify the row names: Replace underscores with spaces and add parentheses around the last word
+modified_order <- sub("_", " ", order)  # Replace underscores with spaces
+modified_order <- c(
+  "Seed mass (mg)",                                    # modified
+  "Whole plant height (m)",                             # modified
+  "Leaf area (mm2)",                                    # modified
+  "Leaf nitrogen content per leaf dry mass (mg/g)",
+  "Leaf dry mass per area (g/mm2)",
+  "Plant flowering begin (month)",                      # modified
+  "Longest whole plant longevity (years)",              # modified
+  "Leaf life span (months)",                            # modified
+  "Plant flowering begin date",
+  "Whole plant growth form diversity",
+  "Leaf type",
+  "Whole plant dispersal syndrome",
+  "Whole plant sexual system",
+  "Whole plant vegetative phenology",
+  "Flower pollination syndrome"
 )
+
 
 # Ensure the row_name is a factor with the desired order
 pfts_counts_long$row_name <- factor(pfts_counts_long$row_name, levels = order)
+
+# Apply modified names to the factor levels
+levels(pfts_counts_long$row_name) <- modified_order
 
 # Create the bar plot
 pft_barplot <- ggplot(pfts_counts_long, aes(x = row_name, y = count, fill = category)) +

@@ -70,6 +70,9 @@ phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Mediterranean/Sahara Regional 
 
 phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Zanzibar-Inhambane Regional Mosaic", "Zanzibar-Inhambane Mosaic", phytogeographic_regions_White$PHYTOCHO_1)
 
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Sahara Regional Transition Zone", "Sahara Regional Transition", phytogeographic_regions_White$PHYTOCHO_1)
+
+phytogeographic_regions_White$PHYTOCHO_1 <- gsub("Sahel Regional Transition Zone", "Sahel Regional Transition", phytogeographic_regions_White$PHYTOCHO_1)
 
 ##  Combine regions into one shapefile
 # Check the CRS of both shapefiles
@@ -105,13 +108,13 @@ modern_sites <- sites |> filter(Pollen=="Modern") |>  select(Site_name_machine_r
 
 ## Elevation----
 elevation <- rast(normalizePath("data/raw_data/mapping_data/elevation.tiff"))
-elevation_crop <- crop(elevation,ext(c(-19,62,0,46.5)))
+elevation_crop_1 <- crop(elevation,ext(c(-20,60,7,44))) # for study area map
+elevation_crop <- crop(elevation,ext(c(-22,61.5,7,44)))
 
 ### Calculate hillshade for further plotting
 slopes <- terrain(elevation_crop, "slope", unit = "radians")
 aspect <- terrain(elevation_crop, "aspect", unit = "radians")
 hs <- shade(slopes, aspect) # base shade for elevation plotting
-
 
 # Convert the raster to a data frame for plotting with ggplot2
 elevation_df <- as.data.frame(elevation_crop, xy = TRUE)
@@ -340,11 +343,11 @@ saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html
 
 # Define output file
 png(normalizePath("outputs/maps/combined_maps.png"),  
-    width = 25.5,  
-    height = 15,  
+    width = 26,  
+    height = 13,  
     units = "cm",  
     res = 3000,  # High resolution
-    pointsize = 13)  # Adjust text size for better readability
+    pointsize = 12)  # Adjust text size for better readability
 
 
 # Define the layout matrix
@@ -517,3 +520,68 @@ legend("bottom",
 # Close the PNG device
 dev.off()
 
+# 6) Study area map ----
+
+merged_phytogeographic_regions$Region_Name <- as.character(merged_phytogeographic_regions$Region_Name)
+
+
+# Replace "Mediterranean/Sahara Transition"
+merged_phytogeographic_regions$Region_Name[
+  merged_phytogeographic_regions$Region_Name == "Mediterranean/Sahara Transition"
+] <- "Mediterranean"
+
+# Replace "Mediterranean Europe"
+merged_phytogeographic_regions$Region_Name[
+  merged_phytogeographic_regions$Region_Name == "Mediterranean Europe"
+] <- "Mediterranean"
+
+# Replace "Mediterranean Africa"
+merged_phytogeographic_regions$Region_Name[
+  merged_phytogeographic_regions$Region_Name == "Mediterranean Africa"
+] <- "Mediterranean"
+
+merged_phytogeographic_regions$Region_Name <- as.factor(merged_phytogeographic_regions$Region_Name)
+
+# Select only the regions to plot
+regions_to_plot <- merged_phytogeographic_regions %>%
+  filter(Region_Name %in% c("Mediterranean", "Sahara Regional Transition","Arabian Peninsula","Sahel Regional Transition","Sudanian Region"))
+regions_to_plot$Region_Name <- droplevels(regions_to_plot$Region_Name)
+
+
+# Define output file
+png(normalizePath("outputs/maps/study_area.png"),  
+    width = 13,  
+    height = 7,  
+    units = "cm",  
+    res = 3000,  # High resolution
+    pointsize = 10)  
+
+# Define a layout with 2 rows and 2 columns
+layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
+       widths = c(2, 1),  # Increase the width of the first plot (larger space)
+       heights = c(1))
+
+# Define colors
+n <- length(unique(regions_to_plot$Region_Name))
+colors_regions <- colorRampPalette(brewer.pal(12, "Paired"))(n)
+
+# Plot 1: map
+plot(elevation_crop_1, col = "lightgray", legend = FALSE, axes = TRUE)
+plot(st_geometry(regions_to_plot), 
+     col = colors_regions[as.numeric(regions_to_plot$Region_Name)], 
+     , border = "black", main = "", add = TRUE)
+
+
+# Plot 1: Legend Phytogeographic Regions
+par(mar = c(0, 0, 0, 0))  # Remove margins
+plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
+legend("left", 
+       legend = levels(regions_to_plot$Region_Name),
+       fill = colors_regions, 
+       border = "black", 
+       cex = 0.8, 
+       title = "Study regions", 
+       bty = "n",  
+       xpd = TRUE)
+
+dev.off()
