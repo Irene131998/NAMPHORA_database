@@ -344,8 +344,7 @@ names(Try_sp_download)[2] <- "AccSpeciesName" # rename to original column name
 readr::write_csv(Try_sp_download, file = normalizePath("data/raw_data/plant_functional_types/TRY/Try_list_download.csv"))
 
 
-
-# Retrieve the downloaded variable from Try and match it to pollen types so we can include it to the Database as well
+# Retrieve the leaf type data from Try and match species/genera to harmonised pollen types
 
 
 leaf_type_TRY <- readxl::read_xlsx(normalizePath("data/raw_data/plant_functional_types/TRY/leaf_type_TRY.xlsx"))

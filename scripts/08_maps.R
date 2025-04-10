@@ -98,6 +98,7 @@ merged_phytogeographic_regions <- rbind(regions, phytogeographic_regions_White)
 ##  Sites----
 sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
 sites$Latitude <- as.numeric(sites$Latitude)
+sites <- sites |> rename(Pollen = "Record type")
 
 ### Fossil sites
 fossil_sites <- sites |> filter(Pollen=="Fossil")  |>  select(Site_name_machine_readable,Longitude, Latitude,Dated, `Link to database`)
@@ -273,10 +274,10 @@ dev.off()
 
 # 4) Phytogeographical map -----
 
-png(normalizePath("outputs/maps/phytogeographical_regions_map.png"), width = 1600, height = 1800, res = 300)
+png(normalizePath("outputs/maps/phytogeographical_regions_map.png"), width = 5700, height = 1600, res = 300)
 
 layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
-       widths = c(0.7, 1),  #  column widths
+       widths = c(1, 0.7),  #  column widths
        heights = c(2, 2, 2))  # Adjust heights to fit all plots
 
 ### Plot 1: Phytogeographic Regions ###
@@ -298,17 +299,47 @@ legend("left",
        legend = levels(merged_phytogeographic_regions$Region_Name),
        fill = colors_regions, 
        border = "black", 
-       cex = 1, 
-       title = NULL, 
+       cex = 1.1, 
+       title = "Phytogeographic regions", 
        bty = "n",  
        xpd = TRUE,
        ncol=2)
-mtext("Phytogeographic regions                   ", side = 3, line = -1, cex = 0.6, col = "black")
 
 dev.off()
 
-# 5) Combined map (fossil + modern) ----
-## 5.1.) Interactive ----
+
+# 5) Biomes map----
+
+png(normalizePath("outputs/maps/biomes_map.png"), width = 5000, height = 1600, res = 300)
+
+layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
+       widths = c(1.1, 0.6),  #  column widths
+       heights = c(2, 2, 2))  # Adjust heights to fit all plots
+
+### Plot 1: Biomes mao
+n <- length(unique(biomes$BIOME))
+my_colors <- brewer.pal(min(n, 12), "Set3")  
+biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
+
+plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
+plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
+
+
+### Plot 2: Legend biomes ###
+par(mar = c(0, 0, 0, 0))  # Remove margins
+plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
+legend("left", 
+       legend = unique(biomes$BIOME_definition),  
+       fill = my_colors,  
+       border = "black", 
+       cex = 1.2,  
+       title = "Biomes", 
+       bty = "n", 
+       xpd = TRUE)
+dev.off()
+
+# 6) Combined map (fossil + modern) ----
+## 6.1.) Interactive ----
 # Eliminate na rows
 sites <- sites |>
   filter(!is.na(Dated))
@@ -337,9 +368,61 @@ sites_map <- leaflet(sites) %>%
 # Save as an HTML file
 saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html"), selfcontained = TRUE)
 
-## 5.2) Static ----
+## 6.2) Static ----
 
-##### 5.2.1) Pollen records + Regions + Biomes -----
+##### 6.2.1) Pollen records ----
+# Define output file
+png(normalizePath("outputs/maps/site_maps.png"),  
+    width = 100,  
+    height = 15,  
+    units = "cm",  
+    res = 3000,  # High resolution
+    pointsize = 12)  # Adjust text size for better readability
+
+
+# Define the layout matrix
+
+layout(matrix(c(1, 1, 2, 2, 0,3,3, 0), nrow = 2, byrow = TRUE))
+
+# Adjust the margins for better spacing
+par(mar = c(4, 4, 2, 2))
+
+
+### Plot 1: Fossil dated Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Yes"],  
+       sites$Latitude[sites$Dated == "Yes"],  
+       col = "black",   # Outline color
+       bg = "blue",    # Fill color
+       pch = 21, cex = 1)  
+
+mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
+
+
+### Plot 2: Fossil not dated Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+points(sites$Longitude[sites$Dated == "No"],  
+       sites$Latitude[sites$Dated == "No"],  
+       col = "black", bg = "red", pch = 21, cex = 1)  
+
+mtext("(b)", side = 3, line = 1, at = -15, cex = 0.8)
+
+### Plot 3: Modern Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Modern"],  
+       sites$Latitude[sites$Dated == "Modern"],  
+       col = "black", bg = "green", pch = 21, cex = 1) 
+
+mtext("(c)", side = 3, line = 1, at = -15, cex = 0.8)
+
+dev.off()
+
+##### 6.2.2) Pollen records + Regions + Biomes -----
 
 # Define output file
 png(normalizePath("outputs/maps/combined_maps.png"),  
@@ -449,7 +532,7 @@ dev.off()
 
 
 
-##### 5.2.2) Pollen records + Biomes -----
+##### 6.2.3) Pollen records + Biomes -----
 # Define output file
 png(normalizePath("outputs/maps/combined_maps_2.png"),  
     width = 15,  
@@ -520,7 +603,7 @@ legend("bottom",
 # Close the PNG device
 dev.off()
 
-# 6) Study area map ----
+# 7) Study area map ----
 
 merged_phytogeographic_regions$Region_Name <- as.character(merged_phytogeographic_regions$Region_Name)
 

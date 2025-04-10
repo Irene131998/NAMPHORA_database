@@ -378,6 +378,7 @@ lapply(libraries, require, character.only = TRUE)
 # Read sites data
 sites <- read_csv(normalizePath("../metadata/pollen_data/database.csv"))
 sites$Latitude <- as.numeric(sites$Latitude)
+sites <- sites |> rename(Pollen = "Record type")
 
 ## Fossil sites
 fossil_sites <- sites |> filter(Pollen=="Fossil")  |>  select(Site_name_machine_readable,Longitude, Latitude,Dated, `Link to database`)

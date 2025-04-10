@@ -16,6 +16,9 @@ lapply(libraries, require, character.only = TRUE)
 # 1) Read data----
 
 sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
+
+sites <- sites |> rename(Pollen = "Record type")
+
 taxonomy <- read_csv(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv"))
 phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographic_affinity.csv"))
 pft <- read_csv(normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"))
@@ -443,22 +446,22 @@ phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = phytogeographic_Affini
   geom_bar(stat = "identity", fill = "grey") + # fill all the bars in grey
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
             vjust = -0.5, 
-            size = 6) +
+            size = 8) +
   theme_minimal() +
   labs(x = "",
        y = "") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 22),
+        axis.text.y = element_text(size = 20),
         axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 18),
+        axis.title.y = element_text(size = 20),
         legend.position = "none")  # removes the legend
 
 
 # Save the plot
 ggsave(normalizePath("outputs/graphs/phyto_aff_proportions.png"), 
        phyto_aff_barplot, 
-       width = 15,   
-       height = 8,  
+       width = 30,   
+       height = 13,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
@@ -550,7 +553,7 @@ pft_barplot <- ggplot(pfts_counts_long, aes(x = row_name, y = count, fill = cate
 # Save the plot
 ggsave(normalizePath("outputs/graphs/pft_barplot.png"), 
        pft_barplot, 
-       width = 18,   
+       width = 23,   
        height = 10,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
