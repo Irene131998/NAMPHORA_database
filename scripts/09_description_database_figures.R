@@ -23,6 +23,16 @@ taxonomy <- read_csv(normalizePath("data/processed_data/taxonomy/harmonised_taxo
 phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographic_affinity.csv"))
 pft <- read_csv(normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"))
 
+
+# Colour palette (colour-blind friendly). Based on Okabe-Ito palette, extended to 28 colours
+cbf_palette <- c(
+  "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999",
+  "#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
+  "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#1F78B4", "#33A02C", "#FB9A99", "#E31A1C",
+  "#FDBF6F", "#CAB2D6", "#6A3D9A", "#FF7F00"
+)
+
+
 # 2) Number sites per bigeographic region----
 
 # Total sites
@@ -87,6 +97,7 @@ combined_barplot <- ggplot(sites_long, aes(x = `Biogeographic area`, y = Count, 
   labs(x = "Biogeographic region", 
        y = "Number of sites", 
        fill = "Site type") +  # Ensure legend title is explicitly set
+  scale_fill_manual(values = cbf_palette) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
         axis.text.y = element_text(size = 16),
         axis.title.x = element_text(size = 18),
@@ -162,7 +173,7 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
   labs(x = "", 
        y = "Number of sites", 
        fill = "Pollen type") +  
-  scale_fill_manual(values = c("#56B4E9", "#A3B96C", "#E69F00")) +
+scale_fill_manual(values = cbf_palette) +
 theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
         axis.text.y = element_text(size = 16),
         axis.title.x = element_text(size = 18),
@@ -221,7 +232,8 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
   theme_minimal() +
   labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
   scale_x_reverse() +  # Reverse x-axis for chronological representation
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
+  scale_fill_manual(values = cbf_palette) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
         axis.text.y = element_text(size = 12),  
         axis.title.x = element_text(size = 12), 
         axis.title.y = element_text(size = 12),
@@ -246,73 +258,7 @@ ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"),
 dated_records_temporal_distribution
 
 
-# 5) Number of sites against year of publications by fossil and modern pollen----
-
-sites_publication <- sites |>  select(Site_name_machine_readable,`Reference 1`,Pollen)
-
-# Extract the first 4-digit number (year) from the `Reference 1` column
-sites_publication$year <- stringr::str_extract(sites_publication$`Reference 1`, "\\d{4}")
-
-# Ensure the 'year' column is numeric
-sites_publication$year <- as.numeric(sites_publication$year)
-
-# Group years into decades by rounding down
-sites_publication$decade <- floor(sites_publication$year / 10) * 10
-
-sites_publication <- sites_publication |>  select(Site_name_machine_readable,decade,Pollen)
-
-# Count number of sites per decade
-sites_publication_fossil <- sites_publication |> filter(Pollen=="Fossil") |> 
-  count(decade)
-sites_publication_fossil <- na.omit(sites_publication_fossil)
-sites_publication_fossil <- sites_publication_fossil %>% dplyr::filter(decade > 1900)
-names(sites_publication_fossil)[2] <- "Fossil"
-
-sites_publication_modern <- sites_publication |> filter(Pollen=="Modern") |> 
-  count(decade)
-sites_publication_modern <- na.omit(sites_publication_modern)
-names(sites_publication_modern)[2] <- "Modern"
-
-# Merge all counts into one dataframe
-sites_publication_total <-  full_join(sites_publication_fossil,sites_publication_modern)
-
-# Reshape data to long format for ggplot
-sites_publication_total_long <- sites_publication_total |> 
-  pivot_longer(cols = c("Fossil", "Modern"), 
-               names_to = "Pollen Type", 
-               values_to = "Count")
-
-
-sites_publication_total_long[is.na(sites_publication_total_long)] <- 0
-
-# Create bar plot
-sites_publication_barplot <- ggplot(sites_publication_total_long, aes(x = decade, y = Count, fill = `Pollen Type`)) +
-  geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
-  theme_minimal() +
-  labs(x = "Publication decade", 
-       y = "Number of sites", 
-       fill = "Pollen type") +  # Ensure legend title is explicitly set
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20),
-        plot.title = element_text(size = 24, face = "bold"),
-        legend.title = element_text(size = 18),  # Increase Site Type label size
-        legend.text = element_text(size = 16))
-
-
-ggsave(normalizePath("docs/supplementary_info/graphs/sites_publication_barplot.png"), 
-       sites_publication_barplot, 
-       width = 8,   
-       height = 6,  
-       dpi = 300,   # High resolution (300 DPI is standard for publication)
-       units = "in" 
-)
-
-sites_publication_barplot
-
-
-# 6) Latitudinal distribution of records according to their archive type----
+# 5) Latitudinal distribution of records according to their archive type----
 
 sites_archive_type <- sites |> select(Site_name_machine_readable,Latitude,"Archive type")
 
@@ -338,11 +284,8 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
     fill = "Archive Type",
   ) +
   theme_minimal() +
-  scale_fill_manual(values = c("skyblue", "darkblue", "darkorange", "black", "lightgreen", 
-                               "gold", "purple", "turquoise", "blue", "violet", 
-                               "yellow", "grey", "tomato", "darkgreen", 
-                               "darkcyan", "chocolate3", "red", "pink", "steelblue", "chartreuse3","darkred","blueviolet","coral2","azure1","aquamarine","brown3","chartreuse1","burlywood2")) + # 28
-  theme(
+  scale_fill_manual(values = cbf_palette) +
+    theme(
     legend.position = "top", 
     legend.text = element_text(size = 10),  
     legend.title = element_text(size = 16, face = "bold"),  
@@ -395,7 +338,8 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
     fill = "Biogeographic area",
   ) +
   theme_minimal() +
-  theme(
+  scale_fill_manual(values = cbf_palette) +
+    theme(
     legend.position = "top", 
     legend.text = element_text(size = 10),  
     legend.title = element_text(size = 16, face = "bold"),  
@@ -446,14 +390,14 @@ phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = phytogeographic_Affini
   geom_bar(stat = "identity", fill = "grey") + # fill all the bars in grey
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
             vjust = -0.5, 
-            size = 8) +
+            size = 10) +
   theme_minimal() +
-  labs(x = "",
+    labs(x = "",
        y = "") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 22),
-        axis.text.y = element_text(size = 20),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20),
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 26),
+        axis.text.y = element_text(size = 26),
+        axis.title.x = element_text(size = 26),
+        axis.title.y = element_text(size = 26),
         legend.position = "none")  # removes the legend
 
 
@@ -540,13 +484,13 @@ pft_barplot <- ggplot(pfts_counts_long, aes(x = row_name, y = count, fill = cate
   labs(x = "",
        y = "Count",
        fill = "Taxonomic Level") +
-  scale_fill_manual(values = c("family" = "blue", "genus" = "green", "species" = "red")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 18),
-        legend.title = element_text(size = 18),  
-        legend.text = element_text(size = 18),
+  scale_fill_manual(values = cbf_palette) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 22),
+        axis.text.y = element_text(size = 22),
+        axis.title.x = element_text(size = 22),
+        axis.title.y = element_text(size = 22),
+        legend.title = element_text(size = 26),  
+        legend.text = element_text(size = 26),
         legend.position = "bottom")
 
 
@@ -554,7 +498,7 @@ pft_barplot <- ggplot(pfts_counts_long, aes(x = row_name, y = count, fill = cate
 ggsave(normalizePath("outputs/graphs/pft_barplot.png"), 
        pft_barplot, 
        width = 23,   
-       height = 10,  
+       height = 14,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )

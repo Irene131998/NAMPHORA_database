@@ -223,13 +223,9 @@ Different sections (folders) of the project are structured as follows:
         -   `/taxonomy_references`: includes the references used for
             pollen taxonomy harmonisation in .bib format.
 
-    -   `/supplementary_info`: Includes additional resources, organised
-        into:
-
-        -   `/original_excel_files_received_from_authors`: Stores the
-            original files provided by the authors.
-
-        -   `/graphs`: Contains graphs not included in the manuscript.
+    -   `/supplementary_info`: Includes the folder
+        `/original_excel_files_received_from_authors`, which stores the
+        original files provided by the authors.
 
 -   `images/`: Contains the PNG files of the database workflow and the
     database logo.
@@ -513,106 +509,78 @@ slopes <- terrain(elevation_crop, "slope", unit = "radians")
 aspect <- terrain(elevation_crop, "aspect", unit = "radians")
 hs <- shade(slopes, aspect) # base shade for elevation plotting
 
+# Colour palette (colour-blind friendly). Based on Okabe-Ito palette, extended to 28 colours
+cbf_palette <- c(
+  "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999",
+  "#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
+  "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#1F78B4", "#33A02C", "#FB9A99", "#E31A1C",
+  "#FDBF6F", "#CAB2D6", "#6A3D9A", "#FF7F00"
+)
 
 ```
 
 ```{r}
 #| echo: false
 #| output: true
-#| fig-cap: "Figure 2. Map of dated fossil (a), undated fossil (b) and modern pollen records (c) compiled in the *NAAMPHoRA* database, the phytogeographical regions from White (1983) and Olson et al. (2001) (c) the biome map (d) from Olson et al. (2001)."
+#| fig-cap: "Figure 2. Map of the phytogeographical regions (a) from White (1983) and Olson et al. (2001) and the biome map (b) from Olson et al. (2001)."
 
 # Define the layout matrix
 layout_matrix <- matrix(c(
-  1, 2, 3,  # First row: 3 columns
-  4, 5, 5, # Second row: 2 columns
-  6, 7, 7  # Third row: 2 columns
-), nrow = 3, byrow = TRUE)
-
+  1, 2,
+  3, 4), nrow = 2, byrow = TRUE)
 
 layout(layout_matrix)  # Apply layout here
 
 # Reduce margins to decrease space between plots
 par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
 
-### Plot 1: Fossil dated Records ###
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
 
-points(sites$Longitude[sites$Dated == "Yes"],  
-       sites$Latitude[sites$Dated == "Yes"],  
-       col = "black",   # Outline color
-       bg = "blue",    # Fill color
-       pch = 21, cex = 1.2)  
-
-mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
-
-
-### Plot 2: Fossil not dated Records ###
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
-points(sites$Longitude[sites$Dated == "No"],  
-       sites$Latitude[sites$Dated == "No"],  
-       col = "black", bg = "red", pch = 21, cex = 1.2)  
-
-mtext("(b)", side = 3, line = 1, at = -15, cex = 0.8)
-
-### Plot 3: Modern Records ###
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
-
-points(sites$Longitude[sites$Dated == "Modern"],  
-       sites$Latitude[sites$Dated == "Modern"],  
-       col = "black", bg = "green", pch = 21, cex = 1.2) 
-
-mtext("(c)", side = 3, line = 1, at = -15, cex = 0.8)
-
-### Plot 4: Phytogeographic Regions ###
+### Plot 1: Phytogeographic Regions ###
 
 # Define colors
 n <- length(unique(merged_phytogeographic_regions$Region_Name))
-colors_regions <- colorRampPalette(brewer.pal(12, "Set3"))(n)
+colors_regions <- colorRampPalette(brewer.pal(12, "Paired"))(n)
 
 plot(elevation_crop, col = terrain.colors(25), alpha = 0, legend = FALSE, axes = TRUE)
 plot(st_geometry(merged_phytogeographic_regions), 
      col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
      , border = "black", main = "", add = TRUE)
 
-mtext("(d)", side = 3, line = 1, at = -15, cex = 0.8)
+mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
 
-### Plot 5: Legend Phytogeographic Regions ###
+### Plot 2: Legend Phytogeographic Regions ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
        legend = levels(merged_phytogeographic_regions$Region_Name),
        fill = colors_regions, 
        border = "black", 
-       cex = 1, 
+       cex = 0.7, 
        title = NULL, 
        bty = "n",  
-       xpd = TRUE,
-       ncol=2)
+       xpd = TRUE)
 mtext("Phytogeographic regions                                                                   ", side = 3, line = -1, cex = 0.6, col = "black")
 
 
 
-### Plot 6: Biomes ###
+### Plot 3: Biomes ###
 n <- length(unique(biomes$BIOME))
-my_colors <- brewer.pal(min(n, 12), "Set3")  # Ensure no errors for >12 colors
+my_colors <- brewer.pal(min(n, 12), "Paired")  # Ensure no errors for >12 colors
 biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
 plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
 
-mtext("(e)", side = 3, line = -1, at = -15, cex = 0.8)
+mtext("(b)", side = 3, line = -1, at = -15, cex = 0.8)
 
-### Plot 6: Legend biomes ###
+### Plot 4: Legend biomes ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
        legend = unique(biomes$BIOME_definition),  
        fill = my_colors,  
        border = "black", 
-       cex = 1,  
+       cex = 0.7,  
        title = "Biomes", 
        bty = "n", 
        xpd = TRUE)
@@ -694,16 +662,17 @@ sites_long$`Site Type` <- factor(sites_long$`Site Type`, levels = order)
 combined_barplot <- ggplot(sites_long, aes(x = `Biogeographic area`, y = Count, fill = `Site Type`)) +
   geom_bar(stat = "identity", position = position_dodge(), color = "black") +  # Dodge bars side by side
   theme_minimal() +
+    scale_fill_manual(values = cbf_palette) +
   labs(x = "Biogeographic region", 
        y = "Number of sites", 
        fill = "Site type") +  # Ensure legend title is explicitly set
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 16),
-        axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
-        plot.title = element_text(size = 22, face = "bold"),
-        legend.title = element_text(size = 16),  
-        legend.text = element_text(size = 14))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10),
+        plot.title = element_text(size = 10, face = "bold"),
+        legend.title = element_text(size = 10),  
+        legend.text = element_text(size = 10))
 
 
 # 2) Number sites (fossil and modern) per database----
@@ -760,14 +729,14 @@ database_barplot <- ggplot(sites_long_database, aes(x = Database, y = Count, fil
   labs(x = "Database", 
        y = "Number of sites", 
        fill = "Pollen type") +  
-    scale_fill_manual(values = c("#56B4E9", "#A3B96C", "#E69F00")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 16),
-        axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
-        plot.title = element_text(size = 22, face = "bold"),
-        legend.title = element_text(size = 16),  
-        legend.text = element_text(size = 14))
+  scale_fill_manual(values = cbf_palette) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10),
+        plot.title = element_text(size = 10, face = "bold"),
+        legend.title = element_text(size = 10),  
+        legend.text = element_text(size = 10))
 
 
 # 3) Number of dated records per time interval----
@@ -806,12 +775,13 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
                                               aes(x = year_bin, y = n, fill = `Biogeographic area`)) +
   geom_bar(stat = "identity", color = "black", position = "stack") +  # Stack bars per Biogeographic area
   theme_minimal() +
+    scale_fill_manual(values = cbf_palette) +
   labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
   scale_x_reverse() +  # Reverse x-axis for chronological representation
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
-        axis.text.y = element_text(size = 12),  
-        axis.title.x = element_text(size = 12), 
-        axis.title.y = element_text(size = 12),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),  
+        axis.text.y = element_text(size = 10),  
+        axis.title.x = element_text(size = 10), 
+        axis.title.y = element_text(size = 10),
         plot.title = element_text(size = 14),
         legend.title = element_text(size = 8), 
         legend.text = element_text(size = 8)) + 
@@ -849,11 +819,8 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
     fill = "Archive Type",
   ) +
   theme_minimal() +
-  scale_fill_manual(values = c("skyblue", "darkblue", "darkorange", "black", "lightgreen", 
-                               "gold", "purple", "turquoise", "blue", "violet", 
-                               "yellow", "grey", "tomato", "darkgreen", 
-                               "darkcyan", "chocolate3", "red", "pink", "steelblue", "chartreuse3","darkred","blueviolet","coral2","azure1","aquamarine","brown3","chartreuse1","burlywood2")) + # 28
-  theme(
+  scale_fill_manual(values = cbf_palette) +
+    theme(
     legend.position = "top", 
     legend.text = element_text(size = 7),  
     legend.title = element_text(size = 8, face = "bold"),  
@@ -897,6 +864,7 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
     fill = "Biogeographic area",
   ) +
   theme_minimal() +
+    scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "top", 
     legend.text = element_text(size = 10),  
@@ -938,14 +906,15 @@ phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = phytogeographic_Affini
   geom_bar(stat = "identity", fill = "grey") + # fill all the bars in grey
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
             vjust = -0.5, 
-            size = 6) +
+            size = 2) +
   theme_minimal() +
+    scale_fill_manual(values = cbf_palette) +
   labs(x = "",
        y = "") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 18),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+        axis.text.y = element_text(size = 10),
+        axis.title.x = element_text(size = 4),
+        axis.title.y = element_text(size = 10),
         legend.position = "none")  # removes the legend
 
 
@@ -1022,13 +991,13 @@ pft_barplot <- ggplot(pfts_counts_long, aes(x = row_name, y = count, fill = cate
   labs(x = "",
        y = "Count",
        fill = "Taxonomic Level") +
-  scale_fill_manual(values = c("family" = "blue", "genus" = "green", "species" = "red")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 18),
-        axis.text.y = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 18),
-        legend.title = element_text(size = 18),  
-        legend.text = element_text(size = 18),
+  scale_fill_manual(values = cbf_palette) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+        axis.text.y = element_text(size = 8),
+        axis.title.x = element_text(size = 8),
+        axis.title.y = element_text(size = 8),
+        legend.title = element_text(size = 8),  
+        legend.text = element_text(size = 9),
         legend.position = "bottom")
 
 

@@ -274,17 +274,22 @@ dev.off()
 
 # 4) Phytogeographical map -----
 
-png(normalizePath("outputs/maps/phytogeographical_regions_map.png"), width = 5700, height = 1600, res = 300)
+png(normalizePath("outputs/maps/phytogeographical_regions_map.png"),  
+    width = 29,  
+    height = 15,  
+    units = "cm",  
+    res = 2700,  # High resolution
+    pointsize = 15)  # Adjust text size for better readability
 
 layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
-       widths = c(1, 0.7),  #  column widths
-       heights = c(2, 2, 2))  # Adjust heights to fit all plots
+       widths = c(1.1, 0.6),  #  column widths
+       heights = c(3, 2))  # Adjust heights to fit all plots
 
 ### Plot 1: Phytogeographic Regions ###
 
 # Define colors
 n <- length(unique(merged_phytogeographic_regions$Region_Name))
-colors_regions <- colorRampPalette(brewer.pal(12, "Set3"))(n)
+colors_regions <- colorRampPalette(brewer.pal(12, "Paired"))(n)
 
 plot(elevation_crop, col = terrain.colors(25), alpha = 0, legend = FALSE, axes = TRUE)
 plot(st_geometry(merged_phytogeographic_regions), 
@@ -299,26 +304,30 @@ legend("left",
        legend = levels(merged_phytogeographic_regions$Region_Name),
        fill = colors_regions, 
        border = "black", 
-       cex = 1.1, 
+       cex = 0.8, 
        title = "Phytogeographic regions", 
        bty = "n",  
-       xpd = TRUE,
-       ncol=2)
+       xpd = TRUE)
 
 dev.off()
 
 
 # 5) Biomes map----
 
-png(normalizePath("outputs/maps/biomes_map.png"), width = 5000, height = 1600, res = 300)
+png(normalizePath("outputs/maps/biomes_map.png"),  
+    width = 35,  
+    height = 12,  
+    units = "cm",  
+    res = 2700,  # High resolution
+    pointsize = 15)  # Adjust text size for better readability
 
 layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
        widths = c(1.1, 0.6),  #  column widths
-       heights = c(2, 2, 2))  # Adjust heights to fit all plots
+       heights = c(2.2, 2))  # Adjust heights to fit all plots
 
 ### Plot 1: Biomes mao
 n <- length(unique(biomes$BIOME))
-my_colors <- brewer.pal(min(n, 12), "Set3")  
+my_colors <- brewer.pal(min(n, 12), "Paired")  
 biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
 
 plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
@@ -332,7 +341,7 @@ legend("left",
        legend = unique(biomes$BIOME_definition),  
        fill = my_colors,  
        border = "black", 
-       cex = 1.2,  
+       cex = 0.8,  
        title = "Biomes", 
        bty = "n", 
        xpd = TRUE)
@@ -373,24 +382,21 @@ saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html
 ##### 6.2.1) Pollen records ----
 # Define output file
 png(normalizePath("outputs/maps/site_maps.png"),  
-    width = 100,  
-    height = 15,  
+    width = 25,  
+    height = 17,  
     units = "cm",  
-    res = 3000,  # High resolution
-    pointsize = 12)  # Adjust text size for better readability
+    res = 2700,  # High resolution
+    pointsize = 15)  # Adjust text size for better readability
 
 
 # Define the layout matrix
 
 layout(matrix(c(1, 1, 2, 2, 0,3,3, 0), nrow = 2, byrow = TRUE))
 
-# Adjust the margins for better spacing
-par(mar = c(4, 4, 2, 2))
-
 
 ### Plot 1: Fossil dated Records ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
 
 points(sites$Longitude[sites$Dated == "Yes"],  
        sites$Latitude[sites$Dated == "Yes"],  
@@ -398,17 +404,17 @@ points(sites$Longitude[sites$Dated == "Yes"],
        bg = "blue",    # Fill color
        pch = 21, cex = 1)  
 
-mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
+mtext("(a)", side = 3, line = 1, at = -20, cex = 0.8)
 
 
 ### Plot 2: Fossil not dated Records ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
 points(sites$Longitude[sites$Dated == "No"],  
        sites$Latitude[sites$Dated == "No"],  
        col = "black", bg = "red", pch = 21, cex = 1)  
 
-mtext("(b)", side = 3, line = 1, at = -15, cex = 0.8)
+mtext("(b)", side = 3, line = 1, at = -20, cex = 0.8)
 
 ### Plot 3: Modern Records ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
@@ -418,7 +424,7 @@ points(sites$Longitude[sites$Dated == "Modern"],
        sites$Latitude[sites$Dated == "Modern"],  
        col = "black", bg = "green", pch = 21, cex = 1) 
 
-mtext("(c)", side = 3, line = 1, at = -15, cex = 0.8)
+mtext("(c)", side = 3, line = 1, at = -20, cex = 0.8)
 
 dev.off()
 
