@@ -1,7 +1,7 @@
 100 #d.min
 400 #d.max
 1 #d.by
-0 #depths.file
+1 #depths.file
  #slump
 10 10 #acc.mean
 1.5 1.5 #acc.shape

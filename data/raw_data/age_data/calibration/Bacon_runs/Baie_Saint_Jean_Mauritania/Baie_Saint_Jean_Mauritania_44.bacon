@@ -1,4 +1,4 @@
-## Ran on Mon Mar  4 18:23:41 2024 
+## Ran on Sat May 17 01:21:21 2025 
 
 Cal 0 : ConstCal;
 Cal 1 :  IntCal20 ,  0 ;
@@ -10,4 +10,4 @@ Det 0 : BSJ1 , 1860, 100, 30,  0,  0,  3,  4,  1;
 Det 1 : BSJ2 , 3360, 150, 240,  0,  0,  3,  4,  1;
 
 ##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
-Bacon 0: FixT, 44,  -74,  1e+06,  1838,  1773,  5,  5,  1.5,  0.15, 30, 250, 417636;
+Bacon 0: FixT, 44,  -75,  1e+06,  1856,  2012,  5,  5,  1.5,  0.15, 30, 250, 651014;

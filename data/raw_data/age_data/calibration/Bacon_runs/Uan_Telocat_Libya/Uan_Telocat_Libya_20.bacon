@@ -1,4 +1,4 @@
-## Ran on Fri Jul 12 15:20:21 2024 
+## Ran on Sat May 17 01:35:00 2025 
 
 Cal 0 : ConstCal;
 Cal 1 :  IntCal20 ,  0 ;
@@ -12,4 +12,4 @@ Det 2 : UT2a , 5484, 75, 80,  0,  0,  3,  4,  1;
 Det 3 : UT3 , 6082, 80, 120,  0,  0,  3,  4,  1;
 
 ##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
-Bacon 0: FixT, 20,  -74,  1e+06,  4752,  4796,  5,  5,  1.5,  0.075, 30, 130, 678897;
+Bacon 0: FixT, 20,  -75,  1e+06,  4630,  4561,  5,  5,  1.5,  0.075, 30, 130, 835591;

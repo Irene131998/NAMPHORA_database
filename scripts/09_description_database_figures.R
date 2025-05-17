@@ -276,7 +276,7 @@ sites_archive_type_count <- sites_archive_type %>%
 sites_archive_type_count <- na.omit(sites_archive_type_count)
 
 # Create the bar plot with different colors for each archive type
-barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = factor(Latitude), fill = Archive_type)) +
+barplot_latitude_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = factor(Latitude), fill = Archive_type)) +
   geom_col() +  # Creates bars for each latitude
   labs(
     x = "Number of sites",
@@ -296,6 +296,38 @@ barplot_archive_type <- ggplot(sites_archive_type_count, aes(x = num_sites, y = 
     plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
   )
 
+# Create a violin plot
+
+# Filter archive types recorded in only one latitude and site:
+sites_archive_type_count_filtered <- sites_archive_type_count |>   group_by(Archive_type) |> 
+  filter(n_distinct(Latitude) > 1)  |> 
+  ungroup()
+
+violin_plot_latitude_archive_type_num_sites <- ggplot(sites_archive_type_count_filtered, aes(x = num_sites, y = Latitude, fill = Archive_type)) +
+  geom_violin(trim = TRUE) +
+  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  labs(
+    x = "Number of sites",
+    y = "Latitude (degrees)"
+  ) +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "none")
+
+violin_plot_latitude_archive_type <- ggplot(sites_archive_type_count_filtered, aes(x = "", y = Latitude, fill = Archive_type)) +
+  geom_violin(trim = TRUE) +
+  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  labs(
+    x = "Number of sites",
+    y = "Latitude (degrees)"
+  ) +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "none")
+
+# Save
 ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"), 
        barplot_archive_type, 
        width = 10,   
@@ -303,7 +335,118 @@ ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"),
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
+
+ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type_num_sites.png"), 
+       violin_plot_latitude_archive_type_num_sites, 
+       width = 10,   
+       height = 8.5,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+
+ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type.png"), 
+       violin_plot_latitude_archive_type, 
+       width = 10,   
+       height = 8.5,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 barplot_archive_type
+
+# 6) Altitudinal distribution of records according to their archive type----
+
+sites_altitude_type <- sites |> select(Site_name_machine_readable,Altitude,"Biogeographic area","Archive type")
+
+sites_altitude_type <- sites_altitude_type |> rename(Archive_type = "Archive type")
+
+sites_altitude_type$Altitude <- as.numeric(sites_altitude_type$Altitude)
+
+# Round down to nearest centennial
+sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
+
+names(sites_altitude_type)[3] <- "Biogeographic_area"
+
+# Exclude marine cores
+sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
+
+# Count the number of sites per altitude and biogeographic area
+sites_altitude_archive_count <- sites_altitude_type %>%
+  group_by(Altitude, Archive_type) %>%
+  summarise(num_sites = n(), .groups = "drop")
+
+sites_altitude_archive_count <- na.omit(sites_altitude_archive_count)
+
+# Create the bar plot with different colors for each biogeographic area
+barplot_altitude_archive <- ggplot(sites_altitude_archive_count, aes(x = num_sites, y = factor(Altitude), fill = Archive_type)) +
+  geom_col() +  # Creates bars for each altitude
+  labs(
+    x = "Number of sites",
+    y = "Altitude (meters)",
+    fill = "Archive type",
+  ) +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "top", 
+    legend.text = element_text(size = 10),  
+    legend.title = element_text(size = 16, face = "bold"),  
+    axis.text.x = element_text(size = 10), 
+    axis.text.y = element_text(size = 10), 
+    axis.title.x = element_text(size = 16, face = "bold"),  
+    axis.title.y = element_text(size = 16, face = "bold"),  
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
+  )
+
+# Violin plots
+#  Filter archive types recorded in only one altitude:
+sites_altitude_archive_count_filtered <- sites_altitude_archive_count |>   group_by(Archive_type) |> 
+  filter(n_distinct(Altitude) > 1)  |> 
+  ungroup()
+
+violin_plot_altitude_archive_num_sites <- ggplot(sites_altitude_archive_count_filtered, aes(x = num_sites, y = Altitude, fill = Archive_type)) +
+  geom_violin(trim = TRUE) +
+  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  labs(
+    x = "Number of sites",
+    y = "Altitude (meters)") +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "none")
+
+violin_plot_altitude_archive_type <- ggplot(sites_altitude_archive_count_filtered, aes(x = "", y = Altitude, fill = Archive_type)) +
+  geom_violin(trim = TRUE) +
+  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  labs(
+    x = "",
+    y = "Altitude (meters)") +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "none")
+
+# Save
+ggsave(normalizePath("outputs/graphs/barplot_altitude_archive.png"), 
+       barplot_altitude_archive, 
+       width = 10,   
+       height = 8,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+ggsave(normalizePath("outputs/graphs/violin_plot_altitude_archive_num_sites.png"), 
+       violin_plot_altitude_archive_num_sites, 
+       width = 10,   
+       height = 8,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+ggsave(normalizePath("outputs/graphs/violin_plot_altitude_archive_type.png"), 
+       violin_plot_altitude_archive_type, 
+       width = 10,   
+       height = 8,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
 
 
 # 7) Altitudinal distribution of records according to the biogeographic area----
@@ -350,6 +493,30 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
     plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
   )
 
+# Violin plots
+violin_plot_altitude_biogeography_num_sites <- ggplot(sites_altitude_type_count, aes(x = num_sites, y = Altitude, fill = Biogeographic_area)) +
+  geom_violin(trim = TRUE) +
+  facet_wrap(vars(Biogeographic_area)) +  # One panel per archive type
+  labs(
+    x = "Number of sites",
+    y = "Altitude (meters)") +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "none")
+
+violin_plot_altitude_biogeography_type <- ggplot(sites_altitude_type_count, aes(x = "", y = Altitude, fill = Biogeographic_area)) +
+  geom_violin(trim = TRUE) +
+  facet_wrap(vars(Biogeographic_area)) +  # One panel per archive type
+  labs(
+    x = "",
+    y = "Altitude (meters)") +
+  theme_minimal() +
+  scale_fill_manual(values = cbf_palette) +
+  theme(
+    legend.position = "none")
+
+# Save
 ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"), 
        barplot_altitude_biogeography, 
        width = 10,   
@@ -357,7 +524,23 @@ ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"),
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
-barplot_altitude_biogeography
+ggsave(normalizePath("outputs/graphs/violin_plot_altitude_biogeography_num_sites.png"), 
+       violin_plot_altitude_biogeography_num_sites, 
+       width = 10,   
+       height = 8,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+ggsave(normalizePath("outputs/graphs/violin_plot_altitude_biogeography_type.png"), 
+       violin_plot_altitude_biogeography_type, 
+       width = 10,   
+       height = 8,  
+       dpi = 300,   # High resolution (300 DPI is standard for publication)
+       units = "in" 
+)
+
+
+
 
 # 8) Number of harmonised pollen taxa per phytogeographic affinity (proportion)----
 

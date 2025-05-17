@@ -1,0 +1,17 @@
+## Ran on Fri May 16 19:08:41 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : NA , 1930, 9260000, 174,  0,  0,  3,  4,  1;
+Det 1 : gram_1 , 1930, 380, 225,  0,  0,  3,  4,  1;
+Det 2 : gram_2 , 6330, 180, 850,  0,  0,  3,  4,  1;
+Det 3 : gram_3 , 7490, 110, 1180,  0,  0,  3,  4,  1;
+Det 4 : gram_4 , 9260, 170, 1380,  0,  0,  3,  4,  1;
+Det 5 : NA , 9260, 9.26e+09, 1828,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 166,  -75,  1e+06,  1827,  1480,  5,  5,  1.5,  0.3, 174, 1834, 724643;

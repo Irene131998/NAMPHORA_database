@@ -7,37 +7,78 @@ install_if_missing <- function(package) {
 
 # PFTS ----
 # Function for calculating the mean in each df of the list family_continuous_traits
+
 process_family <- function(df) {
   df$trait_value <- as.numeric(df$trait_value)
+  # Calculate mean
   df_mean <- df %>%
     group_by(scrubbed_family) %>%
     summarise(mean_trait_value = mean(trait_value, na.rm = TRUE))
+
+  # Calculate SD
+  df_sd<- df %>%
+    group_by(scrubbed_family) %>%
+    summarise(SD_trait_value = sd(trait_value, na.rm = TRUE))
+  
+  # Bind to original df
   df_mean_complete <- df_mean %>%
     dplyr::left_join(df)
-  return(df_mean_complete)
+  
+  df_mean_sd_complete <- df_sd %>%
+    dplyr::left_join(df_mean_complete)
+    
+  return(df_mean_sd_complete)
 }
 
 
 # Function for calculating the mean in each df of the list Genus_continuous_traits
 process_genus <- function(df) {
   df$trait_value <- as.numeric(df$trait_value)
+
+  # Calculate mean
   df_mean <- df %>%
     group_by(scrubbed_genus) %>%
     summarise(mean_trait_value = mean(trait_value, na.rm = TRUE))
+  
+  # Calculate SD
+  df_sd<- df %>%
+    group_by(scrubbed_genus) %>%
+    summarise(SD_trait_value = sd(trait_value, na.rm = TRUE))
+  
+  # Bind to original df
   df_mean_complete <- df_mean %>%
     dplyr::left_join(df)
-  return(df_mean_complete)
+  
+  df_mean_sd_complete <- df_sd %>%
+    dplyr::left_join(df_mean_complete)
+  
+  
+  return(df_mean_sd_complete)
 }
 
 # Function for calculating the mean in each df of the list Species_continuous_traits
 process_species<- function(df) {
   df$trait_value <- as.numeric(df$trait_value)
+
+  # Calculate mean
   df_mean <- df %>%
     group_by(scrubbed_species_binomial) %>%
     summarise(mean_trait_value = mean(trait_value, na.rm = TRUE))
+  
+  # Calculate SD
+  df_sd<- df %>%
+    group_by(scrubbed_species_binomial) %>%
+    summarise(SD_trait_value = sd(trait_value, na.rm = TRUE))
+  
+  # Bind to original df
   df_mean_complete <- df_mean %>%
     dplyr::left_join(df)
-  return(df_mean_complete)
+  
+  df_mean_sd_complete <- df_sd %>%
+    dplyr::left_join(df_mean_complete)
+  
+  
+  return(df_mean_sd_complete)
 }
 
 # Function to select and change colnames in each df of the list and to eliminate duplicates in each df

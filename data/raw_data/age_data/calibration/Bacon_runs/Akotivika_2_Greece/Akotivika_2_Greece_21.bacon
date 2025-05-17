@@ -1,4 +1,4 @@
-## Ran on Wed Mar 13 16:07:15 2024 
+## Ran on Fri May 16 15:42:27 2025 
 
 Cal 0 : ConstCal;
 Cal 1 :  IntCal20 ,  0 ;
@@ -10,4 +10,4 @@ Det 0 : KIA29079 , 4527, 33, 470.5,  0,  0,  3,  4,  1;
 Det 1 : KIA29080 , 5649, 31, 564.5,  0,  0,  3,  4,  1;
 
 ##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
-Bacon 0: FixT, 21,  -74,  1e+06,  4574,  4512,  5,  5,  1.5,  0.15, 470.5, 575.5, 782068;
+Bacon 0: FixT, 21,  -75,  1e+06,  4533,  4500,  5,  5,  1.5,  0.15, 470.5, 575.5, 363700;

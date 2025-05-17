@@ -1,0 +1,18 @@
+## Ran on Sat May 17 11:23:57 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : Meteor_1 , 6610, 250, 70,  0,  0,  3,  4,  2;
+Det 1 : Meteor_2 , 7030, 190, 90,  0,  0,  3,  4,  2;
+Det 2 : Meteor_3 , 7140, 410, 90,  0,  0,  3,  4,  2;
+Det 3 : Meteor_4 , 9510, 320, 130,  0,  0,  3,  4,  2;
+Det 4 : Meteor_5 , 13670, 430, 190,  0,  0,  3,  4,  2;
+Det 5 : Meteor_6 , 14220, 440, 190,  0,  0,  3,  4,  2;
+Det 6 : NA , 13670, 14220000, 550,  0,  0,  3,  4,  2;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 98,  -75,  1e+06,  6326,  6320,  5,  5,  1.5,  0.03, 70, 560, 291060;

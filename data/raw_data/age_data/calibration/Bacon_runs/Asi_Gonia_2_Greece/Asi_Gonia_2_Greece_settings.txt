@@ -1,9 +1,9 @@
 21.5 #d.min
 541.5 #d.max
 1 #d.by
-0 #depths.file
+1 #depths.file
  #slump
-3.5 #acc.mean
+5 #acc.mean
 0.5 #acc.shape
 0.5 #mem.mean
 10 #mem.strength

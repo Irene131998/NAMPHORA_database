@@ -1,7 +1,7 @@
 652.5 #d.min
 995 #d.max
 1 #d.by
-0 #depths.file
+1 #depths.file
  #slump
 2 #acc.mean
 1.5 #acc.shape

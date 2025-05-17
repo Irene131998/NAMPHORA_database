@@ -1,4 +1,4 @@
-## Ran on Mon Jan 20 09:35:15 2025 
+## Ran on Sat May 17 10:59:06 2025 
 
 Cal 0 : ConstCal;
 Cal 1 :  IntCal20 ,  0 ;
@@ -12,4 +12,4 @@ Det 2 : HL8 , 11800, 400, 15,  0,  0,  3,  4,  1;
 Det 3 : HL9 , 176500, 27000, 20,  0,  0,  3,  4,  1;
 
 ##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
-Bacon 0: FixT, 11,  -75,  1e+06,  0,  0,  5,  5,  1.5,  0.003, 5, 21.5, 283870;
+Bacon 0: FixT, 11,  -75,  1e+06,  1,  0,  5,  5,  1.5,  0.003, 5, 21.5, 80068;

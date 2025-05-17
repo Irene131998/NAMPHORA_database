@@ -16,7 +16,7 @@ lapply(libraries, require, character.only = TRUE)
 ## 1.1) Get harmonisation list----
 
 # Read Taxonomy database
-taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
+taxonomy_pollen_taxa <- readr::read_csv(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv"), locale = locale(encoding = "latin1"))
 
 # Select columns
 harmonisation_list <- taxonomy_pollen_taxa |> select("Original_taxa","Pollen_type_SM_morphological")
@@ -201,58 +201,30 @@ for (csv_file in csv_files_dir_calibration) {
   # Check if the corresponding file exists in the second directory
   if (file.exists(corresponding_file)) {
     # Read both CSV files
-    df1 <- readr::read_csv(csv_file, locale = locale(encoding = "latin1")) # READ 
-    df2 <- readr::read_csv(corresponding_file, locale = locale(encoding = "latin1"))
+    df1 <- readr::read_csv(csv_file, locale = locale(encoding = "latin1")) # Calibrated dates
+    df2 <- readr::read_csv(corresponding_file, locale = locale(encoding = "latin1")) # Pollen record
     
     # Select the depth and median columns from calibrated files
     df1 <- df1 |> select(depth, matches("median"))
     
-    # name recalibrated column
+    # Name recalibrated column
     df1 <- df1 |> rename_with(~ "recal median BP", matches("median"))
-    
-    # Round up the depth in df1 to the nearest number so there are no decimals 
-    if(is.numeric(df1$depth)){
-      df1$depth <- ceiling(df1$depth)
-    }
     
     # Standardise column name to 'depth' if necessary
     df2 <- df2 |> rename(depth = any_of(c("Depth","Depth (cm)","depth","Depth (cm) [cm]","depthcm","depth (cm) [cm]","location/depht (cm)","Depth (cm) (rounded)")))
     
-    # Round up the depth in df2 to the nearest number so there are no decimals 
-    if(is.numeric(df2$depth)){
-      df2$depth <- ceiling(df2$depth)
-    }
     
     # Combine by depth
     if ("depth" %in% colnames(df2)) {
       
-      # Check if at least one depth matches
-      if (!any(df1$depth %in% df2$depth)) {
-        log_messages <- append(log_messages, paste("Depth values do not match in files:", file_name))
-        
-        # If no match found, attempt to match with the closest depth in df2 for df1 (if numeric)
-        if(is.numeric(df2$depth)&is.numeric(df1$depth)){
-          df1$depth <- sapply(df1$depth, function(x) {
-            # Find the closest depth in df2
-            closest_depth <- df2$depth[which.min(abs(df2$depth - x))]  
-            return(closest_depth)
-          })
-          
-          # Log matching message
-          log_messages <- append(log_messages, paste("Matched df1 depths to closest depths in df2 for files:", file_name))
-        }}
-      
-      # Now that df1 depths are updated (if needed), join both dfs
-      if (is.numeric(df1$depth) && is.numeric(df2$depth)) {
+      # Join both dfs
+      if (is.numeric(df1$depth) && is.numeric(df2$depth)) { # Numeric depths
         combined_df <- left_join(df2,df1, by = "depth")
         
-      } else if (is.character(df1$depth) && is.character(df2$depth)) {
+      } else if (is.character(df1$depth) && is.character(df2$depth)) { # Samples (no depths)
         combined_df <- left_join(df2,df1, by = "depth")
         
-      } else {
-        log_messages <- append(log_messages, paste(file_name, "'depth' column types do not match between df1 and df2"))
-      }
-      
+      } 
     } else {
       log_messages <- append(log_messages, paste(file_name, "could not be joined: 'depth' column missing in df2"))
     }

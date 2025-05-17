@@ -15,7 +15,7 @@ lapply(libraries, require, character.only = TRUE)
 ## 1) Read taxonomy and get vectors of taxa----
 
 # Read taxonomy database
-taxonomy_pollen_taxa <- readxl::read_xlsx(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.xlsx"))
+taxonomy_pollen_taxa <- readr::read_csv((normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv")),locale = locale(encoding = "latin1"))
 
 Pollen_types <- taxonomy_pollen_taxa |> dplyr::select(Family,Genus,Species_pollen_type,Pollen_type_SM_morphological) |>  dplyr::distinct(Pollen_type_SM_morphological, .keep_all = TRUE) |> 
   dplyr::mutate(across(everything(), trimws))  # Trim whitespace in all columns
@@ -186,7 +186,6 @@ Species_continuous_traits <- lapply(Species_continuous_variables, process_specie
 
 #### 2.2.1) Citations----
 
-
 temp_dir <- file.path(normalizePath(here::here("docs/references/pfts_references/references_BIEN_database")))
 
 # family
@@ -217,7 +216,6 @@ for (i in seq_along(species_continuous_traits)) {  # For every item of the list
 
 ### 3.1) Categorical traits----
 
-
 # Change col names in all the dfs from each list so they have matching colnames and eliminate duplicates in each df
 family_categorical_variables_clean <- purrr::map(family_categorical_variables,categorical_trait_columns)
 genus_categorical_variables_clean <-  purrr::map(genus_categorical_variables, categorical_trait_columns)
@@ -231,7 +229,6 @@ species_categorical_variables_df <- purrr::reduce(species_categorical_variables_
 
 ### 3.2) Continuos traits----
 
-
 # Change col names in all the dfs from each list so they have matching colnames and eliminate duplicates in each df
 family_continuous_traits_clean <- purrr::map(family_continuous_traits,continuous_trait_columns)
 Genus_continuous_traits_clean <-  purrr::map(Genus_continuous_traits, continuous_trait_columns)
@@ -244,7 +241,6 @@ Species_continuous_traits_df <- purrr::reduce(Species_continuous_traits_clean, r
 
 
 ## 4) Bind all dataframes----
-
 
 # Modify continuous dfs
 family_continuous_traits_df <-continuous_traits_unit(family_continuous_traits_df)
@@ -290,48 +286,46 @@ pfts_combined <- pfts_combined |>
 
 ## 5) Combine pfts with pollen types (harmonised)----
 
-# As there are pollen types that can be two genera or species (e.g. Pinus nigra/sylvestris), we have to separate the taxa in order to combine them with their corresponding pfts, and then bind them together at the end.
-
+# As there are pollen types that can be two genera or species (e.g. Pinus nigra/sylvestris), we have to separate the taxa into two rows in order to combine them with their corresponding pfts, and then bind them together at the end.
 
 names(Pollen_types)[3] <- "taxa" 
 
-# Split taxa that have two names into separate rows
-Pollen_types_split <- Pollen_types %>%
-  separate(taxa, into = c("taxa1", "taxa2"), sep = "/")
+# Duplicate rows that have a / in their name
 
-# Rename species Myriophyllum verticillatum and Pinus sylvestris after their separation
-Pollen_types_split$taxa2[Pollen_types_split$taxa2 == "verticillatum"] <- "Myriophyllum verticillatum"
-Pollen_types_split$taxa2[Pollen_types_split$taxa2 == "sylvestris"] <- "Pinus sylvestris"
+Pollen_types_final <- Pollen_types %>%
+  mutate(
+    word_count = str_count(taxa, "\\S+"), # count number of words in taxa name
+    has_slash = str_detect(taxa, "/") # detect taxa names separated with /
+  ) %>%
+  rowwise() %>%
+  mutate(
+    split_taxa = list(
+      if (!is.na(has_slash) && word_count == 1) { # if only 1 word (Jatropha/Croton is considered 1 word)
+        # Case: Genus1/Genus2
+        str_split(taxa, "/")[[1]]
+      } else if (!is.na(has_slash) && word_count == 2) { # if 2 word (Myriophyllum spicatum/verticillatum is considered 2 words)
+        # Case: Genus species1/species2
+        genus <- word(taxa, 1)
+        species_part <- word(taxa, 2)
+        species_split <- str_split(species_part, "/")[[1]]
+        paste(genus, species_split)
+      } else {
+        taxa
+      }
+    )
+  ) %>%
+  unnest(split_taxa) %>%
+  mutate(taxa = split_taxa) %>%
+  select(-word_count, -has_slash, -split_taxa) %>%
+  ungroup()
 
-# Create a new dataframe with only the taxa (previously separated with /) from taxa2
-taxa2_separated <- Pollen_types_split %>%
-  filter(!is.na(taxa2)) |> select(-taxa1) |> rename(taxa = taxa2)
-
-# Create a new dataframe with only the taxa (previously separated with /) from taxa1
-taxa1_separated <- Pollen_types_split %>%
-  filter(!is.na(taxa2)) |> select(-taxa2) |> rename(taxa = taxa1)
-
-# Create a new dataframe with only the taxa that do not have / 
-Pollen_types_no_split <- Pollen_types_split %>%
-  filter(is.na(taxa2)) %>% select(-taxa2) %>%  rename(taxa = taxa1) # eliminate rows that have info in taxa2
-
-# Bind all pollen types together
-Pollen_types_final <- bind_rows(Pollen_types_no_split,taxa1_separated, taxa2_separated)
 
 # Join pollen types with pfts
 pollen_types_pfts <- full_join(Pollen_types_final, pfts_combined, by = c("taxa"))
 
-# Combine information from pollen types that have two potential names
-pollen_types_pfts_combined <- pollen_types_pfts %>%
-  group_by(Pollen_type_SM_morphological, Family,Genus) %>%
-  summarise(across(everything(), ~ paste(na.omit(.), collapse = "; "))) %>% # 
-  ungroup()
-
-
-## 6.) Get variable from TRY database (leaf type)----
+## 6) Get variable from TRY database (leaf type)----
 
 # For retrieving the categorical variable leaf type from the TRY database (must be directly from the website), we match the final pollen types with the try species lists:
-
 
 # Match pollen_types list with try species lists
 Try_sp <- readr::read_csv(
@@ -345,7 +339,6 @@ readr::write_csv(Try_sp_download, file = normalizePath("data/raw_data/plant_func
 
 
 # Retrieve the leaf type data from Try and match species/genera to harmonised pollen types
-
 
 leaf_type_TRY <- readxl::read_xlsx(normalizePath("data/raw_data/plant_functional_types/TRY/leaf_type_TRY.xlsx"))
 
@@ -366,12 +359,6 @@ leaf_type_TRY_no_duplicates <- leaf_type_TRY_no_duplicates %>%
 
 # Join with pollen types final
 Pollen_types_final_leaf_type <- full_join(Pollen_types_final, leaf_type_TRY_no_duplicates, by = "taxa") # keeps the rows from the Try_sp that matches those of Pollen_types. 
-
-# Combine information from pollen types that have two potential names
-Pollen_types_final_leaf_type <- Pollen_types_final_leaf_type %>%
-  group_by(Pollen_type_SM_morphological, Family,Genus) %>%
-  summarise(across(everything(), ~ paste(na.omit(.), collapse = "; "))) %>% # 
-  ungroup()
 
 
 ## 7) Bind al pfts and save----

@@ -1,4 +1,4 @@
-## Ran on Fri Jan 17 17:32:51 2025 
+## Ran on Sat May 17 01:20:52 2025 
 
 Cal 0 : ConstCal;
 Cal 1 :  IntCal20 ,  0 ;
@@ -14,4 +14,4 @@ Det 4 : Poz125905 , 7330, 170, 133,  0,  0,  3,  4,  1;
 Det 5 : Poz122367 , 7510, 50, 136.5,  0,  0,  3,  4,  1;
 
 ##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
-Bacon 0: FixT, 28,  -75,  1e+06,  4723,  4698,  5,  5,  1.5,  0.075, 7.5, 147.5, 69220;
+Bacon 0: FixT, 28,  -75,  1e+06,  4748,  4657,  5,  5,  1.5,  0.075, 7.5, 147.5, 709048;
