@@ -342,13 +342,19 @@ for (file_path in file_paths) {
     select(starts_with("V")) %>%
     mutate(across(starts_with("V"), as.numeric))
   
-  # Compute percentages by dividing each value by the "Pollen sum" row values
-  percentages_pollen_sum <- percentages_pollen_sum %>% 
-    mutate(across(starts_with("V"), ~ . / pollen_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "Pollen sum" row in the same column (.)
-  
-  # Round %
-  percentages_pollen_sum <- percentages_pollen_sum %>%
-    mutate(across(starts_with("V"), ~ round(.x, 3)))  
+  # Proceed only if no decimals found in percentages_pollen_sum data
+  if (!has_decimals(percentages_pollen_sum)) {
+    # Compute percentages by dividing each value by the "Pollen sum" row values
+    percentages_pollen_sum <- percentages_pollen_sum %>% 
+      mutate(across(starts_with("V"), ~ . / pollen_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "Pollen sum" row in the same column (.)
+    
+    # Round %
+    percentages_pollen_sum <- percentages_pollen_sum %>%
+      mutate(across(starts_with("V"), ~ round(.x, 3)))  
+  } else {
+    # If decimals found, skip percentage calculation, optionally keep original data or handle differently
+    percentages_pollen_sum <- percentages_pollen_sum
+  }
   
   # 4) Calculate percentages (over total sum: Indeterminable & Unknown) ----
   percentages_total_sum <- harmonised_df_sums %>%
@@ -361,13 +367,19 @@ for (file_path in file_paths) {
     select(starts_with("V")) %>%
     mutate(across(starts_with("V"), as.numeric))
   
-  # Compute percentages by dividing each value by the "Total sum" row values
-  percentages_total_sum <- percentages_total_sum %>%
-    mutate(across(starts_with("V"), ~ . / total_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "total sum" row in the same column (.)
-  
-  # Round %
-  percentages_total_sum <- percentages_total_sum %>%
-    mutate(across(starts_with("V"), ~ round(.x, 3)))  
+  # Proceed only if no decimals found in percentages_total_sum data
+  if (!has_decimals(percentages_total_sum)) {
+    # Compute percentages by dividing each value by the "Total sum" row values
+    percentages_total_sum <- percentages_total_sum %>%
+      mutate(across(starts_with("V"), ~ . / total_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "total sum" row in the same column (.)
+    
+    # Round %
+    percentages_total_sum <- percentages_total_sum %>%
+      mutate(across(starts_with("V"), ~ round(.x, 3)))  
+  } else {
+    # If decimals found, skip percentage calculation, optionally keep original data or handle differently
+    percentages_total_sum <- percentages_total_sum
+  }
   
   # Join together
   percentages_df <- rbind(percentages_pollen_sum,percentages_total_sum)
@@ -398,7 +410,6 @@ for (file_path in file_paths) {
 
 
 ### 3.2.2) Modern pollen----
-
 
 # Get the list of file paths
 folder_path <- normalizePath("data/processed_data/pollen_data/modern/harmonised_counts")

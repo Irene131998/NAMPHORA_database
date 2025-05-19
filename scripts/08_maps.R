@@ -202,7 +202,44 @@ legend("bottomright",
 # Close the PNG device
 dev.off()
 
+## 2.4) Static map separate ----
+# Dated 
+png(normalizePath("outputs/maps/dated_fossil_site_maps.png"),  
+    width = 25,  
+    height = 17,  
+    units = "cm",  
+    res = 2700,  # High resolution
+    pointsize = 20)
 
+### Plot 1: Fossil dated Records ###
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Yes"],  
+       sites$Latitude[sites$Dated == "Yes"],  
+       col = "black",   # Outline color
+       bg = "blue",    # Fill color
+       pch = 21, cex = 1)  
+
+mtext("(a)", side = 3, line = 1, at = -20, cex = 0.8)
+dev.off()
+
+# Not dated
+png(normalizePath("outputs/maps/not_dated_fossil_site_maps.png"),  
+    width = 25,  
+    height = 17,  
+    units = "cm",  
+    res = 2700,  # High resolution
+    pointsize = 20)
+
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
+points(sites$Longitude[sites$Dated == "No"],  
+       sites$Latitude[sites$Dated == "No"],  
+       col = "black", bg = "red", pch = 21, cex = 1)  
+
+mtext("(b)", side = 3, line = 1, at = -20, cex = 0.8)
+dev.off()
 
 # 3) Plot modern pollen records Interactive map----
 
@@ -269,6 +306,25 @@ plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE,axes 
 points(modern_sites$Longitude,  
        modern_sites$Latitude,  
        col = "black", pch = 19, cex = 0.4)  
+
+dev.off()
+
+## 3.4.) Modern map 2 ----
+png(normalizePath("outputs/maps/modern_site_maps.png"),  
+    width = 25,  
+    height = 17,  
+    units = "cm",  
+    res = 2700,  # High resolution
+    pointsize = 20)
+
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = TRUE)
+plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE, add = TRUE)
+plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = TRUE, add = TRUE)
+
+points(sites$Longitude[sites$Dated == "Modern"],  
+       sites$Latitude[sites$Dated == "Modern"],  
+       col = "black", bg = "green", pch = 21, cex = 1) 
+mtext("(c)", side = 3, line = 1, at = -20, cex = 0.8)
 
 dev.off()
 
@@ -392,7 +448,6 @@ png(normalizePath("outputs/maps/site_maps.png"),
 # Define the layout matrix
 
 layout(matrix(c(1, 1, 2, 2, 0,3,3, 0), nrow = 2, byrow = TRUE))
-
 
 ### Plot 1: Fossil dated Records ###
 plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)

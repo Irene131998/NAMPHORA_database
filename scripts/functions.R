@@ -5,6 +5,17 @@ install_if_missing <- function(package) {
   }
 }
 
+# Processing pollen data ----
+# Check if any numeric values in the data frame have decimals
+has_decimals <- function(df) {
+  # Select numeric columns starting with "V"
+  numeric_cols <- df %>% select(starts_with("V"))
+  
+  # Check if any value has decimals (i.e., not whole number)
+  any(sapply(numeric_cols, function(col) any(col %% 1 != 0, na.rm = TRUE)))
+}
+
+
 # PFTS ----
 # Function for calculating the mean in each df of the list family_continuous_traits
 

@@ -304,32 +304,32 @@ sites_archive_type_count_filtered <- sites_archive_type_count |>   group_by(Arch
   ungroup()
 
 violin_plot_latitude_archive_type_num_sites <- ggplot(sites_archive_type_count_filtered, aes(x = num_sites, y = Latitude, fill = Archive_type)) +
-  geom_violin(trim = TRUE) +
-  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  geom_violin(trim = FALSE) +
+  facet_wrap(vars(Archive_type), ncol = 4) +  # One panel per archive type
   labs(
     x = "Number of sites",
     y = "Latitude (degrees)"
   ) +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +  # Increase base font size
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none")
 
 violin_plot_latitude_archive_type <- ggplot(sites_archive_type_count_filtered, aes(x = "", y = Latitude, fill = Archive_type)) +
-  geom_violin(trim = TRUE) +
-  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  geom_violin(trim = FALSE) +
+  facet_wrap(vars(Archive_type), ncol = 4) +  # One panel per archive type
   labs(
     x = "Number of sites",
     y = "Latitude (degrees)"
   ) +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +  # Increase base font size
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none")
 
 # Save
 ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"), 
-       barplot_archive_type, 
+       barplot_latitude_archive_type, 
        width = 10,   
        height = 8.5,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
@@ -339,7 +339,7 @@ ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"),
 ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type_num_sites.png"), 
        violin_plot_latitude_archive_type_num_sites, 
        width = 10,   
-       height = 8.5,  
+       height = 10,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
@@ -347,11 +347,10 @@ ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type_num_sites
 ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type.png"), 
        violin_plot_latitude_archive_type, 
        width = 10,   
-       height = 8.5,  
+       height = 10,  
        dpi = 300,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
-barplot_archive_type
 
 # 6) Altitudinal distribution of records according to their archive type----
 
@@ -404,23 +403,23 @@ sites_altitude_archive_count_filtered <- sites_altitude_archive_count |>   group
   ungroup()
 
 violin_plot_altitude_archive_num_sites <- ggplot(sites_altitude_archive_count_filtered, aes(x = num_sites, y = Altitude, fill = Archive_type)) +
-  geom_violin(trim = TRUE) +
-  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  geom_violin(trim = FALSE) +
+  facet_wrap(vars(Archive_type), ncol = 4) +  # One panel per archive type
   labs(
     x = "Number of sites",
     y = "Altitude (meters)") +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +  # Increase base font size
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none")
 
 violin_plot_altitude_archive_type <- ggplot(sites_altitude_archive_count_filtered, aes(x = "", y = Altitude, fill = Archive_type)) +
-  geom_violin(trim = TRUE) +
-  facet_wrap(vars(Archive_type)) +  # One panel per archive type
+  geom_violin(trim = FALSE) +
+  facet_wrap(vars(Archive_type), ncol = 4) +  # One panel per archive type
   labs(
     x = "",
     y = "Altitude (meters)") +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +  # Increase base font size
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none")
@@ -463,7 +462,7 @@ sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
 names(sites_altitude_type)[3] <- "Biogeographic_area"
 
 # Exclude marine cores
-sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
+#sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
 
 # Count the number of sites per altitude and biogeographic area
 sites_altitude_type_count <- sites_altitude_type %>%
@@ -495,23 +494,23 @@ barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_s
 
 # Violin plots
 violin_plot_altitude_biogeography_num_sites <- ggplot(sites_altitude_type_count, aes(x = num_sites, y = Altitude, fill = Biogeographic_area)) +
-  geom_violin(trim = TRUE) +
-  facet_wrap(vars(Biogeographic_area)) +  # One panel per archive type
+  geom_violin(trim = FALSE) +
+  facet_wrap(vars(Biogeographic_area), ncol = 3) +  # One panel per archive type
   labs(
     x = "Number of sites",
     y = "Altitude (meters)") +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +  # Increase base font size
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none")
 
 violin_plot_altitude_biogeography_type <- ggplot(sites_altitude_type_count, aes(x = "", y = Altitude, fill = Biogeographic_area)) +
-  geom_violin(trim = TRUE) +
-  facet_wrap(vars(Biogeographic_area)) +  # One panel per archive type
+  geom_violin(trim = FALSE) +
+  facet_wrap(vars(Biogeographic_area), ncol = 3) +  # One panel per archive type
   labs(
     x = "",
     y = "Altitude (meters)") +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +  # Increase base font size
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none")

@@ -223,9 +223,13 @@ Different sections (folders) of the project are structured as follows:
         -   `/taxonomy_references`: includes the references used for
             pollen taxonomy harmonisation in .bib format.
 
-    -   `/supplementary_info`: Includes the folder
-        `/original_excel_files_received_from_authors`, which stores the
-        original files provided by the authors.
+    -   `/supplementary_info`: Includes the following:
+
+        -   `/original_excel_files_received_from_authors`, which stores
+            the original files provided by the authors.
+
+        -   Table S1.docx file, which includes a list with all
+            contributing authors who provided data to the database.
 
 -   `images/`: Contains the PNG files of the database workflow and the
     database logo.
