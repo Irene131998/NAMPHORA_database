@@ -1,0 +1,22 @@
+## Ran on Thu May 22 10:37:29 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : NA , 3375, 10990000, 160,  0,  0,  3,  4,  2;
+Det 1 : IGNS[NZA-21412] , 3375, 39, 333,  0,  0,  3,  4,  2;
+Det 2 : KIA 15211 , 4295, 35, 579,  0,  0,  3,  4,  2;
+Det 3 : IGNS[NZA-21413] , 6764, 45, 890,  0,  0,  3,  4,  2;
+Det 4 : KIA 15213 , 4095, 30, 1085,  0,  0,  3,  4,  2;
+Det 5 : KIA 15212 , 7585, 35, 1345,  0,  0,  3,  4,  2;
+Det 6 : KIA 15210 , 7725, 45, 1775,  0,  0,  3,  4,  2;
+Det 7 : IGNS[NZA-21414] , 8256, 55, 2095,  0,  0,  3,  4,  1;
+Det 8 : IGNS[NZA-21415] , 10273, 66, 4270,  0,  0,  3,  4,  1;
+Det 9 : Beta-137110 , 10990, 40, 4767,  0,  0,  3,  4,  1;
+Det 10 : NA , 10990, 1.099e+10, 4865,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 157,  -75,  1e+06,  3319,  3394,  5,  5,  1.5,  0.75, 160, 4870, 726737;

@@ -1,0 +1,17 @@
+## Ran on Thu May 22 11:49:30 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : NA , 850, 8385000, 0,  0,  0,  3,  4,  1;
+Det 1 : lagoa_1 , 850, 180, 52,  0,  0,  3,  4,  1;
+Det 2 : lagoa_2 , 3280, 240, 118,  0,  0,  3,  4,  1;
+Det 3 : lagoa_3 , 4340, 180, 187.5,  0,  0,  3,  4,  1;
+Det 4 : lagoa_4 , 8385, 100, 333.5,  0,  0,  3,  4,  1;
+Det 5 : NA , 8385, 8.385e+09, 480,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 98,  -75,  1e+06,  889,  790,  5,  5,  1.5,  0.075, 0, 490, 294788;

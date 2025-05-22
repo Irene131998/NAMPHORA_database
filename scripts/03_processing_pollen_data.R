@@ -1,5 +1,10 @@
 ## Script for processing raw pollen data (addition of harmonised pollen names and recalibrated dates, and calculate %)
 
+
+# ! BEFORE RUNNING THIS, CHECK THE PART OF  (starts_with("V")) IN 1.3) MODERN RECORDS ----
+# CHECK HAS_DECIMALS FUNCTION (IT HAS THE starts_with("V") PART)
+
+
 # 0. Load libraries and functions----
 
 source("scripts/functions.R")
@@ -204,15 +209,15 @@ for (csv_file in csv_files_dir_calibration) {
     df1 <- readr::read_csv(csv_file, locale = locale(encoding = "latin1")) # Calibrated dates
     df2 <- readr::read_csv(corresponding_file, locale = locale(encoding = "latin1")) # Pollen record
     
+    # Standardise column name to 'depth' if necessary
+    df1 <- df1 |> rename(depth = any_of(c("Depth","depth cm","Depth cm","Depth (cm)","depth","Depth (cm) [cm]","depthcm","depth (cm) [cm]","location/depht (cm)","Depth (cm) (rounded)")))
+    df2 <- df2 |> rename(depth = any_of(c("Depth","depth cm","Depth cm","Depth (cm)","depth","Depth (cm) [cm]","depthcm","depth (cm) [cm]","location/depht (cm)","Depth (cm) (rounded)")))
+    
     # Select the depth and median columns from calibrated files
     df1 <- df1 |> select(depth, matches("median"))
     
     # Name recalibrated column
-    df1 <- df1 |> rename_with(~ "recal median BP", matches("median"))
-    
-    # Standardise column name to 'depth' if necessary
-    df2 <- df2 |> rename(depth = any_of(c("Depth","Depth (cm)","depth","Depth (cm) [cm]","depthcm","depth (cm) [cm]","location/depht (cm)","Depth (cm) (rounded)")))
-    
+    df1 <- df1 |> rename_with(~ "recal_median_BP", matches("median"))
     
     # Combine by depth
     if ("depth" %in% colnames(df2)) {

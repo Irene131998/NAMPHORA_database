@@ -1,0 +1,15 @@
+## Ran on Thu May 22 12:12:27 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : NA , 1016, 1134000, 4,  0,  0,  3,  4,  1;
+Det 1 : KIA 9913 , 1016, 55, 259.5,  0,  0,  3,  4,  1;
+Det 2 : KIA 9337 , 1134, 32, 267.5,  0,  0,  3,  4,  1;
+Det 3 : NA , 1134, 1.134e+09, 271,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 55,  -75,  1e+06,  905,  986,  5,  5,  1.5,  0.075, 4, 279, 367966;

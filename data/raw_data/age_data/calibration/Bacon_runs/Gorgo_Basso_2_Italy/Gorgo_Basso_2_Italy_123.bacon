@@ -1,0 +1,23 @@
+## Ran on Thu May 22 11:17:14 2025 
+
+Cal 0 : ConstCal;
+Cal 1 :  IntCal20 ,  0 ;
+Cal 2 :  Marine20 ;
+Cal 3 :  SHCal20 ,  0 ;
+
+##   id.   age    std   depth  delta.R  delta.STD     t.a   t.b   cc
+Det 0 : NA , 200, 8690000, 1,  0,  0,  3,  4,  1;
+Det 1 : gorgo1 , 200, 60, 77.5,  0,  0,  3,  4,  1;
+Det 2 : gorgo2 , 1930, 60, 284.5,  0,  0,  3,  4,  1;
+Det 3 : gorgo3 , 2605, 70, 410,  0,  0,  3,  4,  1;
+Det 4 : gorgo4 , 2800, 80, 498.5,  0,  0,  3,  4,  1;
+Det 5 : gorgo5 , 4020, 100, 607,  0,  0,  3,  4,  1;
+Det 6 : gorgo6 , 4470, 160, 634.5,  0,  0,  3,  4,  1;
+Det 7 : gorgo7 , 6440, 80, 698,  0,  0,  3,  4,  1;
+Det 8 : gorgo8 , 7350, 80, 742.5,  0,  0,  3,  4,  1;
+Det 9 : gorgo9 , 8190, 100, 999,  0,  0,  3,  4,  1;
+Det 10 : gorgo10 , 8690, 100, 1116.5,  0,  0,  3,  4,  1;
+Det 11 : NA , 8690, 8.69e+09, 1228,  0,  0,  3,  4,  1;
+
+##		 K   MinAge   MaxAge   th0   th0p   w.a   w.b   alpha  beta  dmin  dmax seed
+Bacon 0: FixT, 123,  -75,  1e+06,  137,  137,  5,  5,  1.5,  0.15, 1, 1231, 801223;
