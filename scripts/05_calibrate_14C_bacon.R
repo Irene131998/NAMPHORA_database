@@ -74,7 +74,6 @@ Bacon(coredir=mydir,"Botija_bog_Spain", depths.file= TRUE, depths=read.table("da
 Bacon(coredir=mydir,"Bourdim_Algeria", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Bourdim_Algeria/Bourdim_Algeria_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Cala_Galdana_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Cala_Galdana_Spain/Cala_Galdana_Spain_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Calan_Porter_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Calan_Porter_Spain/Calan_Porter_Spain_depths.txt"),accept.suggestions = TRUE)
-Bacon(coredir=mydir,"Canaleja_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Canaleja_Spain/Canaleja_Spain_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Dar_Fatma_Tunisia", hiatus.depths = c(80, 125, 180), depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Dar_Fatma_Tunisia/Dar_Fatma_Tunisia_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Dayet_MHad_Morocco", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Dayet_MHad_Morocco/Dayet_MHad_Morocco_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Djebel_Ghorra_2_Tunisia", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Djebel_Ghorra_2_Tunisia/Djebel_Ghorra_2_Tunisia_depths.txt"),accept.suggestions = TRUE)
@@ -151,97 +150,51 @@ Bacon(coredir=mydir,"Sierra_Gador_Spain", depths.file= TRUE, depths=read.table("
 Bacon(coredir=mydir,"Siles_lake_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Siles_lake_Spain/Siles_lake_Spain_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Sogut_Gollu_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Sogut_Gollu_Turkey/Sogut_Gollu_Turkey_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Tigalmamine_Morocco", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Tigalmamine_Morocco/Tigalmamine_Morocco_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Anavyssos_1_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Anavyssos_1_Greece/Anavyssos_1_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Beliche-Guadiana_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Beliche-Guadiana_Portugal/Beliche-Guadiana_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Burmarrad_ria_Malta", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Burmarrad_ria_Malta/Burmarrad_ria_Malta_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Charca_dos_Coes_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Charca_dos_Coes_Portugal/Charca_dos_Coes_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Charco_da_Candieira_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Charco_da_Candieira_Portugal/Charco_da_Candieira_Portugal_depths.txt"),accept.suggestions = TRUE)
-
-Bacon(coredir=mydir,"Fayium_Oasis_Egypt", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Fayium_Oasis_Egypt/Fayium_Oasis_Egypt_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Golhisar_Golu_2_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Golhisar_Golu_2_Turkey/Golhisar_Golu_2_Turkey_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Gorgo_Basso_1_Italy", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Gorgo_Basso_1_Italy/Gorgo_Basso_1_Italy_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Gorgo_Basso_2_Italy", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Gorgo_Basso_2_Italy/Gorgo_Basso_2_Italy_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Ioannina_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Ioannina_Greece/Ioannina_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Katouna_Fen_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Katouna_Fen_Greece/Katouna_Fen_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Kaz_Golu_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Kaz_Golu_Turkey/Kaz_Golu_Turkey_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Kopais_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Kopais_Greece/Kopais_Greece_depths.txt"),accept.suggestions = TRUE)
-
-Bacon(coredir=mydir,"La_Calderilla_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/La_Calderilla_Spain/La_Calderilla_Spain_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Ladik_Golu_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Ladik_Golu_Turkey/Ladik_Golu_Turkey_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lagoa_Clareza_1_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lagoa_Clareza_1_Portugal/Lagoa_Clareza_1_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lagoa_Comprida_1_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lagoa_Comprida_1_Portugal/Lagoa_Comprida_1_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lagoa_Comprida_2_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lagoa_Comprida_2_Portugal/Lagoa_Comprida_2_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lagoa_das_Salgadeiras_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lagoa_das_Salgadeiras_Portugal/Lagoa_das_Salgadeiras_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lagoacho_das_Favas_Portugal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lagoacho_das_Favas_Portugal/Lagoacho_das_Favas_Portugal_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Laguna_de_Río_Seco_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Laguna_de_Río_Seco_Spain/Laguna_de_Río_Seco_Spain_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lake_Maliq_Albania", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lake_Maliq_Albania/Lake_Maliq_Albania_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Lake_Sapanca_1_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lake_Sapanca_1_Turkey/Lake_Sapanca_1_Turkey_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Limni_Lysimachia_lake_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Limni_Lysimachia_lake_Greece/Limni_Lysimachia_lake_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Limni_Ozeros_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Limni_Ozeros_Greece/Limni_Ozeros_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Maison_Forestiere_1_Morocco", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Maison_Forestiere_1_Morocco/Maison_Forestiere_1_Morocco_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Maison_Forestiere_3_Morocco", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Maison_Forestiere_3_Morocco/Maison_Forestiere_3_Morocco_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"MD95-2044_Mediterrean_Sea", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/MD95-2044_Mediterrean_Sea/MD95-2044_Mediterrean_Sea_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Merja_Kahla_Morocco", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Merja_Kahla_Morocco/Merja_Kahla_Morocco_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Merja_Zerga_Morocco", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Merja_Zerga_Morocco/Merja_Zerga_Morocco_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Padul_1_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Padul_1_Spain/Padul_1_Spain_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Psatha_bay_Megaris_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Psatha_bay_Megaris_Greece/Psatha_bay_Megaris_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Roquetas_Mar_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Roquetas_Mar_Spain/Roquetas_Mar_Spain_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Son_Bou_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Son_Bou_Spain/Son_Bou_Spain_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Stagno_di_Chia_Italy", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Stagno_di_Chia_Italy/Stagno_di_Chia_Italy_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Tecer_Golu_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Tecer_Golu_Turkey/Tecer_Golu_Turkey_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Tenaghi_Philippon_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Tenaghi_Philippon_Greece/Tenaghi_Philippon_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Trikhonis_5_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Trikhonis_5_Greece/Trikhonis_5_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Urgo_Pietra_Giordano_Italy", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Urgo_Pietra_Giordano_Italy/Urgo_Pietra_Giordano_Italy_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Urio_Quattrocchi_Italy", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Urio_Quattrocchi_Italy/Urio_Quattrocchi_Italy_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Valdeyernos_bog_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Valdeyernos_bog_Spain/Valdeyernos_bog_Spain_depths.txt"), postbomb=2, accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Vegoritis_8_Greece", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Vegoritis_8_Greece/Vegoritis_8_Greece_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Villaverde_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Villaverde_Spain/Villaverde_Spain_depths.txt"),accept.suggestions = TRUE)
-
 Bacon(coredir=mydir,"Yenicaga_Golu_Turkey", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Yenicaga_Golu_Turkey/Yenicaga_Golu_Turkey_depths.txt"),accept.suggestions = TRUE)
 
 # 3) Sahara -----
-
+Bacon(coredir=mydir,"Fayium_Oasis_Egypt", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Fayium_Oasis_Egypt/Fayium_Oasis_Egypt_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Emi_Koussi_Chad", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Emi_Koussi_Chad/Emi_Koussi_Chad_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Baie_Saint_Jean_Mauritania", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Baie_Saint_Jean_Mauritania/Baie_Saint_Jean_Mauritania_depths.txt"),accept.suggestions = TRUE) 
 Bacon(coredir=mydir,"Bir_Atrun_Sudan", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Bir_Atrun_Sudan/Bir_Atrun_Sudan_depths.txt"),accept.suggestions = TRUE)
@@ -293,12 +246,12 @@ Bacon(coredir=mydir,"Lake_Abiyata_ABIYATA_AB5CV_Ethiopia", depths.file= TRUE, de
 Bacon(coredir=mydir,"Lake_Abiyata_ABIYATA_Ethiopia", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lake_Abiyata_ABIYATA_Ethiopia/Lake_Abiyata_ABIYATA_Ethiopia_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"Lake_Langeno_LC_Ethiopia", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Lake_Langeno_LC_Ethiopia/Lake_Langeno_LC_Ethiopia_depths.txt"),accept.suggestions = TRUE) 
 Bacon(coredir=mydir,"Mont_Badda_Ethiopia", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Mont_Badda_Ethiopia/Mont_Badda_Ethiopia_depths.txt"),accept.suggestions = TRUE) 
-Bacon(coredir=mydir,"Rosilda_Senegal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Rosilda_Senegal/Rosilda_Senegal_depths.txt"),accept.suggestions = TRUE) 
 Bacon(coredir=mydir,"Wenchi_Ethiopia", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Wenchi_Ethiopia/Wenchi_Ethiopia_depths.txt"),accept.suggestions = TRUE) 
 
 
 # 5) Atlantic Ocean -----
-
+Bacon(coredir=mydir,"Rosilda_Senegal", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Rosilda_Senegal/Rosilda_Senegal_depths.txt"),accept.suggestions = TRUE) 
+Bacon(coredir=mydir,"La_Calderilla_Spain", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/La_Calderilla_Spain/La_Calderilla_Spain_depths.txt"),accept.suggestions = TRUE)
 Bacon(coredir=mydir,"M80_17B", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/M80_17B/M80_17B_depths.txt"),accept.suggestions = TRUE) 
 Bacon(coredir=mydir,"GIK16017-2_Atlantic_Ocean", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/GIK16017-2_Atlantic_Ocean/GIK16017-2_Atlantic_Ocean_depths.txt"),accept.suggestions = TRUE) 
 Bacon(coredir=mydir,"Meteor_12347-2", depths.file= TRUE, depths=read.table("data/raw_data/age_data/calibration/Bacon_runs/Meteor_12347-2/Meteor_12347-2_depths.txt"),accept.suggestions = TRUE) 

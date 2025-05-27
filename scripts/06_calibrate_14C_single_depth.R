@@ -15,7 +15,6 @@ lapply(library, require, character.only = TRUE)
 
 # 1) Arabian Peninsula ----
 
-
 #Al Balid 1, Oman
 calibrate(age = 300,error = 40,cc=1) # plot of the radiocarbon and calibrated distributions, together with their hpd ranges
 calib.balid_1 <- caldist(300, 40)
@@ -408,11 +407,7 @@ calib.1 <- caldist(1940, 60)
 points.1 <- point.estimates(calib.1)
 points.1 # midpoint = 1857.5 ; median= 1860.3 : weighted mean: 1860.6    
 
-
-
-
 # 3) Sahara ----
-
 
 #Amekni_Algeria
 calibrate(age = 6800,error = 220,cc=1)
@@ -450,6 +445,12 @@ calib.Messak_Settafet<- caldist(4380, 145)
 points.Messak_Settafet <- point.estimates(calib.Messak_Settafet)
 points.Messak_Settafet # midpoint = 5008.0 ; weighted mean= 4896.1   ;median=4901.1    
 
+#Nemra_Chad
+calibrate(age = 27000,error = 900,cc=1)
+calib.Nemra<- caldist(27000, 900)
+points.Nemra <- point.estimates(calib.Nemra)
+points.Nemra # midpoint = 31240.0; weighted mean= 31243.4  ;median=  31161.3 
+
 #Sai_island_Sudan
 calibrate(age = 6060,error = 25,cc=1)
 calib.Sai_island<- caldist(6060, 25)
@@ -467,6 +468,11 @@ calibrate(age = 14970,error = 400,cc=1)
 calib.Trou_au_Natron<- caldist(14970, 400)
 points.Trou_au_Natron <- point.estimates(calib.Trou_au_Natron)
 points.Trou_au_Natron # midpoint = 18090.0; weighted mean= 18182.6  ;median= 18213.7             
+# South-west Fourtchiak, Chad
+calibrate(age = 21000,error = 2000,cc=1)
+calib.1 <- caldist(21000, 2000)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =24874.0  ; median= 24329.5  : weighted mean:24403.4   
 
 #Amara_West_Sudan
 #P1_17E
@@ -508,6 +514,48 @@ calibrate(age = 4910,error = 80,cc=1)
 calib.4910<- caldist(4910, 80)
 points.4910 <- point.estimates(calib.4910)
 points.4910 # midpoint = 5682.5 ; weighted mean= 5660.3 ; median=5649.2                
+
+
+# TH125_Libya
+calibrate(age = 4960,error = 175,cc=1)
+calib.1 <- caldist(4960, 175)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =  5747.5   ; median=  5703.5 : weighted mean: 5701.7           
+
+# TH120_Libya
+#TH120-1
+calibrate(age = 4820,error = 50,cc=1)
+calib.1 <- caldist(4820, 50)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint = 5492.5  ; median= 5526.6  : weighted mean:5532.0 
+
+#TH120-2
+calibrate(age = 6480,error = 50,cc=1)
+calib.1 <- caldist(6480, 50)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =  7375.0   ; median=  7371.1  : weighted mean:7378.6
+
+# TH94_Libya
+calibrate(age = 5530,error = 220,cc=1)
+calib.1 <- caldist(5530, 220)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =  6295.0  ; median=  6318.9   : weighted mean: 6319.2 
+
+## TH113_Libya
+
+#3b
+calibrate(age = 3915,error = 165,cc=1)
+calib.1 <- caldist(3915, 165)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =  4376.5  ; median=  4376.5   : weighted mean:4349.5 
+
+#2b
+calibrate(age = 4225,error = 175,cc=1)
+calib.1 <- caldist(4225, 175)
+points.1 <- point.estimates(calib.1)
+points.1 # midpoint =  4799.5  ; median= 4714.6   : weighted mean:4707.7     
+
+# 4) Sub-Sahara ----
 
 # Gobero 1, Niger (Burials)
 
@@ -571,48 +619,6 @@ calib.8620<- caldist(8620, 40)
 points.8620 <- point.estimates(calib.8620)
 points.8620 # midpoint = 9605.0 ; weighted mean= 9591.0 ; median= 9580.9                 
 
-# TH125_Libya
-calibrate(age = 4960,error = 175,cc=1)
-calib.1 <- caldist(4960, 175)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint =  5747.5   ; median=  5703.5 : weighted mean: 5701.7           
-
-# TH120_Libya
-#TH120-1
-calibrate(age = 4820,error = 50,cc=1)
-calib.1 <- caldist(4820, 50)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint = 5492.5  ; median= 5526.6  : weighted mean:5532.0 
-
-#TH120-2
-calibrate(age = 6480,error = 50,cc=1)
-calib.1 <- caldist(6480, 50)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint =  7375.0   ; median=  7371.1  : weighted mean:7378.6
-
-# TH94_Libya
-calibrate(age = 5530,error = 220,cc=1)
-calib.1 <- caldist(5530, 220)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint =  6295.0  ; median=  6318.9   : weighted mean: 6319.2 
-
-## TH113_Libya
-
-#3b
-calibrate(age = 3915,error = 165,cc=1)
-calib.1 <- caldist(3915, 165)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint =  4376.5  ; median=  4376.5   : weighted mean:4349.5 
-
-#2b
-calibrate(age = 4225,error = 175,cc=1)
-calib.1 <- caldist(4225, 175)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint =  4799.5  ; median= 4714.6   : weighted mean:4707.7     
-
-# 4) Sub-Sahara ----
-
-
 #Anambe_Senegal
 calibrate(age = 4600,error = 125,cc=1)
 calib.Anambe<- caldist(4600, 125)
@@ -660,19 +666,11 @@ calibrate(age = 530,error = 30,cc=1)
 calib.Mare_de_Kissi<- caldist(530, 30)
 points.Mare_de_Kissi <- point.estimates(calib.Mare_de_Kissi)
 points.Mare_de_Kissi # midpoint = 568.0 ; weighted mean= 548.8  ;median=537.8                      
-
 #Mowo_Cameroon
 calibrate(age = 515,error = 95,cc=1)
 calib.Mowo_Cameroon<- caldist(515, 95)
 points.Mowo_Cameroon <- point.estimates(calib.Mowo_Cameroon)
 points.Mowo_Cameroon # midpoint = 493.5 ; weighted mean= 528.9  ;median=535.5                                   
-
-#Nemra_Chad
-calibrate(age = 27000,error = 900,cc=1)
-calib.Nemra<- caldist(27000, 900)
-points.Nemra <- point.estimates(calib.Nemra)
-points.Nemra # midpoint = 31240.0; weighted mean= 31243.4  ;median=  31161.3             
-
 #Tiguent_Mauritania
 calibrate(age = 2868,error = 120,cc=1)
 calib.TIguent<- caldist(2868, 120)
@@ -704,15 +702,7 @@ calib.1 <- caldist(7920, 80)
 points.1 <- point.estimates(calib.1)
 points.1 # midpoint = 8776.0   ; median= 8768.1    : weighted mean: 8779.5  
 
-# South-west Fourtchiak, Chad
-calibrate(age = 21000,error = 2000,cc=1)
-calib.1 <- caldist(21000, 2000)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint =24874.0  ; median= 24329.5  : weighted mean:24403.4   
-
-
 # 5) Atlantic Ocean ----
-
 
 # GIK12329-6_Atlantic_Ocean
 calibrate(age = 20050,error = 2325,cc=2) 

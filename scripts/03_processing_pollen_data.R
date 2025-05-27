@@ -293,6 +293,14 @@ for (file_path in file_paths) {
     df <- df |> select(-one_of(c("Pollen sum", "Total sum")))
   }
   
+  # Replace NA values to 0
+  df <- df %>%
+    mutate(across(
+      .cols = !matches("depth|BP"),   # all columns except those with "depth" or "BP"
+      ~ replace_na(., 0)
+    ))
+  
+  
   # Transpose df so the taxa names are in the same column, in order to join with habit list
   df_t <- t(df) |> as.data.frame() |> tibble::rownames_to_column(var = "Pollen_type_SM_morphological") # now columns are named V1,V2,etc.
   
@@ -441,6 +449,14 @@ for (file_path in file_paths) {
   if (any(colnames(df) %in% c("Pollen sum", "Total sum"))) {
     df <- df |> select(-one_of(c("Pollen sum", "Total sum")))
   }
+  
+  # Replace NA values to 0
+  df <- df %>%
+    mutate(across(
+      .cols = !matches("depth|BP"),   # all columns except those with "depth" or "BP"
+      ~ replace_na(., 0)
+    ))
+  
   
   # Transpose df so the taxa names are in the same column, in order to join with habit list
   df_t <- t(df) |> as.data.frame() |> tibble::rownames_to_column(var = "Pollen_type_SM_morphological")# now columns are named V1,V2,etc.
