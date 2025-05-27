@@ -17,8 +17,6 @@ lapply(libraries, require, character.only = TRUE)
 
 sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
 
-sites <- sites |> rename(Pollen = "Record type")
-
 taxonomy <- read_csv(normalizePath("data/processed_data/taxonomy/harmonised_taxonomy_list.csv"))
 phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographic_affinity.csv"))
 pft <- read_csv(normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"))
