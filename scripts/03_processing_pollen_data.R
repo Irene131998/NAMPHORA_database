@@ -16,6 +16,20 @@ invisible(lapply(libraries, install_if_missing))
 # Load the libraries
 lapply(libraries, require, character.only = TRUE)
 
+# Modify Gobero_1_Niger site as it has percentages and total pollen count is not reported 
+gobero_niger <- read_csv(normalizePath("data/raw_data/pollen_data/fossil/Gobero_1_Niger.csv"))
+percentage_data <- gobero_niger[, 5:ncol(gobero_niger)]
+
+# Find the lowest non-zero percentage value (min percentage = 1 grain)
+min_percent <- min(percentage_data[percentage_data > 0], na.rm = TRUE)
+
+# Estimate counts by dividing all values by the minimum percentage
+estimated_counts <- percentage_data / min_percent
+
+estimated_counts <- round(estimated_counts)
+
+Gobero_1_Niger_counts <- cbind(gobero_niger[, 1:4],estimated_counts) 
+
 # 1. Add new harmonised taxa names to each individual files (sequences)----
 
 ## 1.1) Get harmonisation list----
@@ -43,6 +57,12 @@ if (!dir.exists(output_dir)) {
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"))
+  
+  # Replace with modified Gobero data if it's the Gobero file
+  if (grepl("Gobero_1_Niger", tolower(basename(file_path)))) {
+    message("Replacing Gobero file with updated grain count version.")
+    df <- Gobero_1_Niger_counts
+  }
   
   # Clean taxa names
   colnames(df) <- colnames(df) %>% 
