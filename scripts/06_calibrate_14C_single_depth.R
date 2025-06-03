@@ -555,6 +555,12 @@ calib.1 <- caldist(4225, 175)
 points.1 <- point.estimates(calib.1)
 points.1 # midpoint =  4799.5  ; median= 4714.6   : weighted mean:4707.7     
 
+# GIK12329-6_Atlantic_Ocean
+calibrate(age = 20050,error = 2325,cc=2) 
+calib.balid_1 <- caldist(20050, 2325, cc=2)
+points.balid_1 <- point.estimates(calib.balid_1)
+points.balid_1 # midpoint = 22892.0 ; weighted mean= 22989.3       ; median =23055.5   
+
 # 4) Sub-Sahara ----
 
 # Gobero 1, Niger (Burials)
@@ -701,12 +707,4 @@ calibrate(age = 7920,error = 80,cc=1)
 calib.1 <- caldist(7920, 80)
 points.1 <- point.estimates(calib.1)
 points.1 # midpoint = 8776.0   ; median= 8768.1    : weighted mean: 8779.5  
-
-# 5) Atlantic Ocean ----
-
-# GIK12329-6_Atlantic_Ocean
-calibrate(age = 20050,error = 2325,cc=2) 
-calib.balid_1 <- caldist(20050, 2325, cc=2)
-points.balid_1 <- point.estimates(calib.balid_1)
-points.balid_1 # midpoint = 22892.0 ; weighted mean= 22989.3       ; median =23055.5   
 

@@ -26,6 +26,7 @@ min_percent <- min(percentage_data[percentage_data > 0], na.rm = TRUE)
 # Estimate counts by dividing all values by the minimum percentage
 estimated_counts <- percentage_data / min_percent
 
+# Round to nearest integer (to get real grain counts)
 estimated_counts <- round(estimated_counts)
 
 Gobero_1_Niger_counts <- cbind(gobero_niger[, 1:4],estimated_counts) 
