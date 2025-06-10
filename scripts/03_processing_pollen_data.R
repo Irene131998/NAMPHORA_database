@@ -275,7 +275,6 @@ for (csv_file in csv_files_dir_calibration) {
 
 ## 3.1) Get habit list----
 
-
 habit_list <- taxonomy_pollen_taxa |> select("Pollen_type_SM_morphological","Habit_summarised (for percentage calculation)")
 
 habit_list <- habit_list |> rename(Habit_summarised="Habit_summarised (for percentage calculation)")

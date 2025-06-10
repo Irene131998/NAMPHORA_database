@@ -2,7 +2,6 @@
   
 # Load library ----
 
-
 source("scripts/functions.R")
 library <- c("rice")
 
@@ -637,23 +636,11 @@ calib.Diogo_1<- caldist(8930, 180)
 points.Diogo_1 <- point.estimates(calib.Diogo_1)
 points.Diogo_1 # midpoint =   10015.0 ; weighted mean=  9996.6, median =  9995.3        
 
-#Kamala_Chad
-calibrate(age = 10100,error = 300,cc=1)
-calib.Kamala<- caldist(10100, 300)
-points.Kamala <- point.estimates(calib.Kamala)
-points.Kamala # midpoint = 11742.5 ; weighted mean=  11758.7 ;median=11744.4                 
-
 #Kouka_Chad
 calibrate(age = 9690,error = 210,cc=1)
 calib.Kouka<- caldist(9690, 210)
 points.Kouka <- point.estimates(calib.Kouka)
 points.Kouka # midpoint = 11090.0  ; weighted mean=  11051.8 ;median=  11033.1                    
-
-#Lake_Guiers_1_Senegal
-calibrate(age = 6100,error = 200,cc=1)
-calib.Guiers<- caldist(6100, 200)
-points.Guiers <- point.estimates(calib.Guiers)
-points.Guiers # midpoint = 6962.5; weighted mean= 6960.5: median= 6962.5                
 
 #Lake_Hardibo_Ethiopia
 calibrate(age = 2460,error = 70,cc=1)

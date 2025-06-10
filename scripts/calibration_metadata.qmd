@@ -46,7 +46,9 @@ attributes <- data.frame(
            "Dated", "Recalibrated", "Calibration R package", "Radiocarbon dates", 
            "Depths", "Material dated", "Dating method (Conventional/AMS)", 
            "Calibration curve", "Hiatus", "Post-bomb curve", 
-           "Reservoir effect", "Accumulation rate (yr/cm)", "Comments #1", "Comment #2"),
+           "Reservoir effect", "Accumulation rate (yr/cm)","Could_not_be_recalibrated
+","Calibration_not_necessary
+", "Comments #1", "Comment #2"),
   Description = c("Biogeographical region to which the site belongs", 
                   "Country where the site is located", "Site name", 
                   "Machine-readable name for the site", "Whether the record was dated", 
@@ -58,10 +60,10 @@ attributes <- data.frame(
                   "Whether there was a hiatus in the record", 
                   "Whether there was a post-bomb dated and the corresponding Post-bomb curve used in calibration", 
                   "Whether there was an effect of reservoir on radiocarbon dating", 
-                  "Rate of accumulation in years per cm used in the calibration",
+                  "Rate of accumulation in years per cm used in the calibration","Dates were not recalibrated due to unavailable radiocarbon dates or associated errors","Recalibration was not necessary because their chronologies were based on tephra or biostratigraphic timescales",
                   "Additional comments regarding the site or data", 
                   "Further comments or notes on the dataset"),
-  Unit = c("Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical","Categorical", "Categorical", "Categorical", "Years/cm", "Centimeters","Categorical", "Categorical")
+  Unit = c("Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical","Categorical", "Categorical", "Categorical", "Years/cm", "Centimeters","Categorical", "Categorical","Categorical", "Categorical")
 )
 
 

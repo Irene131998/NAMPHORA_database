@@ -351,15 +351,15 @@ violin_plot_latitude_archive_type_num_sites_2 <- ggplot(
   scale_fill_manual(values = cbf_palette) +
   theme(
     legend.position = "none",
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 20),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
     plot.margin = margin(t = 2, r = 2, b = 2, l = 1)
     
   )
 # Save
 ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type_num_sites_2.png"), 
        violin_plot_latitude_archive_type_num_sites_2, 
-       width = 20,   
-       height = 10,  
+       width = 13,   
+       height = 5,  
        dpi = 400,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
