@@ -286,11 +286,6 @@ calib.Abiare <- caldist(1050, 130)
 points.Abiare <- point.estimates(calib.Abiare)
 points.Abiare # midpoint = 996.0; weighted mean= 967.5; median = 962.6                 
 
-#Aghia_Galini_Greece
-calibrate(age = 8265,error = 50,cc=1)
-calib.Aghia<- caldist(8265, 50)
-points.Aghia <- point.estimates(calib.Aghia)
-points.Aghia # midpoint = 9227.5; weighted mean= 9247.7 ; median = 9244.3                   
 
 #Akotivika_1_Greece
 calibrate(age = 2810,error = 60,cc=1)
@@ -357,18 +352,6 @@ calibrate(age = 2470,error = 50,cc=1)
 calib.Hoyran_Golu<- caldist(2470, 50)
 points.Hoyran_Golu <- point.estimates(calib.Hoyran_Golu)
 points.Hoyran_Golu # midpoint = 2542.0; weighted mean=  2553.5; median=2557.3       
-
-#La_Cruz_Spain
-calibrate(age = 640,error = 60,cc=1)
-calib.La_Cruz<- caldist(640, 60)
-points.La_Cruz <- point.estimates(calib.La_Cruz)
-points.La_Cruz # midpoint = 607.5; weighted mean= 607.5  ;median= 605.4    
-
-#Lake_Orestias_1_Greece
-calibrate(age = 4080,error = 75,cc=1)
-calib.Orestias<- caldist(4080, 75)
-points.Orestias <- point.estimates(calib.Orestias)
-points.Orestias # midpoint = 4621.0; weighted mean= 4608.3 ;median= 4598.5         
 
 #Turbera_Panera_Cabras_Spain
 calibrate(age = 235,error = 35,cc=1)
@@ -683,11 +666,6 @@ calib.Orstom_313 <- caldist(1190, 300)
 points.Orstom_313 <- point.estimates(calib.Orstom_313)
 points.Orstom_313 # midpoint = 1128.5; weighted mean= 1114.2; median=1104.4             
 
-# Sonjokoya_Sudan
-calibrate(age = 3140,error = 30,cc=1)
-calib.1 <- caldist(3140, 30)
-points.1 <- point.estimates(calib.1)
-points.1 # midpoint = 3350.0   ; median= 3366.0   : weighted mean:3358.3        
 
 # Danka_Valley_Ethiopia
 calibrate(age = 7920,error = 80,cc=1)

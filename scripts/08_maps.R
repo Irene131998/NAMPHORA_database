@@ -155,7 +155,7 @@ saveWidget(fossil_sites_map,normalizePath("outputs/maps/fossil_sites_interactive
 fossil_sites_plot <- ggplot() +
   geom_raster(data = elevation_df, aes(x = x, y = y, fill = value)) +
   scale_fill_gradientn(colors = terrain.colors(100)) +  # Terrain color scale
-  geom_sf(data = biomes_crop, aes(geometry = geometry), fill = NA, color = "black", lwd = 0.5) +
+  geom_sf(data = biomes, aes(geometry = geometry), fill = NA, color = "black", lwd = 0.5) +
   geom_point(data = fossil_sites, mapping = aes(x = Longitude, y = Latitude, color = as.factor(Dated)), size = 2) +
   theme_minimal() +
   labs(fill = "Elevation (m)", color = "Dated") +
