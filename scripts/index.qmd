@@ -321,10 +321,9 @@ Different sections (folders) of the project are structured as follows:
     (`outputs/graphs/`).
 
 -   `scripts/`: This folder contains all scripts of the data pipeline.
-    It also includes the following sub-folder:
 
-    -   `/renv`: Stores all installed R packages along with a record of
-        their versions. 
+-   `renv/`: Stores all installed R packages along with a record of
+    their versions. 
 
 # Data pipeline {#data-pipeline}
 
