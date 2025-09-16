@@ -11,7 +11,7 @@ execute:
 
 # Description
 
-The ***NaAMPHoRA*** (*Northern Africa, Arabian, and Mediterranean Pollen Holocene Records Archive*) is an open-access database that compiles fossil and modern pollen records from North Africa, Arabia, and the Mediterranean. The database includes fossil and modern pollen records, both raw and harmonised, as well as un-calibrated and recalibrated radiocarbon dates.
+The ***NAMPHORA*** (*Northern Africa, Arabian, and Mediterranean Pollen Holocene Records Archive*) is an open-access database that compiles fossil and modern pollen records from Northern Africa, Arabia, and the Mediterranean. The database includes fossil and modern pollen records, both raw and harmonised, as well as un-calibrated and recalibrated radiocarbon dates.
 
 Details on the geographical, temporal and other relevant information of all the pollen records has been compiled in the “*database.csv*” file, which contains the following metadata:
 
@@ -111,7 +111,7 @@ kable(temporal_extent)
 # Create a dataframe with variable names, descriptions, and units
 site_metadata <- data.frame(
   Name = c("Biogeographic area", "Country", "Site", "Site_name_machine_readable", 
-                   "Archive type", "Latitude", "Longitude", "Altitude", "Database", "Pollen", 
+                   "Archive type", "Latitude", "Longitude", "Altitude", "Database", "Record type", 
                    "Published", "Data received (from authors)", "Link to database", "dataset_id", 
                    "Dated", "Recalibrated", "Period", "African Humid Period", 
                    "Minimum mean cal BP", "Maximum mean cal BP", "Observations", 

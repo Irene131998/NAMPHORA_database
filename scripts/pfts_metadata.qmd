@@ -11,7 +11,7 @@ execute:
 
 # Description
 
-The **NaAMPHoRA** database compiles plant functional traits sourced from two trait databases: the **Botanical Information and Ecology Network (BIEN)** and the **TRY Plant Trait Database (TRY)**. Trait data from the **BIEN** database were accessed and processed using the associated **Bien R package (v. 1.2.7)** (Maitner, 2025), with results stored in the `processed_data` folder. In contrast, the **TRY** database does not provide an R package for direct data access, so trait data, specifically for leaf type, were manually extracted from the **TRY website** (Kattge et al., 2020).
+The **NAMPHORA** database compiles plant functional traits sourced from two trait databases: the **Botanical Information and Ecology Network (BIEN)** and the **TRY Plant Trait Database (TRY)**. Trait data from the **BIEN** database were accessed and processed using the associated **Bien R package (v. 1.2.7)** (Maitner, 2025), with results stored in the `processed_data` folder. In contrast, the **TRY** database does not provide an R package for direct data access, so trait data, specifically for leaf type, were manually extracted from the **TRY website** (Kattge et al., 2020).
 
 The final list of plant functional traits (PFTs) is stored in the `processed_data/plant_functional_types` folder. Metadata information is provided here:
 
@@ -38,36 +38,72 @@ lapply(library, require, character.only = TRUE)
 #| message: false
 # Define Attributes
 
-# Define variable names, descriptions, and units
+# Define variable names, descriptions, and units for the final CSV
 attributes <- data.frame(
-  Name = c("Pollen_type_SM_morphological", "Family", "Genus", "Taxa", "URL_source", 
-           "Project_pi", "Project_pi_contact", "Whole_plant_height_m", "Seed_mass_mg", 
-           "Leaf_area_mm2", "Longest_whole_plant_longevity_years", "Plant_flowering_begin_month", 
-           "Plant_flowering_begin_date", "Leaf_dry_mass_g", "Leaf_life_span_months", 
-           "Leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1", "Whole_plant_dispersal_syndrome", 
-           "Whole_plant_vegetative_phenology", "Whole_plant_growth_form_diversity", 
-           "Whole_plant_sexual_system", "Flower_pollination_syndrome", 
-           "Leaf_dry_mass_per_area_g_mm_2", "Try_dataset", "Leaf_type", "Try_reference"),
-  Description = c("Taxonomical harmonised pollen type", "Family of the plant species", 
-                  "Genus of the plant species", "Name of the taxon (at species, genus or family level) from which the trait has been retrieved", 
-                  "URL linking to the data source", "Principal investigator of the original project in which the trait was measured", 
-                  "Contact information for the project PI of the original project in which the trait was measured", "Trait 1: Height of the whole plant in meters", 
-                  "Trait 2: Seed mass in milligrams", "Trait 3: Leaf area in square millimeters", 
-                  "Trait 4: Longevity of the whole plant in years", "Trait 5: Month when flowering begins", 
-                  "Trait 6: Specific date when flowering begins", "Trait 7: Leaf dry mass in grams", 
-                  "Trait 8: Leaf lifespan in months", "Trait 9: Leaf nitrogen content per unit of leaf dry mass", 
-                  "Trait 10: Dispersal syndrome of the whole plant", 
-                  "Trait 11: Vegetative phenology of the whole plant", 
-                  "Trait 12: Diversity of the plant’s growth form", "Trait 13: Sexual system of the whole plant", 
-                  "Trait 14: Pollination syndrome of the flowers", "Trait 15: Leaf dry mass per unit area", 
-                  "Trait 16: Dataset in which the plant is included", "Trait 17: Type of leaf (e.g., deciduous, evergreen)", 
-                  "Reference for the type of leaf trait retrieved from TRY database"),
-  Unit = c("Categorical", "Categorical", "Categorical", "Categorical", "URL", "Categorical", "Categorical", 
-           "Meters", "Milligrams", "Millimeters squared", "Years", "Month", "Date", "Grams", 
-           "Months", "Milligrams per gram", "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Grams per millimeter squared", "Categorical", "Categorical", "Categorical")
+  Name = c(
+    "pollen_type",
+    "mean_log10_whole_plant_height_m",
+    "mean_log10_seed_mass_mg",
+    "mean_log10_leaf_area_mm2",
+    "mean_log10_longest_whole_plant_longevity_years",
+    "mean_log10_leaf_dry_mass_g",
+    "mean_log10_leaf_life_span_months",
+    "mean_log10_leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1",
+    "mean_log10_leaf_dry_mass_per_area_g_mm_2",
+    "whole_plant_growth_form_diversity",
+    "whole_plant_vegetative_phenology",
+    "flower_pollination_syndrome",
+    "whole_plant_dispersal_syndrome",
+    "whole_plant_sexual_system",
+    "leaf_type",
+    "growth_form_literature",
+    "projects_PIs_BIEN",
+    paste0("BIEN_url_source_", 1:112),
+    paste0("Try_reference_", 1:12)
+  ),
+  Description = c(
+    "Taxonomically harmonised pollen type",
+    "Mean of log10-transformed plant height (m)",
+    "Mean of log10-transformed seed mass (mg)",
+    "Mean of log10-transformed leaf area (mm²)",
+    "Mean of log10-transformed plant longevity (years)",
+    "Mean of log10-transformed leaf dry mass (g)",
+    "Mean of log10-transformed leaf lifespan (months)",
+    "Mean of log10-transformed nitrogen content per leaf dry mass (mg/g)",
+    "Mean of log10-transformed leaf dry mass per unit area (g/mm²)",
+    "Diversity of the whole plant’s growth form",
+    "Vegetative phenology of the whole plant",
+    "Pollination syndrome of the flowers",
+    "Dispersal syndrome of the whole plant",
+    "Sexual system of the whole plant",
+    "Leaf type (e.g., deciduous, evergreen)",
+    "Growth form categories from NAMPHORA habit's categorisation",
+    "Principal investigators of BIEN projects",
+    rep("URL linking to BIEN data source", 112),
+    rep("Reference for trait data from TRY database", 12)
+  ),
+  Unit = c(
+    "Categorical",
+    "log10(meters)",
+    "log10(milligrams)",
+    "log10(mm²)",
+    "log10(years)",
+    "log10(grams)",
+    "log10(months)",
+    "log10(mg/g)",
+    "log10(g/mm²)",
+    "Categorical",
+    "Categorical",
+    "Categorical",
+    "Categorical",
+    "Categorical",
+    "Categorical",
+    "Categorical",
+    "Categorical",
+    rep("URL", 112),
+    rep("Categorical", 12)
+  )
 )
-
 # Save attributes metadata as CSV
 write_csv(attributes, normalizePath("../metadata/plant_functional_types/pfts_metadata.csv"))
 

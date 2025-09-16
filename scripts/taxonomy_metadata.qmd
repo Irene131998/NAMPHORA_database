@@ -11,7 +11,7 @@ execute:
 
 # Description
 
-The NaAMPHoRA database compiles fossil and modern pollen records from multiple sources, including the African Pollen Database (APD: https://africanpollendatabase.ipsl.fr/#/home), Neotoma Paleoecology Database (https://www.neotomadb.org/), and direct contributions from authors. However, due to differences in taxonomic nomenclature across these sources, a taxonomic harmonisation process was implemented to ensure consistency and comparability.
+The NAMPHORA database compiles fossil and modern pollen records from multiple sources, including the African Pollen Database (APD: https://africanpollendatabase.ipsl.fr/#/home), Neotoma Paleoecology Database (https://www.neotomadb.org/), and direct contributions from authors. However, due to differences in taxonomic nomenclature across these sources, a taxonomic harmonisation process was implemented to ensure consistency and comparability.
 
 The pollen taxonomical harmonisation followed these key steps:
 
@@ -39,11 +39,9 @@ The pollen taxonomical harmonisation followed these key steps:
 
     -   Phytogeographic affinities were linked to GBIF & POWO.
 
-    -   Habit and phytogeograhic affinities were also cross-referenced with the pollen inventory of Vincens *et al.* (2007).
-
 3.  **Final harmonisation list**
 
-    -   The harmonised taxonomy list was compiled into *harmonised_taxonomy_list.csv*, which serves as the reference list for all pollen records compiled in the NaAMPHoRA database.
+    -   The harmonised taxonomy list was compiled into *harmonised_taxonomy_list.csv*, which serves as the reference list for all pollen records compiled in the NAMPHORA database.
     -   Metadata for the *harmonised_taxonomy_list.csv* file is provided here:
 
 ```{r}
@@ -71,69 +69,98 @@ lapply(library, require, character.only = TRUE)
 
 # Define variable names, descriptions, and units
 attributes <- data.frame(
-  Name = c("Palaeo_Modern", "Original_taxa", "Family", "Genus", "Species_pollen_type", 
-               "Pollen_type_SM_morphological", 
-               "Reference_taxonomy_1", "Reference_taxonomy_2", "Reference_taxonomy_3", "Reference_taxonomy_4", 
-               "Observations_SM", "Fossil_Sequences", 
-               "Modern_Sequences", "Total_Sequences", "Phytogeographical_affinity", 
-               "Phytogeographical_affinity_summarised", "Link_GBIF", "Link_POWO", 
-               "Habit_life_form", "Habit_summarised", "Reference_habit_1", "Reference_habit_2", 
-               "Reference_habit_3", "Reference_habit_4", "Reference_habit_5", "Reference_habit_6", 
-               "Reference_habit_7", "Reference_habit_8", "Observation_habit", "Pollen_type_Lezine_2009", 
-               "Pollen_habit_Lezine_2009", "Pollen_type_Mottl_2020", "Pollen_type_APD", "Pollen_habit_APD", 
-               "Plant_habit_APD", "No_spp_Vincens_2007", "Habit_Vincens_2007", 
-               "Phytogeographical_affinity_Vincens_2007", "Habitat_Vincens_2007"),
+  Name = c("Palaeo_Modern", 
+           "Biological_group",
+           "Taxa_superior",
+           "Higher_rank",
+           "Order", 
+           "Family",
+           "Subfamily",
+           "Tribe",
+           "Genus", 
+           "Original_taxa", 
+           "Pollen_type_harmonised",
+           "Taxonomical_resolution_original_type",
+           "Taxonomical_resolution_harmonised_type",
+           "Observations_SM", 
+           "Observations_IS", 
+           "Reference_taxonomy_family_order_1",
+           "Reference_taxonomy_subfamily_tribe_1",
+           "Reference_pollen_taxonomy_1", 
+           "Reference_pollen_taxonomy_2", 
+           "Reference_pollen_taxonomy_3", 
+           "Reference_pollen_taxonomy_4", 
+           "Fossil_Sequences", 
+           "Modern_Sequences", 
+           "Total_Sequences", 
+           "Pollen_type_harmonised_Lezine_2009", 
+           "Pollen_type_harmonised_Mottl_2020", 
+           "Pollen_type_harmonised_APD",
+           "Fossil_Sequences_Pollen_type_harmonised",
+           "Modern_Sequences_Pollen_type_harmonised",
+           "Total_Sequences_Pollen_type_harmonised"),
   
   Description = c("Indicates whether the data is from fossil (Palaeo) or modern (Modern) records", 
-                  "Original taxonomic name as recorded in the dataset", 
-                  "Family of the taxon", 
-                  "Genus of the taxon", 
-                  "Species name of the pollen type", 
-                  "Morphological harmonisation of the pollen type (carried out by Saúl Manzano (SM))", 
-                  "Reference for taxonomic identification", 
-                  "Reference for taxonomic identification", 
-                  "Reference for taxonomic identification", 
-                  "Reference for taxonomic identification", 
+                  "Indicates the biological group to which the original pollen type belongs (angiosperms, invertebrates, pteridophyta, etc.)",
+                  "Indicates the biological group (in more taxonomical detail) to which the original pollen type belongs (angiosperms, invertebrates, monilophya, lycophyta, etc.)",
+                  "Indicates the higher rank to which the original pollen type belongs (angiosperms, rotifera, monilophyta, etc.)",
+                  "Order of the original pollen type",
+                  "Family of the original pollen type", 
+                  "Subfamily of the original pollen type", 
+                  "Tribe of the original pollen type",
+                  "Genus of the original pollen type", 
+                  "Original taxonomic name as recorded in the dataset",
+                  "Morphological harmonisation of the pollen type", 
+                  "Level of taxonomic resolution in the original type (species, genus, family, etc.)",
+                  "Level of taxonomic resolution in the harmonised type (species, genus, family, etc.)",
                   "Observations on the pollen type harmonisation (by Saúl Manzano (SM))", 
+                  "Observations on the pollen type harmonisation (by Irene Solano (IS))", 
+                  "Reference for assignation of families and orders", 
+                  "Reference for assignation of subfamilies and tribes", 
+                  "Reference for pollen taxonomy", 
+                  "Reference for pollen taxonomy", 
+                  "Reference for pollen taxonomy", 
+                  "Reference for pollen taxonomy", 
                   "Number of fossil records in which the original pollen type is present", 
                   "Number of modern records in which the original pollen type is present", 
                   "Total number of records in which the original pollen type is present", 
-                  "Phytogeographical affinity of the pollen type", 
-                  "Summarised phytogeographical affinity category", 
-                  "Link to Global Biodiversity Information Facility (GBIF: https://www.gbif.org/)  record", 
-                  "Link to Plants of the World Online (POWO: https://powo.science.kew.org/) record", 
-                  "Life form or life habit of the plant", 
-                  "Summarised habit category for percentage calculations", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Reference for plant habit classification", 
-                  "Observations on plant habit", 
                   "Pollen type classification from Lézine et al. (2009)", 
-                  "Pollen habit classification from Lézine et al.(2009)", 
-                  "Pollen type classification from Mottl et al.(2020)", 
-                  "Pollen type classification from APD", 
-                  "Pollen habit classification from APD", 
-                  "Plant habit classification from APD", 
-                  "Number of species in Vincens et al. (2007)", 
-                  "Habit classification from Vincens et al. (2007)", 
-                  "Phytogeographical affinity from Vincens et al. (2007)", 
-                  "Habitat classification from Vincens et al. (2007)"),
+                  "Pollen type classification from Mottl et al. (2020)", 
+                  "Pollen type classification from APD",
+                  "Number of fossil records in which the harmonised pollen type is present", 
+                  "Number of modern records in which the harmonised pollen type is present",
+                  "Total number of records in which the harmonised pollen type is present"),
   
-  Unit = c("Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Categorical", "Categorical", "Categorical", 
-           "count", 
-           "count", "count", "Categorical","Categorical", 
-           "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Categorical", "Categorical", "Categorical", 
-           "Categorical", "Categorical", "Categorical")
+  Unit = c("Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical",
+           "Categorical",
+           "Categorical",
+           "Categorical", 
+           "Categorical", 
+           "Reference", 
+           "Reference", 
+           "Reference", 
+           "Reference", 
+           "Reference", 
+           "Reference", 
+           "Count", 
+           "Count", 
+           "Count", 
+           "Categorical", 
+           "Categorical", 
+           "Categorical", 
+           "Count", 
+           "Count", 
+           "Count")
 )
 
 
@@ -155,5 +182,3 @@ kable(attributes)
 1.  Lézine, A. M., Watrin, J., Vincens, A., & Hély, C. Are modern pollen data representative of West African vegetation? *Review of Palaeobotany and Palynology, 156*, 265–276. (2009).
 
 2.  Mott, O., et al. Global acceleration in rates of vegetation change over the past 18,000 years. *Science, 372*, 860–864. (2021).
-
-3.  Vincens, A., Lézine, A. M., Buchet, G., Lewden, D., & Le Thomas, A. African pollen database inventory of tree and shrub pollen types. *Review of Palaeobotany and Palynology, 145*, 135–141. (2007).

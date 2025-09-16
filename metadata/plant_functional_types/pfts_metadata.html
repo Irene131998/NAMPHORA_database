@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="description" class="level1">
 <h1>Description</h1>
-<p>The <strong>NaAMPHoRA</strong> database compiles plant functional traits sourced from two trait databases: the <strong>Botanical Information and Ecology Network (BIEN)</strong> and the <strong>TRY Plant Trait Database (TRY)</strong>. Trait data from the <strong>BIEN</strong> database were accessed and processed using the associated <strong>Bien R package (v. 1.2.7)</strong> (Maitner, 2025), with results stored in the <code>processed_data</code> folder. In contrast, the <strong>TRY</strong> database does not provide an R package for direct data access, so trait data, specifically for leaf type, were manually extracted from the <strong>TRY website</strong> (Kattge et al., 2020).</p>
+<p>The <strong>NAMPHORA</strong> database compiles plant functional traits sourced from two trait databases: the <strong>Botanical Information and Ecology Network (BIEN)</strong> and the <strong>TRY Plant Trait Database (TRY)</strong>. Trait data from the <strong>BIEN</strong> database were accessed and processed using the associated <strong>Bien R package (v. 1.2.7)</strong> (Maitner, 2025), with results stored in the <code>processed_data</code> folder. In contrast, the <strong>TRY</strong> database does not provide an R package for direct data access, so trait data, specifically for leaf type, were manually extracted from the <strong>TRY website</strong> (Kattge et al., 2020).</p>
 <p>The final list of plant functional traits (PFTs) is stored in the <code>processed_data/plant_functional_types</code> folder. Metadata information is provided here:</p>
 </section>
 <section id="metadata" class="level1">
@@ -80,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 55%">
-<col style="width: 16%">
+<col style="width: 40%">
+<col style="width: 47%">
+<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -93,128 +93,708 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Pollen_type_SM_morphological</td>
-<td style="text-align: left;">Taxonomical harmonised pollen type</td>
+<td style="text-align: left;">pollen_type</td>
+<td style="text-align: left;">Taxonomically harmonised pollen type</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Family</td>
-<td style="text-align: left;">Family of the plant species</td>
+<td style="text-align: left;">mean_log10_whole_plant_height_m</td>
+<td style="text-align: left;">Mean of log10-transformed plant height (m)</td>
+<td style="text-align: left;">log10(meters)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mean_log10_seed_mass_mg</td>
+<td style="text-align: left;">Mean of log10-transformed seed mass (mg)</td>
+<td style="text-align: left;">log10(milligrams)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mean_log10_leaf_area_mm2</td>
+<td style="text-align: left;">Mean of log10-transformed leaf area (mm²)</td>
+<td style="text-align: left;">log10(mm²)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mean_log10_longest_whole_plant_longevity_years</td>
+<td style="text-align: left;">Mean of log10-transformed plant longevity (years)</td>
+<td style="text-align: left;">log10(years)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mean_log10_leaf_dry_mass_g</td>
+<td style="text-align: left;">Mean of log10-transformed leaf dry mass (g)</td>
+<td style="text-align: left;">log10(grams)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mean_log10_leaf_life_span_months</td>
+<td style="text-align: left;">Mean of log10-transformed leaf lifespan (months)</td>
+<td style="text-align: left;">log10(months)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mean_log10_leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1</td>
+<td style="text-align: left;">Mean of log10-transformed nitrogen content per leaf dry mass (mg/g)</td>
+<td style="text-align: left;">log10(mg/g)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mean_log10_leaf_dry_mass_per_area_g_mm_2</td>
+<td style="text-align: left;">Mean of log10-transformed leaf dry mass per unit area (g/mm²)</td>
+<td style="text-align: left;">log10(g/mm²)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">whole_plant_growth_form_diversity</td>
+<td style="text-align: left;">Diversity of the whole plant’s growth form</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Genus</td>
-<td style="text-align: left;">Genus of the plant species</td>
+<td style="text-align: left;">whole_plant_vegetative_phenology</td>
+<td style="text-align: left;">Vegetative phenology of the whole plant</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Taxa</td>
-<td style="text-align: left;">Name of the taxon (at species, genus or family level) from which the trait has been retrieved</td>
+<td style="text-align: left;">flower_pollination_syndrome</td>
+<td style="text-align: left;">Pollination syndrome of the flowers</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">URL_source</td>
-<td style="text-align: left;">URL linking to the data source</td>
+<td style="text-align: left;">whole_plant_dispersal_syndrome</td>
+<td style="text-align: left;">Dispersal syndrome of the whole plant</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">whole_plant_sexual_system</td>
+<td style="text-align: left;">Sexual system of the whole plant</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">leaf_type</td>
+<td style="text-align: left;">Leaf type (e.g., deciduous, evergreen)</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">growth_form_literature</td>
+<td style="text-align: left;">Growth form categories from NAMPHORA habit’s categorisation</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">projects_PIs_BIEN</td>
+<td style="text-align: left;">Principal investigators of BIEN projects</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_1</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_2</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
 <td style="text-align: left;">URL</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Project_pi</td>
-<td style="text-align: left;">Principal investigator of the original project in which the trait was measured</td>
+<td style="text-align: left;">BIEN_url_source_3</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_4</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_5</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_6</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_7</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_8</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_9</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_10</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_11</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_12</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_13</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_14</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_15</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_16</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_17</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_18</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_19</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_20</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_21</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_22</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_23</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_24</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_25</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_26</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_27</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_28</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_29</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_30</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_31</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_32</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_33</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_34</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_35</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_36</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_37</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_38</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_39</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_40</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_41</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_42</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_43</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_44</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_45</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_46</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_47</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_48</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_49</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_50</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_51</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_52</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_53</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_54</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_55</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_56</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_57</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_58</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_59</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_60</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_61</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_62</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_63</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_64</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_65</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_66</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_67</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_68</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_69</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_70</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_71</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_72</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_73</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_74</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_75</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_76</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_77</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_78</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_79</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_80</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_81</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_82</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_83</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_84</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_85</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_86</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_87</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_88</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_89</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_90</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_91</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_92</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_93</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_94</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_95</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_96</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_97</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_98</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_99</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_100</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_101</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_102</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_103</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_104</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_105</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_106</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_107</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_108</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_109</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_110</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIEN_url_source_111</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BIEN_url_source_112</td>
+<td style="text-align: left;">URL linking to BIEN data source</td>
+<td style="text-align: left;">URL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Try_reference_1</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Project_pi_contact</td>
-<td style="text-align: left;">Contact information for the project PI of the original project in which the trait was measured</td>
+<td style="text-align: left;">Try_reference_2</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Whole_plant_height_m</td>
-<td style="text-align: left;">Trait 1: Height of the whole plant in meters</td>
-<td style="text-align: left;">Meters</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Seed_mass_mg</td>
-<td style="text-align: left;">Trait 2: Seed mass in milligrams</td>
-<td style="text-align: left;">Milligrams</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Leaf_area_mm2</td>
-<td style="text-align: left;">Trait 3: Leaf area in square millimeters</td>
-<td style="text-align: left;">Millimeters squared</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Longest_whole_plant_longevity_years</td>
-<td style="text-align: left;">Trait 4: Longevity of the whole plant in years</td>
-<td style="text-align: left;">Years</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Plant_flowering_begin_month</td>
-<td style="text-align: left;">Trait 5: Month when flowering begins</td>
-<td style="text-align: left;">Month</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Plant_flowering_begin_date</td>
-<td style="text-align: left;">Trait 6: Specific date when flowering begins</td>
-<td style="text-align: left;">Date</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Leaf_dry_mass_g</td>
-<td style="text-align: left;">Trait 7: Leaf dry mass in grams</td>
-<td style="text-align: left;">Grams</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Leaf_life_span_months</td>
-<td style="text-align: left;">Trait 8: Leaf lifespan in months</td>
-<td style="text-align: left;">Months</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Leaf_nitrogen_content_per_leaf_dry_mass_mg_g_1</td>
-<td style="text-align: left;">Trait 9: Leaf nitrogen content per unit of leaf dry mass</td>
-<td style="text-align: left;">Milligrams per gram</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Whole_plant_dispersal_syndrome</td>
-<td style="text-align: left;">Trait 10: Dispersal syndrome of the whole plant</td>
-<td style="text-align: left;">Categorical</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Whole_plant_vegetative_phenology</td>
-<td style="text-align: left;">Trait 11: Vegetative phenology of the whole plant</td>
+<td style="text-align: left;">Try_reference_3</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Whole_plant_growth_form_diversity</td>
-<td style="text-align: left;">Trait 12: Diversity of the plant’s growth form</td>
+<td style="text-align: left;">Try_reference_4</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Whole_plant_sexual_system</td>
-<td style="text-align: left;">Trait 13: Sexual system of the whole plant</td>
+<td style="text-align: left;">Try_reference_5</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Flower_pollination_syndrome</td>
-<td style="text-align: left;">Trait 14: Pollination syndrome of the flowers</td>
+<td style="text-align: left;">Try_reference_6</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Leaf_dry_mass_per_area_g_mm_2</td>
-<td style="text-align: left;">Trait 15: Leaf dry mass per unit area</td>
-<td style="text-align: left;">Grams per millimeter squared</td>
+<td style="text-align: left;">Try_reference_7</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
+<td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Try_dataset</td>
-<td style="text-align: left;">Trait 16: Dataset in which the plant is included</td>
+<td style="text-align: left;">Try_reference_8</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Leaf_type</td>
-<td style="text-align: left;">Trait 17: Type of leaf (e.g., deciduous, evergreen)</td>
+<td style="text-align: left;">Try_reference_9</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Try_reference</td>
-<td style="text-align: left;">Reference for the type of leaf trait retrieved from TRY database</td>
+<td style="text-align: left;">Try_reference_10</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Try_reference_11</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
+<td style="text-align: left;">Categorical</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Try_reference_12</td>
+<td style="text-align: left;">Reference for trait data from TRY database</td>
 <td style="text-align: left;">Categorical</td>
 </tr>
 </tbody>

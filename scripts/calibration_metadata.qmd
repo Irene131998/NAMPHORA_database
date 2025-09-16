@@ -11,7 +11,7 @@ execute:
 
 # Description
 
-The **NaAMPHoRA database** includes modern and fossil pollen records along with their chronologies. Raw radiocarbon dates were calibrated using a Bayesian age-depth modelling approach implemented in the ***rbacon*** **R package** (v3.2.0; Blaauw & Christen, 2011). For sites with only one dated depth or missing depth information, we calibrated radiocarbon ages using the ***rice*** **R package** (v1.0.0; Blaauw, 2024).
+The **NAMPHORA database** includes modern and fossil pollen records along with their chronologies. Raw radiocarbon dates were calibrated using a Bayesian age-depth modelling approach implemented in the ***rbacon*** **R package** (v3.2.0; Blaauw & Christen, 2011). For sites with only one dated depth or missing depth information, we calibrated radiocarbon ages using the ***rice*** **R package** (v1.0.0; Blaauw, 2024).
 
 Details on the calibration for each site are available in the *calibration_information.csv* file, which contains the following metadata:
 

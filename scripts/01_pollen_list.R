@@ -1,6 +1,9 @@
 ## Script for extracting data from Neotoma & get raw pollen list for harmonisation
 
+#--------------------------------------------------------#
 # 0. Load libraries and functions ----
+#--------------------------------------------------------#
+
 source("scripts/functions.R")
 
 libraries <- c("neotoma2", "dplyr", "tidyr", "readr")
@@ -11,9 +14,11 @@ invisible(lapply(libraries, install_if_missing))
 # Load the libraries
 lapply(libraries, require, character.only = TRUE)
 
-# 1. Download neotoma files and convert to APD structure (i.e. pollen types in columns) ----
+#--------------------------------------------------------#
+# 1. Download Neotoma files and convert to APD structure (i.e. pollen types in columns) ----
+#--------------------------------------------------------#
 
-## 1.1) Download from neotoma ----
+## 1.1) Download from Neotoma ----
 # Read sites_id file to download all from neotoma using neotoma2 R package
 datasets_ids_df <- read.csv(normalizePath("metadata/pollen_data/database.csv"))
 datasets_ids_df <- datasets_ids_df |> dplyr::filter(Database == "Neotoma") |> select(Site_name_machine_readable,dataset_id,Pollen)
@@ -31,7 +36,7 @@ for (i in seq_len(nrow(datasets_ids_df))) {
   site_name <- datasets_ids_df$Site_name_machine_readable[i]  
   pollen_type <- datasets_ids_df$Pollen[i]  
   
-  print(paste("Processing Site:", site_name, " (ID:", dataset_id, ", Pollen:", pollen_type, ")"))  # Track progress
+  print(paste("Processing Site:", site_name, " (ID:", dataset_id, ", Pollen:", pollen_type, ")"))
   
   neotoma_site <- tryCatch({
     get_downloads(dataset_id, all_data = TRUE)
@@ -49,7 +54,7 @@ for (i in seq_len(nrow(datasets_ids_df))) {
   )
 }
 
-## 1.2) Modify neotoma files to match APD structure and save it in their corresponding folder (modern/fossil) -----
+## 1.2) Modify Neotoma files to match APD structure and save it in their corresponding folder (modern/fossil) -----
 # Reshape dataframes
 df_list <- lapply(names(neotoma_sites_list), function(site_name) {
   site_data <- neotoma_sites_list[[site_name]]  
@@ -130,7 +135,11 @@ for (name in names(modern_list)) {
   write.csv(df, file = file.path(modern_folder_path, paste0(name, ".csv")), row.names = FALSE)
 }
 
+
+
+#--------------------------------------------------------#
 # 2. Extract pollen types from raw files (for taxonomic harmonisation) ----
+#--------------------------------------------------------#
 
 ## 2.1) Fossil records ----
 # Set the directory containing your CSV files
@@ -155,7 +164,7 @@ for (file in file_list) {
   raw_taxa <- gsub(" {2,}", " ", raw_taxa)  # Remove double spaces (replace with a single space)
   
   # Add names to list
-  raw_taxa_list[[file]] <- raw_taxa # [[]] because it is a list
+  raw_taxa_list[[file]] <- raw_taxa 
 }
 
 # Eliminate duplicates in list
@@ -185,13 +194,17 @@ for (file in file_list) {
   raw_taxa <- gsub(" {2,}", " ", raw_taxa)  # Remove double spaces (replace with a single space)
   
   # Add names to list
-  raw_taxa_list_modern[[file]] <- raw_taxa # [[]] because it is a list
+  raw_taxa_list_modern[[file]] <- raw_taxa
 }
 
 # Eliminate duplicates in list
 raw_taxa_list_modern <- unique(unlist(raw_taxa_list_modern)) # we need to unlist before eliminating duplicates
 
+
+#--------------------------------------------------------#
 # 3. Combine lists and save final list ----
+#--------------------------------------------------------#
+
 raw_taxa <- c(raw_taxa_list,raw_taxa_list_modern)
 raw_taxa <- unique(unlist(raw_taxa)) # we need to unlist before eliminating duplicates
 
@@ -200,7 +213,7 @@ raw_taxa <- as.data.frame(raw_taxa)
 colnames(raw_taxa) <- "Original_taxa" 
 
 # Eliminate non-taxa names
-unnecessary_rows <- grepl("Fossilva|MADCAP|BP|Depth|depth|sample_name|C14|Age|Calendar|Volume|volume|Cuticles|Counted|diatoms|error|element|Chronology|Protist|grammi|Lab|Layer|lithology|Licopods|Mark|concentration|accumulation|lycopodium|Mass|name|Lycopod|Markers|Burial|sample|Sample|added|Sedimentation|Site|flux|spike|Spike|Sum|Taxonomic|gram|Year|Total|year|weight|code|sum|SUM|COUNTS|thickness|Thickness|code|shrubs|trees|herbs", raw_taxa$Original_taxa)# Identify rows containing "BP" in their names
+unnecessary_rows <- grepl("Fossilva|MADCAP|BP|Depth|depth|sample_name|C14|Age|Calendar|Volume|volume|Cuticles|Counted|diatoms|error|element|Chronology|Protist|grammi|Lab|Layer|lithology|Licopods|Mark|concentration|accumulation|lycopodium|Mass|name|Lycopod|Markers|Burial|sample|Sample|added|Sedimentation|Site|flux|spike|Spike|Sum|Taxonomic|gram|Year|Total|year|weight|code|sum|SUM|COUNTS|thickness|Thickness|code|shrubs|trees|herbs", raw_taxa$Original_taxa)
 raw_taxa <- raw_taxa[!unnecessary_rows, , drop = FALSE]
 
 # Save csv so the tildes are written correctly
@@ -209,5 +222,5 @@ write.table(
   file = normalizePath("data/raw_data/taxonomy/raw_taxa_list/raw_pollen_types.csv", mustWork = FALSE),
   sep = ",",         
   row.names = FALSE, 
-  fileEncoding = "latin1"  # Ensures special characters are correctly saved
+  fileEncoding = "latin1"  
 )
