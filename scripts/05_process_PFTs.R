@@ -25,12 +25,14 @@ species_pollen_types <- species_pollen_types |> rename(pollen_type = Pollen_type
 # Get vector of species
 species <- species_pollen_types$species
 
+
 # Read habit categories
 habit_list <- readr::read_csv((normalizePath("data/processed_data/taxonomy/habit_list.csv")),locale = locale(encoding = "latin1"))
 
 habit_list <- habit_list |> select("Pollen_type_harmonised","Habit_summarised (for percentage calculation)")
 habit_list <- habit_list |> rename(pollen_type = Pollen_type_harmonised)
 habit_list <- habit_list |> rename(growth_form_literature= "Habit_summarised (for percentage calculation)")
+
 
 #--------------------------------------------------------#
 # 2) Retrieve the traits----
@@ -68,9 +70,6 @@ for (i in seq_along(species_categorical_variables)) {  # For every item of the l
 }
 
 ### 2.2) Continuous variables----
-
-continuous_traits <- c("whole plant height")
-
 
 # List of traits
 continuous_traits <- c("whole plant height",
@@ -167,12 +166,7 @@ pfts_combined <- pfts_combined |> mutate(across(c(whole_plant_height_m, seed_mas
 
 # Calculate Leaf dry mass per area (LMA): leaf dry mass/leaf area
 pfts_combined <- pfts_combined |> 
-  mutate(leaf_dry_mass_per_area_g_mm_2 =leaf_dry_mass_g/leaf_area_mm2)
-
-write.csv(pfts_combined, file = normalizePath("data/processed_data/plant_functional_types/pfts_combined_bien_part5.csv"), row.names = FALSE)
-
-pfts_combined <-read_csv(normalizePath("data/processed_data/plant_functional_types/pfts_combined_bien_part5.csv"))
-
+  mutate(leaf_dry_mass_per_area_g_mm_2 =leaf_dry_mass_g/leaf_area_mm2) 
 
 #--------------------------------------------------------#
 # 5) Get authors list from BIEN traits for acknowledgements ----
@@ -271,13 +265,12 @@ pollen_types_pfts_summary <- pollen_types_pfts_summary |> rename(projects_PIs_BI
 #--------------------------------------------------------#
 
 # Read leaf type data, which has been retrieved directly from TRY website
-leaf_type_TRY <- read.table(
-  normalizePath("data/raw_data/plant_functional_types/TRY/leaf_type_TRY.txt"),
-  sep = "\t",
-  fill = TRUE,          # Fill missing values with NA
-  header = TRUE,        
-  stringsAsFactors = FALSE
-)
+leaf_type_TRY <- read.table(unz("data/raw_data/plant_functional_types/TRY/leaf_type_TRY.zip", "leaf_type_TRY.txt"),
+                            sep = "\t",
+                            fill = TRUE,          # Fill missing values with NA
+                            header = TRUE,        
+                            stringsAsFactors = FALSE)
+
 
 leaf_type_TRY <- leaf_type_TRY |> select(AccSpeciesName,TraitName, OrigValueStr, Dataset,LastName,FirstName,Reference)
 
