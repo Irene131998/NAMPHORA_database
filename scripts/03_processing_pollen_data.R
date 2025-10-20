@@ -335,6 +335,7 @@ for (file_path in file_paths) {
   # Remove columns with  empty names
   df <- df[, !(colnames(df) == "")]
   
+  
   # Clean taxa names
   colnames(df) <- colnames(df) |>
     trimws() |>
