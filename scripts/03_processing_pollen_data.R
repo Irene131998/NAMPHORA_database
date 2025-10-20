@@ -80,11 +80,11 @@ for (file_path in file_paths) {
     dplyr::left_join(harmonisation_list)
   
   # Move harmonised names to first column
-  harmonised_df <- harmonised_df %>%
+  harmonised_df <- harmonised_df |>
     select(last_col(), everything())
   
   # Fill missing taxa names using "Original_taxa" (get depth/sample/age columns back)
-  harmonised_df <- harmonised_df %>%
+  harmonised_df <- harmonised_df |>
     mutate(Pollen_type_harmonised = 
              coalesce(Pollen_type_harmonised, Original_taxa))# fill NA values in Pollen_type_harmonised with Original_taxa values
   
@@ -92,16 +92,16 @@ for (file_path in file_paths) {
   
   # Convert to numeric (if the numbers are stored as characters)
   numeric_df <- harmonised_df |>
-    group_by(Pollen_type_harmonised) %>%
-    dplyr::filter(!str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA")) %>% # (?i) = case insensitive
+    group_by(Pollen_type_harmonised) |>
+    dplyr::filter(!str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA")) |> # (?i) = case insensitive
     mutate(across(where(is.character), as.numeric))
   
   character_df <- harmonised_df |>
     dplyr::filter(str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA")) 
   
   # Combine rows from same harmonised taxa
-  numeric_df<- numeric_df %>%
-    group_by(Pollen_type_harmonised) %>%
+  numeric_df<- numeric_df |>
+    group_by(Pollen_type_harmonised) |>
     summarise(across(where(is.numeric), ~ sum(.x, na.rm = TRUE)))
   
   # Bind
@@ -176,11 +176,11 @@ for (file_path in file_paths) {
     dplyr::left_join(harmonisation_list)
   
   # Move harmonised names to first column
-  harmonised_df <- harmonised_df %>%
+  harmonised_df <- harmonised_df |>
     select(last_col(), everything())  # Moves last column to first position
   
   # Fill missing taxa names using "Original_taxa" (get depth/sample/age columns back)
-  harmonised_df <- harmonised_df %>%
+  harmonised_df <- harmonised_df |>
     mutate(Pollen_type_harmonised = 
              coalesce(Pollen_type_harmonised, Original_taxa))# fill NA values in Pollen_type_harmonised with Original_taxa values
   
@@ -188,16 +188,16 @@ for (file_path in file_paths) {
   
   # Convert to numeric (if the numbers are stored as characters)
   numeric_df <- harmonised_df |>
-    group_by(Pollen_type_harmonised) %>%
-    dplyr::filter(!str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA")) %>%
+    group_by(Pollen_type_harmonised) |>
+    dplyr::filter(!str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA")) |>
     mutate(across(where(is.character), as.numeric))
   
   character_df <- harmonised_df |>
     dplyr::filter(str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA")) # (?i) = case insensitive
   
   # Combine rows from same harmonised taxa
-  numeric_df<- numeric_df %>%
-    group_by(Pollen_type_harmonised) %>%
+  numeric_df<- numeric_df |>
+    group_by(Pollen_type_harmonised) |>
     summarise(across(where(is.numeric), ~ sum(.x, na.rm = TRUE)))
   
   # Bind
@@ -308,7 +308,7 @@ habit_list <- habit_list |> rename(Habit_summarised="Habit_summarised (for perce
 
 habit_list <- habit_list |> select(Pollen_type_harmonised,Habit_summarised)
 
-habit_list <- habit_list %>%
+habit_list <- habit_list |>
   filter(!if_all(everything(), is.na))
 
 ## 3.2) Calculate base and total sums and percentages----
@@ -343,11 +343,11 @@ for (file_path in file_paths) {
   # Remove the Pollen Sum column if it exists in the original dataframe.
   cols_to_remove <- c("Pollen sum", "Total sum")
   
-  df <- df %>% 
+  df <- df |> 
     select(-any_of(cols_to_remove[tolower(cols_to_remove) %in% tolower(names(df))]))
   
   # Replace NA values to 0
-  df <- df %>%
+  df <- df |>
     mutate(across(
       .cols = !matches("depth|BP|Sample"),   # all columns except those with "depth" or "BP"
       ~ replace_na(., 0)
@@ -365,14 +365,14 @@ for (file_path in file_paths) {
   harmonised_df <- harmonised_df[!duplicated(harmonised_df), ]
   
   # Eliminate columns that have 0/NA in all rows
-  harmonised_df <- harmonised_df %>%
+  harmonised_df <- harmonised_df |>
     select_if(~ any(!is.na(.)) & any(. != 0, na.rm = TRUE))
   
   # 1) Calculate pollen sum (Trees + Shrubs + Herbs)
-  pollen_sum <- harmonised_df %>%
+  pollen_sum <- harmonised_df |>
     dplyr::filter(Habit_summarised %in% c("Trees", "Shrubs", "Herbs", 
                                           "Herbs or Shrubs or Trees", "Herbs or Shrubs", 
-                                          "Shrubs or Trees", "Geophytes")) %>%
+                                          "Shrubs or Trees", "Geophytes")) |>
     mutate(across(starts_with("V"),as.numeric))
   
   # Sum the columns
@@ -385,8 +385,8 @@ for (file_path in file_paths) {
   harmonised_df_sums <- rbind(harmonised_df, new_row) 
   
   # 2) Calculate total sum (Trees + Shrubs + Herbs + Aquatics + Indeterminable)
-  total_sum <- harmonised_df %>%
-    dplyr::filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Unknown/Indeterminable", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) %>%
+  total_sum <- harmonised_df |>
+    dplyr::filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Unknown/Indeterminable", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) |>
     mutate(across(starts_with("V"),as.numeric))
   
   # Sum the columns
@@ -402,13 +402,13 @@ for (file_path in file_paths) {
   row.names(harmonised_df_sums) <- harmonised_df_sums[,1]
   
   # 3) Calculate percentages (over pollen sum) 
-  percentages_pollen_sum <- harmonised_df_sums |>dplyr::filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) %>%
+  percentages_pollen_sum <- harmonised_df_sums |>dplyr::filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) |>
     mutate(across(starts_with("V"), as.numeric))
   
   # Identify the "Pollen sum" row
-  pollen_sum_row <- harmonised_df_sums %>%
-    dplyr::filter(Pollen_type_harmonised == "Pollen sum") %>%
-    select(starts_with("V")) %>%
+  pollen_sum_row <- harmonised_df_sums |>
+    dplyr::filter(Pollen_type_harmonised == "Pollen sum") |>
+    select(starts_with("V")) |>
     mutate(across(starts_with("V"), as.numeric))
   
   # Proceed only if no decimals found in percentages_pollen_sum data
@@ -418,7 +418,7 @@ for (file_path in file_paths) {
       mutate(across(starts_with("V"), ~ . / pollen_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "Pollen sum" row in the same column (.)
     
     # Round %
-    percentages_pollen_sum <- percentages_pollen_sum %>%
+    percentages_pollen_sum <- percentages_pollen_sum |>
       mutate(across(starts_with("V"), ~ round(.x, 3)))  
   } else {
     # If decimals found, skip percentage calculation
@@ -426,24 +426,24 @@ for (file_path in file_paths) {
   }
   
   # 4) Calculate percentages (over total sum: Indeterminable & Unknown)
-  percentages_total_sum <- harmonised_df_sums %>%
-    dplyr::filter(Habit_summarised %in% c("Unknown/Indeterminable"))%>%
+  percentages_total_sum <- harmonised_df_sums |>
+    dplyr::filter(Habit_summarised %in% c("Unknown/Indeterminable"))|>
     mutate(across(starts_with("V"), as.numeric))
   
   # Identify the "Total sum" row
-  total_sum_row <- harmonised_df_sums %>%
-    dplyr::filter(Pollen_type_harmonised == "Total sum") %>%
-    select(starts_with("V")) %>%
+  total_sum_row <- harmonised_df_sums |>
+    dplyr::filter(Pollen_type_harmonised == "Total sum") |>
+    select(starts_with("V")) |>
     mutate(across(starts_with("V"), as.numeric))
   
   # Proceed only if no decimals found in percentages_total_sum data
   if (!has_decimals(percentages_total_sum)) {
     # Compute percentages by dividing each value by the "Total sum" row values
-    percentages_total_sum <- percentages_total_sum %>%
+    percentages_total_sum <- percentages_total_sum |>
       mutate(across(starts_with("V"), ~ . / total_sum_row[1, cur_column()] * 100)) 
     
     # Round %
-    percentages_total_sum <- percentages_total_sum %>%
+    percentages_total_sum <- percentages_total_sum |>
       mutate(across(starts_with("V"), ~ round(.x, 3)))  
   } else {
     # If decimals found, skip percentage calculation, optionally keep original data or handle differently
@@ -454,7 +454,7 @@ for (file_path in file_paths) {
   percentages_df <- rbind(percentages_pollen_sum,percentages_total_sum)
   
   # Join depth, sums and BP information from original df 
-  original_df <- harmonised_df_sums%>%
+  original_df <- harmonised_df_sums|>
     dplyr::filter(str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA|Pollen sum|Total sum")) 
   
   final_df <- rbind(percentages_df,original_df)
@@ -504,11 +504,11 @@ for (file_path in file_paths) {
   # Remove the Pollen Sum column if it exists in the original dataframe.
   cols_to_remove <- c("Pollen sum", "Total sum")
   
-  df <- df %>% 
+  df <- df |> 
     select(-any_of(cols_to_remove[tolower(cols_to_remove) %in% tolower(names(df))]))
   
   # Replace NA values to 0
-  df <- df %>%
+  df <- df |>
     mutate(across(
       .cols = !matches("depth|BP|sample"),   # all columns except those with "depth" or "BP"
       ~ replace_na(., 0)
@@ -526,14 +526,14 @@ for (file_path in file_paths) {
   harmonised_df <- harmonised_df[!duplicated(harmonised_df), ]
   
   # Eliminate columns that have 0/NA in all rows
-  harmonised_df <- harmonised_df %>%
+  harmonised_df <- harmonised_df |>
     select_if(~ any(!is.na(.)) & any(. != 0, na.rm = TRUE))
   
   # 1) Calculate pollen sum (Trees + Shrubs + Herbs)
-  pollen_sum <- harmonised_df %>%
+  pollen_sum <- harmonised_df |>
     filter(Habit_summarised %in% c("Trees", "Shrubs", "Herbs", 
                                    "Herbs or Shrubs or Trees", "Herbs or Shrubs", 
-                                   "Shrubs or Trees", "Geophyte")) %>%
+                                   "Shrubs or Trees", "Geophyte")) |>
     mutate(across(starts_with("V"),as.numeric))
   
   # Sum the columns
@@ -546,8 +546,8 @@ for (file_path in file_paths) {
   harmonised_df_sums <- rbind(harmonised_df, new_row) 
   
   # 2) Calculate total sum (Trees + Shrubs + Herbs + Aquatics + Indeterminable)
-  total_sum <- harmonised_df %>%
-    filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Unknown/Indeterminable", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) %>%
+  total_sum <- harmonised_df |>
+    filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Unknown/Indeterminable", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) |>
     mutate(across(starts_with("V"),as.numeric))
   
   # Sum the columns
@@ -564,13 +564,13 @@ for (file_path in file_paths) {
   
   
   # 3) Calculate percentages (over pollen sum)
-  percentages_pollen_sum <- harmonised_df_sums |>filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) %>%
+  percentages_pollen_sum <- harmonised_df_sums |>filter(Habit_summarised %in% c("Bryophyta", "Fern", "Algae", "Aquatic", "Fungi", "Anthocerotophyta", "Parasitic", "Marchantiophyta", "Selaginellales", "Trees", "Herbs or Shrubs or Trees", "Shrubs or Trees", "Herbs or Shrubs", "Shrubs", "Herbs", "Geophytes")) |>
     mutate(across(starts_with("V"), as.numeric))
   
   # Identify the "Pollen sum" row
-  pollen_sum_row <- harmonised_df_sums %>%
-    filter(Pollen_type_harmonised == "Pollen sum") %>%
-    select(starts_with("V")) %>%
+  pollen_sum_row <- harmonised_df_sums |>
+    filter(Pollen_type_harmonised == "Pollen sum") |>
+    select(starts_with("V")) |>
     mutate(across(starts_with("V"), as.numeric))
 
   # Proceed only if no decimals found in percentages_pollen_sum data
@@ -580,7 +580,7 @@ for (file_path in file_paths) {
       mutate(across(starts_with("V"), ~ . / pollen_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "Pollen sum" row in the same column (.)
     
     # Round %
-    percentages_pollen_sum <- percentages_pollen_sum %>%
+    percentages_pollen_sum <- percentages_pollen_sum |>
       mutate(across(starts_with("V"), ~ round(.x, 3)))  
   } else {
     # If decimals found, skip percentage calculation
@@ -589,24 +589,24 @@ for (file_path in file_paths) {
   
   
   # 4) Calculate percentages (over total sum: Indeterminable & Unknown)
-  percentages_total_sum <- harmonised_df_sums %>%
-    filter(Habit_summarised %in% c("Unknown/Indeterminable"))%>%
+  percentages_total_sum <- harmonised_df_sums |>
+    filter(Habit_summarised %in% c("Unknown/Indeterminable"))|>
     mutate(across(starts_with("V"), as.numeric))
   
   # Identify the "Total sum" row
-  total_sum_row <- harmonised_df_sums %>%
-    filter(Pollen_type_harmonised == "Total sum") %>%
-    select(starts_with("V")) %>%
+  total_sum_row <- harmonised_df_sums |>
+    filter(Pollen_type_harmonised == "Total sum") |>
+    select(starts_with("V")) |>
     mutate(across(starts_with("V"), as.numeric))
   
   # Proceed only if no decimals found in percentages_total_sum data
   if (!has_decimals(percentages_total_sum)) {
     # Compute percentages by dividing each value by the "Total sum" row values
-    percentages_total_sum <- percentages_total_sum %>%
+    percentages_total_sum <- percentages_total_sum |>
       mutate(across(starts_with("V"), ~ . / total_sum_row[1, cur_column()] * 100))
     
     # Round %
-    percentages_total_sum <- percentages_total_sum %>%
+    percentages_total_sum <- percentages_total_sum |>
       mutate(across(starts_with("V"), ~ round(.x, 3)))  
   } else {
     # If decimals found, skip percentage calculation, optionally keep original data or handle differently
@@ -617,7 +617,7 @@ for (file_path in file_paths) {
   percentages_df <- rbind(percentages_pollen_sum,percentages_total_sum)
   
   # Join depth, sums and BP information from original df
-  original_df <- harmonised_df_sums%>%
+  original_df <- harmonised_df_sums|>
     filter(str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA|Pollen sum|Total sum"))
   
   final_df <- rbind(percentages_df,original_df)
