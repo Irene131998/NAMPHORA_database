@@ -6,7 +6,7 @@
 
 source("scripts/functions.R")
 
-libraries <-c("sf", "terra", "ggplot2", "dplyr", "readr", "leaflet", "htmlwidgets", "RColorBrewer")
+libraries <-c("sf", "terra", "ggplot2", "dplyr", "readr", "leaflet", "htmlwidgets", "RColorBrewer","ggnewscale","patchwork")
 
 
 # Install missing packages
@@ -100,7 +100,7 @@ regions <- regions |>  select(Region_Name,geometry)
 merged_phytogeographic_regions <- rbind(regions, phytogeographic_regions_White)
 
 # Save merged shapefile
-st_write(merged_phytogeographic_regions, "data/procesed_data/mapping_data/merged_phytogeographic_regions.shp")
+#st_write(merged_phytogeographic_regions, "data/procesed_data/mapping_data/merged_phytogeographic_regions.shp")
 
 ##  Sites----
 sites <- read_csv(normalizePath("metadata/pollen_data/database.csv"))
@@ -127,7 +127,6 @@ hs <- shade(slopes, aspect) # base shade for elevation plotting
 # Convert the raster to a data frame for plotting with ggplot2
 elevation_df <- as.data.frame(elevation_crop, xy = TRUE)
 colnames(elevation_df) <- c("x", "y", "value")
-
 
 #--------------------------------------------------------#
 # 2) Phytogeographical map -----
@@ -311,52 +310,120 @@ saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html
 
 ## 5.2) Static ----
 
-# Define output file
-png(normalizePath("outputs/maps/site_maps.png"),  
-    width = 25,  
-    height = 17,  
-    units = "cm",  
-    res = 2700,  # High resolution
-    pointsize = 12)  # Adjust text size for better readability
+# Convert rasters to data.frames
+hs_df <- as.data.frame(hs, xy = TRUE)
+names(hs_df)[3] <- "shade"
+
+elev_df <- as.data.frame(elevation_crop, xy = TRUE)
+names(elev_df)[3] <- "elev"
+
+# Combine site data
+fossil_dated <-  sites |> filter(Pollen=="Fossil",Dated == "Yes")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`)
+
+fossil_undated <-  sites |> filter(Pollen=="Fossil",Dated == "No")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`,Dated)
+
+modern <-  sites |> filter(Pollen=="Modern")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`)
 
 
-# Define the layout matrix
+# Define base map (hillshade + elevation)
+base_map <- list(
+  geom_raster(data = hs_df, aes(x = x, y = y, fill = shade)),
+  scale_fill_gradient(low = "white", high = "black", guide = "none"),
+  new_scale_fill(),
+  geom_raster(data = elev_df, aes(x = x, y = y, fill = elev), alpha = 0.5),
+  scale_fill_gradientn(colours = terrain.colors(25), name = "Elevation",
+                       guide = guide_colorbar(
+                         barwidth  = unit(0.5, "cm"))))
 
-layout(matrix(c(1, 1, 2, 2, 0,3,3, 0), nrow = 2, byrow = TRUE))
+# Define your palette
+palette <- c("#E31A1C", "#56B4E9", "#F0E442", "#E69F00", "#009E73")
 
-### Plot 1: Fossil dated Records ###
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
+# Ensure the column name is correct
+fossil_dated$`Biogeographic area` <- factor(fossil_dated$`Biogeographic area`)
+fossil_undated$`Biogeographic area` <- factor(fossil_undated$`Biogeographic area`)
+modern$`Biogeographic area` <- factor(modern$`Biogeographic area`)
 
-points(sites$Longitude[sites$Dated == "Yes"],  
-       sites$Latitude[sites$Dated == "Yes"],  
-       col = "black",   # Outline color
-       bg = "blue",    # Fill color
-       pch = 21, cex = 1)  
+# Plot
+p_fossil_dated <- ggplot() +
+  base_map +
+  new_scale_fill() +
+  geom_point(
+    data = fossil_dated,
+    aes(
+      x = Longitude, y = Latitude, fill = `Biogeographic area`  # map fill to the column
+    ),
+    shape = 21, color = "black", size = 2, stroke = 0.8
+  ) +
+  scale_fill_manual(values = palette, name = "Biogeographic area") +
+  coord_equal() +
+  labs(
+    title = "(a)",
+    x = "Longitude", y = "Latitude"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", hjust = 0)
+  )
 
-mtext("(a)", side = 3, line = 1, at = -20, cex = 0.8)
+p_fossil_undated <- ggplot() +
+  base_map +
+  new_scale_fill() +
+  geom_point(
+    data = fossil_undated,
+    aes(
+      x = Longitude, y = Latitude, fill = `Biogeographic area`  # map fill to the column
+    ),
+    shape = 21, color = "black", size = 2, stroke = 0.8
+  ) +
+  scale_fill_manual(values = palette, name = "Biogeographic area") +
+  coord_equal() +
+  labs(
+    title = "(b)",
+    x = "Longitude", y = "Latitude"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", hjust = 0)
+  )
 
+p_modern <- ggplot() +
+  base_map +
+  new_scale_fill() +
+  geom_point(
+    data = modern,
+    aes(
+      x = Longitude, y = Latitude, fill = `Biogeographic area`  # map fill to the column
+    ),
+    shape = 21, color = "black", size = 2, stroke = 0.8
+  ) +
+  scale_fill_manual(values = palette, name = "Biogeographic area") +
+  coord_equal() +
+  labs(
+    title = "(c)",
+    x = "Longitude", y = "Latitude"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", hjust = 0.25)
+  )
 
-### Plot 2: Fossil not dated Records ###
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = FALSE, axes = FALSE, add = TRUE)
-points(sites$Longitude[sites$Dated == "No"],  
-       sites$Latitude[sites$Dated == "No"],  
-       col = "black", bg = "red", pch = 21, cex = 1)  
+# Combine plots
+combined_plot <- (
+  (p_fossil_dated + p_fossil_undated) /  # top row
+    p_modern                              # bottom row
+) +
+  plot_layout(heights = c(1, 1), guides = "collect", widths = c(4, 1)) 
+  
+# Save combined plot
+ggsave(
+  "outputs/maps/site_maps.png",
+  plot = combined_plot,
+  width = 14, height = 7, dpi = 600
+)
 
-mtext("(b)", side = 3, line = 1, at = -20, cex = 0.8)
-
-### Plot 3: Modern Records ###
-plot(hs, col = gray(0:100 / 100), legend = FALSE, axes = TRUE)
-plot(elevation_crop, col = terrain.colors(25), alpha = 0.5, legend = TRUE, axes = FALSE, add = TRUE)
-
-points(sites$Longitude[sites$Dated == "Modern"],  
-       sites$Latitude[sites$Dated == "Modern"],  
-       col = "black", bg = "green", pch = 21, cex = 1) 
-
-mtext("(c)", side = 3, line = 1, at = -20, cex = 0.8)
-
-dev.off()
 
 #--------------------------------------------------------#
 # 6) Study area map ----
@@ -387,6 +454,63 @@ regions_to_plot <- merged_phytogeographic_regions %>%
   filter(Region_Name %in% c("Mediterranean", "Sahara Regional Transition","Arabian Peninsula","Sahel Regional Transition","Sudanian Region"))
 regions_to_plot$Region_Name <- droplevels(regions_to_plot$Region_Name)
 
+# Combine polygons by region
+regions_combined <- regions_to_plot %>%
+  group_by(Region_Name) %>%
+  summarise(geometry = st_union(geometry), .groups = "drop")
+
+plot(regions_combined$geometry, col = "white", border = "black")
+
+# Filter Sahara regions
+sahara <- regions_combined %>%
+  filter(Region_Name == "Sahara Regional Transition") 
+
+# Merge all polygons into one (fills internal gaps)
+sahara_filled <- st_union(sahara)
+
+sahara_filled_sf <- st_sf(
+  Region_Name = "Sahara Regional Transition",
+  geometry = sahara_filled
+)
+
+sahara_filled_sf <- sahara_filled_sf %>%
+  st_make_valid() %>%       # Fix invalid geometry
+  st_buffer(0)              # Merge tiny gaps/holes
+
+# Extract polygons as a list
+polys <- st_cast(sahara_filled_sf$geometry, "POLYGON")
+
+# Compute areas
+areas <- st_area(polys)
+
+# Keep only the largest polygon
+largest_poly <- polys[which.max(areas)]
+
+# Wrap back into sf as a single feature
+sahara_cleaned <- st_sf(
+  Region_Name = "Sahara Regional Transition",
+  geometry = st_sfc(largest_poly)
+)
+
+# Check 
+plot(sahara_cleaned$geometry, col = "yellow", border = "black")
+
+# Add cleand Saharan polygon to the other regions
+regions_combined <- regions_combined %>%
+  filter(Region_Name != "Sahara Regional Transition")
+
+regions_combined <- bind_rows(regions_combined, sahara_cleaned)
+
+plot(regions_combined$geometry, col = "yellow", border = "black")
+
+# Convert regions to a raster mask
+regions_vect <- vect(regions_combined)
+regions_raster <- rasterize(regions_vect, hs, field = 1)
+
+# Mask hs to only regions
+hs_masked <- mask(hs, regions_raster)
+
+plot(hs_masked)
 
 # Define output file
 png(normalizePath("outputs/maps/study_area.png"),  
@@ -402,22 +526,39 @@ layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE),
        heights = c(1))
 
 # Define colors
-n <- length(unique(regions_to_plot$Region_Name))
-colors_regions <- colorRampPalette(brewer.pal(12, "Paired"))(n)
+n <- length(unique(regions_combined$Region_Name))
+color_palette <- leaflet::colorFactor(
+  palette = c("#E31A1C", "#56B4E9", "#F0E442", "#E69F00", "#009E73"), 
+  domain = regions_combined$Region_Name
+)
+
+legend_colors <- color_palette(levels(regions_combined$Region_Name))
+
+# Ensure Region_Name is a factor
+regions_combined$Region_Name <- factor(regions_combined$Region_Name)
+
+# Create colors for legend
+legend_colors <- color_palette(levels(regions_combined$Region_Name))
+
 
 # Plot 1: map
 plot(elevation_crop_1, col = "lightgray", legend = FALSE, axes = TRUE)
-plot(st_geometry(regions_to_plot), 
-     col = colors_regions[as.numeric(regions_to_plot$Region_Name)], 
-     , border = "black", main = "", add = TRUE)
+plot(hs_masked, col = gray(0:100 / 100), legend = FALSE, axes = FALSE,add = TRUE)
+plot(
+  st_geometry(regions_combined),
+  col = adjustcolor(region_colors, alpha.f = 0.6), 
+  border = "black",
+  main = "",
+  add = TRUE
+)
 
 
 # Plot 1: Legend Phytogeographic Regions
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
-       legend = levels(regions_to_plot$Region_Name),
-       fill = colors_regions, 
+       legend = levels(regions_combined$Region_Name),
+       fill = legend_colors, 
        border = "black", 
        cex = 0.8, 
        title = "Study regions", 
@@ -425,3 +566,5 @@ legend("left",
        xpd = TRUE)
 
 dev.off()
+
+

@@ -340,7 +340,7 @@ ggsave(normalizePath("outputs/graphs/barplot_archive_type.png"),
        units = "in" 
 )
 
-# Create a violin plot
+# Create a boxplot
 
 # Filter archive types recorded in only one latitude and site:
 sites_archive_type_count_filtered <- sites_archive_type_count |>   group_by(Archive_type) |> 
@@ -349,47 +349,42 @@ sites_archive_type_count_filtered <- sites_archive_type_count |>   group_by(Arch
 
 sites_archive_type_count_filtered <- sites_archive_type_count_filtered |> filter(!Archive_type=="Unknown")
 
-# Calculate percentages so they are in the same scale!
-sites_archive_type_percentages <- sites_archive_type_count_filtered |>
-  group_by(Archive_type) |> 
-  mutate(
-    total_sites = sum(num_sites),
-    percent = round(num_sites / total_sites * 100,3)
-  ) |> 
-  ungroup()
+# Plot
 
-
-violin_plot_latitude_archive_type_num_sites <- ggplot(
-  sites_archive_type_percentages, 
-  aes(x = Archive_type, y = Latitude, fill = Archive_type, weight = percent)
+boxplot_latitude_archive_type_num_sites <- ggplot(
+  sites_archive_type_count_filtered, 
+  aes(x = Archive_type, y = Latitude, fill = Archive_type)
 ) +
-  geom_violin(
-    trim = FALSE, 
-    scale = "width",  # same max. width
-    width = 0.5          # wide violin
+  geom_boxplot(
+    width = 0.5,
+    outlier.shape = NA   # hide boxplot outliers since we’ll plot all points
+  ) +
+  geom_jitter(
+    aes(color = Archive_type),
+    width = 0.15,   # horizontal jitter
+    size = 2,
+    alpha = 0.7,
+    show.legend = FALSE
   ) +
   labs(x = "", y = "Latitude (degrees)") +
-  coord_cartesian(ylim = c(-10, 60)) +  # keeps all rows, just limits view
+  coord_cartesian(ylim = c(-10, 60)) +
   theme_minimal(base_size = 20) +
   scale_fill_manual(values = palette_2) +
+  scale_color_manual(values = palette_2) +
   theme(
     legend.position = "none",
     axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
     plot.margin = margin(t = 2, r = 2, b = 2, l = 1)
-  ) 
-
+  )
 
 # Save
-ggsave(normalizePath("outputs/graphs/violin_plot_latitude_archive_type_num_sites.png"), 
-       violin_plot_latitude_archive_type_num_sites, 
+ggsave(normalizePath("outputs/graphs/boxplot_latitude_archive_type_num_sites.png"), 
+       boxplot_latitude_archive_type_num_sites, 
        width = 12,
        height = 7,  
        dpi = 600,   # High resolution (600 DPI is standard for publication)
        units = "in" 
 )
-
-
-
 #--------------------------------------------------------#
 # 6) Altitudinal distribution of records according to their archive type----
 #--------------------------------------------------------#
@@ -444,39 +439,6 @@ ggsave(normalizePath("outputs/graphs/barplot_altitude_archive.png"),
        units = "in" 
 )
 
-# Violin plots
-#  Filter archive types recorded in only one altitude:
-sites_altitude_archive_count_filtered <- sites_altitude_archive_count |>   group_by(Archive_type) |> 
-  filter(n_distinct(Altitude) > 1)  |> 
-  ungroup()
-
-
-violin_plot_altitude_archive_num_sites <- ggplot(
-  sites_altitude_archive_count_filtered, 
-  aes(x = Archive_type, y = Altitude, fill = Archive_type, weight = num_sites)
-) +
-  geom_violin(trim = FALSE, scale = "width", width = 0.5) +  # wider violins
-  labs(
-    x = "Archive type",
-    y = "Altitude (meters)"
-  ) +
-  theme_minimal(base_size = 16) +
-  scale_fill_manual(values = palette_2) +
-  theme(
-    legend.position = "none",
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 20),
-    plot.margin = margin(10, 10, 10, 10)
-    
-  )
-
-# Save
-ggsave(normalizePath("outputs/graphs/violin_plot_altitude_archive_num_sites.png"), 
-       violin_plot_altitude_archive_num_sites, 
-       width = 10,   
-       height = 8,  
-       dpi = 600,   # High resolution (300 DPI is standard for publication)
-       units = "in" 
-)
 
 #--------------------------------------------------------#
 # 7) Altitudinal distribution of records according to the biogeographic area----
@@ -494,7 +456,7 @@ sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
 names(sites_altitude_type)[3] <- "Biogeographic_area"
 
 # Exclude marine cores
-sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
+# sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
 
 # Count the number of sites per altitude and biogeographic area
 sites_altitude_type_count <- sites_altitude_type |>
@@ -503,61 +465,44 @@ sites_altitude_type_count <- sites_altitude_type |>
 
 sites_altitude_type_count <- na.omit(sites_altitude_type_count)
 
-# Create the bar plot with different colors for each biogeographic area
-barplot_altitude_biogeography <- ggplot(sites_altitude_type_count, aes(x = num_sites, y = factor(Altitude), fill = Biogeographic_area)) +
-  geom_col() +  # Creates bars for each altitude
-  labs(
-    x = "Number of sites",
-    y = "Altitude (meters)",
-    fill = "Biogeographic area",
-  ) +
-  theme_minimal() +
-  scale_fill_manual(values = palette_2) +
-    theme(
-    legend.position = "top", 
-    legend.text = element_text(size = 10),  
-    legend.title = element_text(size = 16, face = "bold"),  
-    axis.text.x = element_text(size = 10), 
-    axis.text.y = element_text(size = 10), 
-    axis.title.x = element_text(size = 16, face = "bold"),  
-    axis.title.y = element_text(size = 16, face = "bold"),  
-    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)  
-  )
-# Save
-ggsave(normalizePath("outputs/graphs/barplot_altitude_biogeography.png"), 
-       barplot_altitude_biogeography, 
-       width = 10,   
-       height = 8,  
-       dpi = 600,   # High resolution (300 DPI is standard for publication)
-       units = "in" 
-)
+# Boxplot
 
-# Violin plots
-
-violin_plot_altitude_biogeography_num_sites <- ggplot(
+boxplot_altitude_biogeography_num_sites <- ggplot(
   sites_altitude_type_count, 
-  aes(x = Biogeographic_area, y = Altitude, fill = Biogeographic_area, weight = num_sites)
+  aes(x = Biogeographic_area, y = Altitude, fill = Biogeographic_area)
 ) +
-  geom_violin(trim = FALSE, scale = "width", width = 0.5) + 
+  geom_boxplot(
+    width = 0.5,
+    outlier.shape = NA   # hide outliers since we'll overlay points
+  ) +
+  geom_jitter(
+    aes(color = Biogeographic_area),
+    width = 0.15,   # horizontal jitter
+    size = 2,
+    alpha = 0.7,
+    show.legend = FALSE
+  ) +
   labs(
     x = "Biogeographic area",
     y = "Altitude (meters)"
   ) +
   theme_minimal(base_size = 16) +
   scale_y_continuous(
-    limits = c(-5000, 5000),            
-    breaks = seq(-5000, 5000, by = 1000)) + 
+    limits = c(-5000, 5000),
+    breaks = seq(-5000, 5000, by = 1000)
+  ) +
   scale_fill_manual(values = palette_2) +
+  scale_color_manual(values = palette_2) +
   theme(
     legend.position = "none",
     axis.text.x = element_text(angle = 45, hjust = 1, size = 16),
-    plot.margin = margin(10, 10, 10, 10))
-
+    plot.margin = margin(10, 10, 10, 10)
+  )
 
 
 # Save
-ggsave(normalizePath("outputs/graphs/violin_plot_altitude_biogeography_num_sites.png"), 
-       violin_plot_altitude_biogeography_num_sites, 
+ggsave(normalizePath("outputs/graphs/boxplot_altitude_biogeography_num_sites.png"), 
+       boxplot_altitude_biogeography_num_sites, 
        width = 10,   
        height = 5.5,  
        dpi = 600,   # High resolution (600 DPI is standard for publication)
