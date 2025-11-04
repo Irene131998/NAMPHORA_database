@@ -37,6 +37,8 @@ palette_2 <- c(
   "#FDBF6F", "#CAB2D6", "#6A3D9A", "#FF7F00")
 
 
+palette_3 <- c("darkorange1", "olivedrab", "lightgoldenrod1", "goldenrod1", "chartreuse2") # FOR REGIONS
+
 #--------------------------------------------------------#
 # 2) Number sites per bigeographic region----
 #--------------------------------------------------------#
@@ -260,13 +262,13 @@ dated_records_binned <- na.omit(dated_records_binned)
 dated_records_binned <- filter(dated_records_binned, year_bin <= 20000)
 
 # Create the bar plot with color per Biogeographic area
-dated_records_temporal_distribution <- ggplot(dated_records_binned, 
+dated_records_temporal_distribution_v1 <- ggplot(dated_records_binned, 
                                               aes(x = year_bin, y = n, fill = `Biogeographic area`)) +
   geom_bar(stat = "identity", color = "black", position = "stack") +  # Stack bars per Biogeographic area
   theme_minimal() +
   labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
   scale_x_reverse() +  # Reverse x-axis for chronological representation
-  scale_fill_manual(values = palette_2) +
+  scale_fill_manual(values = palette_3) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
         axis.text.y = element_text(size = 12),  
         axis.title.x = element_text(size = 12), 
@@ -281,15 +283,46 @@ dated_records_temporal_distribution <- ggplot(dated_records_binned,
   annotate("text", x = (5500 + 14800) / 2, y = 35, label = "AHP", color = "black", size = 5, fontface = "bold", hjust = 0.5)  # Add text "AHP" at the center of the line
 
 
+
+dated_records_temporal_distribution_v2 <- ggplot(dated_records_binned, 
+                                              aes(x = year_bin, y = n, fill = `Biogeographic area`)) +
+  
+  # AHP shaded region
+  geom_rect(aes(xmin = 14800, xmax = 5500, 
+                ymin = 0, ymax = 100),
+            fill = "lightgrey", alpha = 0.05) +  # pearl-grey translucent background
+  
+  # Bars 
+  geom_bar(stat = "identity", color = "black", position = "stack", alpha = 0.9) +
+  
+  # Annotate AHP on top 
+  annotate("text", x = (5500 + 14800) / 2, y = 105, label = "AHP", color = "black", size = 5, fontface = "bold", hjust = 0.5)  + # Add text "AHP" at the center of the line
+
+  
+  # Scales and theme 
+  scale_x_reverse() +
+  scale_fill_manual(values = palette_3) +
+  theme_minimal() +
+  labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
+        axis.text.y = element_text(size = 12),  
+        axis.title.x = element_text(size = 12), 
+        axis.title.y = element_text(size = 12),
+        plot.title = element_text(size = 14),
+        legend.title = element_text(size = 8), 
+        legend.text = element_text(size = 8))
+
+
+
 ggsave(normalizePath("outputs/graphs/dated_records_temporal_distribution.png"), 
-       dated_records_temporal_distribution, 
+       dated_records_temporal_distribution_v2, 
        width = 6,   
        height = 4,  
        dpi = 600,   # High resolution (300 DPI is standard for publication)
        units = "in" 
 )
 
-dated_records_temporal_distribution
+dated_records_temporal_distribution_v2
 
 #--------------------------------------------------------#
 # 5) Latitudinal distribution of records according to their archive type----
@@ -319,7 +352,7 @@ barplot_latitude_archive_type <- ggplot(sites_archive_type_count, aes(x = num_si
     fill = "Archive Type",
   ) +
   theme_minimal() +
-  scale_fill_manual(values = palette_2) +
+  scale_fill_manual(values = palette_1) +
     theme(
     legend.position = "top", 
     legend.text = element_text(size = 10),  
@@ -369,8 +402,8 @@ boxplot_latitude_archive_type_num_sites <- ggplot(
   labs(x = "", y = "Latitude (degrees)") +
   coord_cartesian(ylim = c(-10, 60)) +
   theme_minimal(base_size = 20) +
-  scale_fill_manual(values = palette_2) +
-  scale_color_manual(values = palette_2) +
+  scale_fill_manual(values = palette_1) +
+  scale_color_manual(values = palette_1) +
   theme(
     legend.position = "none",
     axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
@@ -419,7 +452,7 @@ barplot_altitude_archive <- ggplot(sites_altitude_archive_count, aes(x = num_sit
     fill = "Archive type",
   ) +
   theme_minimal() +
-  scale_fill_manual(values = palette_2) +
+  scale_fill_manual(values = palette_1) +
   theme(
     legend.position = "top", 
     legend.text = element_text(size = 10),  
@@ -455,15 +488,37 @@ sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
 
 names(sites_altitude_type)[3] <- "Biogeographic_area"
 
+# Number of marine records per biogeographic area
+n_records_marine <- sites_altitude_type |> filter(Archive_type =="Marine core")
+n_records_marine <- n_records_marine |> group_by(Biogeographic_area) |>
+  summarise(num_sites = n(), .groups = "drop")
+
 # Exclude marine cores
-# sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
+sites_altitude_type <- sites_altitude_type |> filter(!Altitude<0)
 
 # Count the number of sites per altitude and biogeographic area
 sites_altitude_type_count <- sites_altitude_type |>
   group_by(Altitude, Biogeographic_area) |>
   summarise(num_sites = n(), .groups = "drop")
 
+
 sites_altitude_type_count <- na.omit(sites_altitude_type_count)
+
+# Join the counts of marine records to the biogeographic areas
+biogeo_labels <- n_records_marine |>
+  mutate(label = paste0(Biogeographic_area, "\n","(N marine records = ", " ", num_sites, ")")) |>
+  select(Biogeographic_area, label)
+
+# If some Biogeographic_area have 0 marine sites, include them with (0)
+all_areas <- unique(sites_altitude_type_count$Biogeographic_area)
+biogeo_labels <- full_join(
+  tibble(Biogeographic_area = all_areas),
+  biogeo_labels,
+  by = "Biogeographic_area"
+) |>
+  mutate(label = ifelse(is.na(label),
+                        paste0(Biogeographic_area, " (0)"),
+                        label))
 
 # Boxplot
 
@@ -473,38 +528,40 @@ boxplot_altitude_biogeography_num_sites <- ggplot(
 ) +
   geom_boxplot(
     width = 0.5,
-    outlier.shape = NA   # hide outliers since we'll overlay points
+    outlier.shape = NA
   ) +
   geom_jitter(
     aes(color = Biogeographic_area),
-    width = 0.15,   # horizontal jitter
+    width = 0.15,
     size = 2,
     alpha = 0.7,
     show.legend = FALSE
   ) +
   labs(
-    x = "Biogeographic area",
+    x = "",
     y = "Altitude (meters)"
   ) +
   theme_minimal(base_size = 16) +
-  scale_y_continuous(
-    limits = c(-5000, 5000),
-    breaks = seq(-5000, 5000, by = 1000)
-  ) +
-  scale_fill_manual(values = palette_2) +
-  scale_color_manual(values = palette_2) +
+  scale_y_continuous() +
+  scale_fill_manual(values = palette_3) +
+  scale_color_manual(values = palette_3) +
+  scale_x_discrete(labels = setNames(biogeo_labels$label, biogeo_labels$Biogeographic_area)) +
   theme(
     legend.position = "none",
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 16),
+    axis.text.x = element_text(
+      angle = 0,        # keep labels horizontal
+      hjust = 0.5,      # center horizontally
+      vjust = 1,        # optional: tweak vertical position
+      size = 16
+    ),
     plot.margin = margin(10, 10, 10, 10)
   )
-
 
 # Save
 ggsave(normalizePath("outputs/graphs/boxplot_altitude_biogeography_num_sites.png"), 
        boxplot_altitude_biogeography_num_sites, 
-       width = 10,   
-       height = 5.5,  
+       width = 15,   
+       height = 10,  
        dpi = 600,   # High resolution (600 DPI is standard for publication)
        units = "in" 
 )
@@ -635,7 +692,7 @@ pft_barplot <- ggplot(pfts_counts, aes(x = trait, y = count, fill = trait)) +
   geom_bar(stat = "identity", position = "dodge") +
   theme_minimal() +
   labs(x = "", y = "Number of harmonised pollen types", fill = "Taxonomic Level") +
-  scale_fill_manual(values = palette_2) +
+  scale_fill_manual(values = palette_1) +
   theme(
     axis.text.x = element_text(angle = 50, hjust = 1, size = 15),
     axis.text.y = element_text(size = 20),

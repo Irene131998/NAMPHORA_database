@@ -6,7 +6,7 @@
 
 source("scripts/functions.R")
 
-libraries <-c("sf", "terra", "ggplot2", "dplyr", "readr", "leaflet", "htmlwidgets", "RColorBrewer","ggnewscale","patchwork")
+libraries <-c("sf", "terra", "ggplot2", "dplyr", "readr", "leaflet", "htmlwidgets", "RColorBrewer","ggnewscale","patchwork","maptiles","ggspatial","rnaturalearth")
 
 
 # Install missing packages
@@ -132,6 +132,57 @@ colnames(elevation_df) <- c("x", "y", "value")
 # 2) Phytogeographical map -----
 #--------------------------------------------------------#
 
+# Merge subpolygons into one per region
+merged_regions <- merged_phytogeographic_regions |> 
+  group_by(Region_Name) |>    # group by the region name
+  summarise(geometry = st_union(geometry))  # merge all polygons in each group
+
+# Merge areas within the Sahara region into Saharan polygon
+
+## Filter Sahara regions
+sahara <- merged_regions %>%
+  filter(Region_Name == "Sahara Regional Transition") 
+
+## Merge all polygons into one (fills internal gaps)
+sahara_filled <- st_union(sahara)
+
+sahara_filled_sf <- st_sf(
+  Region_Name = "Sahara Regional Transition",
+  geometry = sahara_filled
+)
+
+sahara_filled_sf <- sahara_filled_sf %>%
+  st_make_valid() %>%       # Fix invalid geometry
+  st_buffer(0)              # Merge tiny gaps/holes
+
+## Extract polygons as a list
+polys <- st_cast(sahara_filled_sf$geometry, "POLYGON")
+
+## Compute areas
+areas <- st_area(polys)
+
+## Keep only the largest polygon
+largest_poly <- polys[which.max(areas)]
+
+## Wrap back into sf as a single feature
+sahara_cleaned <- st_sf(
+  Region_Name = "Sahara Regional Transition",
+  geometry = st_sfc(largest_poly)
+)
+
+## Add cleand Saharan polygon to the other regions
+merged_regions <- merged_regions %>%
+  filter(Region_Name != "Sahara Regional Transition")
+
+merged_regions <- bind_rows(merged_regions, sahara_cleaned)
+
+## Make sure Region_Name is a factor
+merged_regions$Region_Name <- factor(merged_regions$Region_Name)
+
+# Get world countries
+countries <- ne_countries(scale = "medium", returnclass = "sf")
+
+# PLOT
 png(normalizePath("outputs/maps/phytogeographical_regions_map.png"),  
     width = 29,  
     height = 15,  
@@ -146,21 +197,55 @@ layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE),
 ### Plot 1: Phytogeographic Regions ###
 
 # Define colors
-n <- length(unique(merged_phytogeographic_regions$Region_Name))
-colors_regions <- colorRampPalette(brewer.pal(12, "Paired"))(n)
+palette_main <- c(
+  "Arabian Peninsula" = "darkorange1",
+  "Sahara Regional Transition" = "lightgoldenrod1",
+  "Sudanian Region" = "chartreuse2",
+  "Sahel Regional Transition" = "goldenrod1"
+)
+
+# Mediterranean sub-regions
+palette_medit <- c(
+  "Mediterranean Europe" = "olivedrab3",
+  "Mediterranean Africa" = "olivedrab2",
+  "Mediterranean/Sahara Transition" = "olivedrab4"
+)
+
+# Get all regions
+all_regions <- unique(merged_regions$Region_Name)
+
+# Combine the ones already colored
+colored_regions <- c(names(palette_main), names(palette_medit))
+
+# Remaining regions get shades of grey
+palette_grey <- setNames(
+  gray.colors(length(all_regions[!all_regions %in% colored_regions]), start = 0.8, end = 0.4),
+  all_regions[!all_regions %in% colored_regions]
+)
+
+# Final palette
+palette_final <- c(palette_main, palette_medit, palette_grey)
+col_vec <- palette_final[as.character(merged_regions$Region_Name)]
 
 plot(elevation_crop, col = terrain.colors(25), alpha = 0, legend = FALSE, axes = TRUE)
-plot(st_geometry(merged_phytogeographic_regions), 
-     col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
-     , border = "black", main = "", add = TRUE)
+plot(st_geometry(merged_regions),
+     col = col_vec,  
+     border = NA,
+     main = "",
+     add = TRUE)
 
+# Draw country borders on top
+plot(st_geometry(countries), 
+     border = "black", 
+     lwd = 0.7,       # line width of country borders
+     add = TRUE)
 
 ### Plot 2: Legend Phytogeographic Regions ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
-       legend = levels(merged_phytogeographic_regions$Region_Name),
-       fill = colors_regions, 
+       legend = names(palette_final),
+       fill = palette_final,
        border = "black", 
        cex = 0.8, 
        title = "Phytogeographic regions", 
@@ -275,158 +360,8 @@ legend("left",
 
 dev.off()
 
-#--------------------------------------------------------#
-# 5) Combined map (fossil + modern) ----
-#--------------------------------------------------------#
 
-## 5.1.) Interactive ----
-# Eliminate na rows
-sites <- sites |>
-  filter(!is.na(Dated))
-
-# Create a color palette based on the "Dated" column
-color_palette <- colorFactor(palette =  c("green", "red","blue"), domain = sites$Dated)
-
-# Create leaflet map 
-
-sites_map <- leaflet(sites) %>%
-  addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
-  addCircleMarkers(
-    lng = ~Longitude, lat = ~Latitude,
-    color = ~color_palette(Dated),  # Color based on "Dated"
-    radius = 2, fillOpacity = 0.8,
-    popup = ~paste( "<b>Name:</b>", Site_name_machine_readable, "<br>",
-                    "<b>Dated:</b>", Dated, "<br>",
-                    "<b>Link:</b>", `Link to database`, "<br>")  # Show name of site, date info and link
-  ) %>%
-  addLegend(
-    position = "bottomright", 
-    pal = color_palette, values = ~Dated, 
-    title = "Dated", opacity = 1
-  )
-
-# Save as an HTML file
-saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html"), selfcontained = TRUE)
-
-## 5.2) Static ----
-
-# Convert rasters to data.frames
-hs_df <- as.data.frame(hs, xy = TRUE)
-names(hs_df)[3] <- "shade"
-
-elev_df <- as.data.frame(elevation_crop, xy = TRUE)
-names(elev_df)[3] <- "elev"
-
-# Combine site data
-fossil_dated <-  sites |> filter(Pollen=="Fossil",Dated == "Yes")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`)
-
-fossil_undated <-  sites |> filter(Pollen=="Fossil",Dated == "No")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`,Dated)
-
-modern <-  sites |> filter(Pollen=="Modern")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`)
-
-
-# Define base map (hillshade + elevation)
-base_map <- list(
-  geom_raster(data = hs_df, aes(x = x, y = y, fill = shade)),
-  scale_fill_gradient(low = "white", high = "black", guide = "none"),
-  new_scale_fill(),
-  geom_raster(data = elev_df, aes(x = x, y = y, fill = elev), alpha = 0.5),
-  scale_fill_gradientn(colours = terrain.colors(25), name = "Elevation",
-                       guide = guide_colorbar(
-                         barwidth  = unit(0.5, "cm"))))
-
-# Define your palette
-palette <- c("#E31A1C", "#56B4E9", "#F0E442", "#E69F00", "#009E73")
-
-# Ensure the column name is correct
-fossil_dated$`Biogeographic area` <- factor(fossil_dated$`Biogeographic area`)
-fossil_undated$`Biogeographic area` <- factor(fossil_undated$`Biogeographic area`)
-modern$`Biogeographic area` <- factor(modern$`Biogeographic area`)
-
-# Plot
-p_fossil_dated <- ggplot() +
-  base_map +
-  new_scale_fill() +
-  geom_point(
-    data = fossil_dated,
-    aes(
-      x = Longitude, y = Latitude, fill = `Biogeographic area`  # map fill to the column
-    ),
-    shape = 21, color = "black", size = 2, stroke = 0.8
-  ) +
-  scale_fill_manual(values = palette, name = "Biogeographic area") +
-  coord_equal() +
-  labs(
-    title = "(a)",
-    x = "Longitude", y = "Latitude"
-  ) +
-  theme_minimal(base_size = 10) +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold", hjust = 0)
-  )
-
-p_fossil_undated <- ggplot() +
-  base_map +
-  new_scale_fill() +
-  geom_point(
-    data = fossil_undated,
-    aes(
-      x = Longitude, y = Latitude, fill = `Biogeographic area`  # map fill to the column
-    ),
-    shape = 21, color = "black", size = 2, stroke = 0.8
-  ) +
-  scale_fill_manual(values = palette, name = "Biogeographic area") +
-  coord_equal() +
-  labs(
-    title = "(b)",
-    x = "Longitude", y = "Latitude"
-  ) +
-  theme_minimal(base_size = 10) +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold", hjust = 0)
-  )
-
-p_modern <- ggplot() +
-  base_map +
-  new_scale_fill() +
-  geom_point(
-    data = modern,
-    aes(
-      x = Longitude, y = Latitude, fill = `Biogeographic area`  # map fill to the column
-    ),
-    shape = 21, color = "black", size = 2, stroke = 0.8
-  ) +
-  scale_fill_manual(values = palette, name = "Biogeographic area") +
-  coord_equal() +
-  labs(
-    title = "(c)",
-    x = "Longitude", y = "Latitude"
-  ) +
-  theme_minimal(base_size = 10) +
-  theme(
-    legend.position = "right",
-    plot.title = element_text(face = "bold", hjust = 0.25)
-  )
-
-# Combine plots
-combined_plot <- (
-  (p_fossil_dated + p_fossil_undated) /  # top row
-    p_modern                              # bottom row
-) +
-  plot_layout(heights = c(1, 1), guides = "collect", widths = c(4, 1)) 
-  
-# Save combined plot
-ggsave(
-  "outputs/maps/site_maps.png",
-  plot = combined_plot,
-  width = 14, height = 7, dpi = 600
-)
-
-
-#--------------------------------------------------------#
-# 6) Study area map ----
+# 5) Study regions map ----
 #--------------------------------------------------------#
 
 merged_phytogeographic_regions$Region_Name <- as.character(merged_phytogeographic_regions$Region_Name)
@@ -513,7 +448,7 @@ hs_masked <- mask(hs, regions_raster)
 plot(hs_masked)
 
 # Define output file
-png(normalizePath("outputs/maps/study_area.png"),  
+png(normalizePath("outputs/maps/study_regions.png"),  
     width = 13,  
     height = 7,  
     units = "cm",  
@@ -525,29 +460,32 @@ layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE),
        widths = c(2, 1),  # Increase the width of the first plot (larger space)
        heights = c(1))
 
-# Define colors
-n <- length(unique(regions_combined$Region_Name))
+# Define colours
+
+regions_combined$Region_Name <- factor( #  Ensure Region_Name is a factor
+  regions_combined$Region_Name,
+  levels = c("Arabian Peninsula", "Mediterranean", "Sahara Regional Transition", "Sahel Regional Transition", "Sudanian Region")
+)
+regions_combined <- regions_combined[order(regions_combined$Region_Name), ]
+
 color_palette <- leaflet::colorFactor(
-  palette = c("#E31A1C", "#56B4E9", "#F0E442", "#E69F00", "#009E73"), 
-  domain = regions_combined$Region_Name
+  palette = c("darkorange1", "olivedrab", "lightgoldenrod1", "goldenrod1", "chartreuse2"),
+  domain = regions_combined$Region_Name,
+  ordered = TRUE
 )
 
-legend_colors <- color_palette(levels(regions_combined$Region_Name))
-
-# Ensure Region_Name is a factor
-regions_combined$Region_Name <- factor(regions_combined$Region_Name)
-
 # Create colors for legend
-legend_colors <- color_palette(levels(regions_combined$Region_Name))
-
+legend_labels <- levels(regions_combined$Region_Name)
+legend_colors <- color_palette(legend_labels)
 
 # Plot 1: map
 plot(elevation_crop_1, col = "lightgray", legend = FALSE, axes = TRUE)
 plot(hs_masked, col = gray(0:100 / 100), legend = FALSE, axes = FALSE,add = TRUE)
 plot(
   st_geometry(regions_combined),
-  col = adjustcolor(region_colors, alpha.f = 0.6), 
+  col = adjustcolor(legend_colors, alpha.f = 0.6), 
   border = "black",
+  lwd = 0.5,       # thinner borders (default is 1)
   main = "",
   add = TRUE
 )
@@ -567,4 +505,221 @@ legend("left",
 
 dev.off()
 
+#--------------------------------------------------------#
+#6) Study area map ----
+#--------------------------------------------------------#
+# Get extent
+range(na.omit(sites$Latitude))
+range(na.omit(sites$Longitude))
 
+xmin <- as.numeric(-21.0262)
+xmax <- as.numeric(60.8325)
+ymin <- as.numeric(7.516667)
+ymax <- as.numeric(40.963610)
+
+
+bbox_sf <- st_as_sfc(st_bbox(
+  c(xmin = -21.0262, xmax = 60.8325, ymin = 7.516667, ymax = 40.963610),
+  crs = 4326  # <- WGS84 (lat/long)
+))
+
+# Download satellite map
+sat_map <- get_tiles(bbox_sf, provider = "Esri.WorldImagery", zoom = 4)
+
+map_study_area <- ggplot() +
+  layer_spatial(sat_map) +        
+  annotation_north_arrow(location = "tr", which_north = "true",
+                         style = north_arrow_fancy_orienteering()) + # north arrow
+  coord_sf(crs = st_crs(4326),
+           xlim = c(xmin, xmax),
+           ylim = c(ymin, ymax),
+           expand = FALSE) +  # flat map
+  theme_minimal(base_size = 16) +   # increases all text a bit
+  labs(
+    title = "",
+    x = "Longitude",
+    y = "Latitude"
+  ) +
+  theme(
+    axis.title = element_text(size = 18),               # axis titles bigger
+    axis.text = element_text(size = 14),                               # axis tick labels
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+
+map_study_area
+
+# Save plot
+ggsave(
+  "outputs/maps/study_area.png",
+  plot = map_study_area,
+  width = 14, height = 7, dpi = 600
+)
+
+
+#--------------------------------------------------------#
+# 7) Fossil and modern sites ----
+#--------------------------------------------------------#
+
+## 7.1.) Interactive ----
+# Eliminate na rows
+sites <- sites |>
+  filter(!is.na(Dated))
+
+# Create a color palette based on the "Dated" column
+color_palette <- colorFactor(palette =  c("green", "red","blue"), domain = sites$Dated)
+
+# Create leaflet map 
+
+sites_map <- leaflet(sites) %>%
+  addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
+  addCircleMarkers(
+    lng = ~Longitude, lat = ~Latitude,
+    color = ~color_palette(Dated),  # Color based on "Dated"
+    radius = 2, fillOpacity = 0.8,
+    popup = ~paste( "<b>Name:</b>", Site_name_machine_readable, "<br>",
+                    "<b>Dated:</b>", Dated, "<br>",
+                    "<b>Link:</b>", `Link to database`, "<br>")  # Show name of site, date info and link
+  ) %>%
+  addLegend(
+    position = "bottomright", 
+    pal = color_palette, values = ~Dated, 
+    title = "Dated", opacity = 1
+  )
+
+# Save as an HTML file
+saveWidget(sites_map,normalizePath("outputs/maps/full_sites_interactive_map.html"), selfcontained = TRUE)
+
+## 7.2) Static ----
+
+# Combine site data
+fossil_dated <-  sites |> filter(Pollen=="Fossil",Dated == "Yes")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`)
+
+fossil_undated <-  sites |> filter(Pollen=="Fossil",Dated == "No")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`,Dated)
+
+modern <-  sites |> filter(Pollen=="Modern")  |>  select(Site_name_machine_readable,Longitude, Latitude, `Biogeographic area`)
+
+# Define palette
+palette <- c("darkorange1", "olivedrab", "lightgoldenrod1", "goldenrod1", "chartreuse2")
+
+# Ensure the column name is correct
+fossil_dated$`Biogeographic area` <- factor(fossil_dated$`Biogeographic area`)
+fossil_undated$`Biogeographic area` <- factor(fossil_undated$`Biogeographic area`)
+modern$`Biogeographic area` <- factor(modern$`Biogeographic area`)
+
+
+# Download satellite map
+bbox_sf <- st_as_sfc(st_bbox(
+  c(xmin = -22, xmax = 62, ymin = 7, ymax = 42),
+  crs = 4326  # <- wider area
+))
+sat_map <- get_tiles(bbox_sf, provider = "Esri.WorldImagery", zoom = 5)
+
+
+# Plot
+p_fossil_dated <- ggplot() +
+  layer_spatial(sat_map) +
+  annotation_north_arrow(
+    location = "tr", which_north = "true",
+    style = north_arrow_fancy_orienteering()
+  ) +
+  geom_point(
+    data = fossil_dated,
+    aes(x = Longitude, y = Latitude, fill = `Biogeographic area`),
+    shape = 21, color = "black", size = 3, stroke = 0.8
+  ) +
+  scale_fill_manual(values = palette, name = "Biogeographic area") +
+  coord_sf(
+    xlim = c(-22, 62),
+    ylim = c(7, 42),
+    expand = FALSE
+  ) +
+  labs(
+    title = "(a)",
+    x = "Longitude", y = "Latitude"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", hjust = 0),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12)
+  )
+
+
+p_fossil_undated <-ggplot() +
+  layer_spatial(sat_map) +
+  annotation_north_arrow(
+    location = "tr", which_north = "true",
+    style = north_arrow_fancy_orienteering()
+  ) +
+  geom_point(
+    data = fossil_undated,
+    aes(x = Longitude, y = Latitude, fill = `Biogeographic area`),
+    shape = 21, color = "black", size = 3, stroke = 0.8
+  ) +
+  scale_fill_manual(values = palette, name = "Biogeographic area") +
+  coord_sf(
+    xlim = c(-22, 62),
+    ylim = c(7, 42),
+    expand = FALSE
+  ) +
+  labs(
+    title = "(b)",
+    x = "Longitude", y = "Latitude"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", hjust = 0),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12)
+  )
+
+p_modern <- ggplot() +
+  layer_spatial(sat_map) +
+  annotation_north_arrow(
+    location = "tr", which_north = "true",
+    style = north_arrow_fancy_orienteering()
+  ) +
+  geom_point(
+    data = modern,
+    aes(x = Longitude, y = Latitude, fill = `Biogeographic area`),
+    shape = 21, color = "black", size = 3, stroke = 0.8
+  ) +
+  scale_fill_manual(values = palette, name = "Biogeographic area") +
+  coord_sf(
+    xlim = c(-22, 62),
+    ylim = c(7, 42),
+    expand = FALSE
+  ) +
+  labs(
+    title = "(c)",
+    x = "Longitude", y = "Latitude"
+  ) +
+  theme_minimal(base_size = 12) +
+   theme(
+    legend.position = "right",
+    legend.title = element_text(size = 14, face = "bold"),   # bigger legend title
+    legend.text  = element_text(size = 12),                  # bigger legend labels
+    legend.key.size = unit(0.8, "cm"),                       # bigger symbol boxes
+    legend.spacing.y = unit(0.3, "cm"),                      # vertical space between items
+    plot.title = element_text(face = "bold", hjust = 0.25)
+  )
+
+# Combine plots
+combined_plot <- (
+  (p_fossil_dated + p_fossil_undated) /  # top row
+    p_modern                              # bottom row
+) +
+  plot_layout(heights = c(1, 1), guides = "collect", widths = c(4, 1)) 
+
+# Save combined plot
+ggsave(
+  "outputs/maps/site_maps.png",
+  plot = combined_plot,
+  width = 14, height = 7, dpi = 600
+)
+
+
+#--------------------------------------------------------#

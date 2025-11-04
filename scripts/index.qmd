@@ -385,7 +385,8 @@ compiled in this database)
 
 source("functions.R")
 
-libraries <- c("dplyr","readxl","readr","here","tidyr","BIEN","purrr","sp","terra","geodata","tidyterra","ggtext","ggplot2","openxlsx","stringr","leaflet","sf","quarto","htmlwidgets","terra","RColorBrewer")
+libraries <- c("dplyr","readxl","readr","here","tidyr","BIEN","purrr","sp","terra","geodata","tidyterra","ggtext","ggplot2","openxlsx","stringr","leaflet","sf","quarto","htmlwidgets","terra","RColorBrewer","ggnewscale","patchwork","maptiles","ggspatial","rnaturalearth")
+
 
 # Install missing packages
 invisible(lapply(libraries, install_if_missing))
@@ -540,72 +541,127 @@ palette_2 <- c(
   "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#1F78B4", "#33A02C", "#FB9A99", "#0072B2",
   "#FDBF6F", "#CAB2D6", "#6A3D9A", "#FF7F00")
 
+
+palette_3 <- c("darkorange1", "olivedrab", "lightgoldenrod1", "goldenrod1", "chartreuse2") # FOR REGIONS
+
 ```
 
 ```{r}
 #| echo: false
 #| output: true
-#| fig-cap: "Figure 2. Map of the phytogeographical regions (a) from White (1983) and Olson et al. (2001) and the biome map (b) from Olson et al. (2001)."
+#| fig-cap: "Figure 2. Map of the phytogeographical regions from White (1983) and Olson et al. (2001)."
 
-# Define the layout matrix
-layout_matrix <- matrix(c(
-  1, 2,
-  3, 4), nrow = 2, byrow = TRUE)
+# Merge subpolygons into one per region
+merged_regions <- merged_phytogeographic_regions |> 
+  group_by(Region_Name) |>    # group by the region name
+  summarise(geometry = st_union(geometry))  # merge all polygons in each group
 
-layout(layout_matrix)  # Apply layout here
+# Merge areas within the Sahara region into Saharan polygon
 
-# Reduce margins to decrease space between plots
-par(mar = c(3, 3, 2, 2), oma = c(0, 0, 0, 0))
+## Filter Sahara regions
+sahara <- merged_regions %>%
+  filter(Region_Name == "Sahara Regional Transition") 
 
+## Merge all polygons into one (fills internal gaps)
+sahara_filled <- st_union(sahara)
+
+sahara_filled_sf <- st_sf(
+  Region_Name = "Sahara Regional Transition",
+  geometry = sahara_filled
+)
+
+sahara_filled_sf <- sahara_filled_sf %>%
+  st_make_valid() %>%       # Fix invalid geometry
+  st_buffer(0)              # Merge tiny gaps/holes
+
+## Extract polygons as a list
+polys <- st_cast(sahara_filled_sf$geometry, "POLYGON")
+
+## Compute areas
+areas <- st_area(polys)
+
+## Keep only the largest polygon
+largest_poly <- polys[which.max(areas)]
+
+## Wrap back into sf as a single feature
+sahara_cleaned <- st_sf(
+  Region_Name = "Sahara Regional Transition",
+  geometry = st_sfc(largest_poly)
+)
+
+## Add cleand Saharan polygon to the other regions
+merged_regions <- merged_regions %>%
+  filter(Region_Name != "Sahara Regional Transition")
+
+merged_regions <- bind_rows(merged_regions, sahara_cleaned)
+
+## Make sure Region_Name is a factor
+merged_regions$Region_Name <- factor(merged_regions$Region_Name)
+
+# Get world countries
+countries <- ne_countries(scale = "medium", returnclass = "sf")
+
+# PLOT
+layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
+       widths = c(1.1, 0.6),  #  column widths
+       heights = c(3, 2))  # Adjust heights to fit all plots
 
 ### Plot 1: Phytogeographic Regions ###
 
 # Define colors
-n <- length(unique(merged_phytogeographic_regions$Region_Name))
-colors_regions <- colorRampPalette(brewer.pal(12, "Paired"))(n)
+palette_main <- c(
+  "Arabian Peninsula" = "darkorange1",
+  "Sahara Regional Transition" = "lightgoldenrod1",
+  "Sudanian Region" = "chartreuse2",
+  "Sahel Regional Transition" = "goldenrod1"
+)
+
+# Mediterranean sub-regions
+palette_medit <- c(
+  "Mediterranean Europe" = "olivedrab3",
+  "Mediterranean Africa" = "olivedrab2",
+  "Mediterranean/Sahara Transition" = "olivedrab4"
+)
+
+# Get all regions
+all_regions <- unique(merged_regions$Region_Name)
+
+# Combine the ones already colored
+colored_regions <- c(names(palette_main), names(palette_medit))
+
+# Remaining regions get shades of grey
+palette_grey <- setNames(
+  gray.colors(length(all_regions[!all_regions %in% colored_regions]), start = 0.8, end = 0.4),
+  all_regions[!all_regions %in% colored_regions]
+)
+
+# Final palette
+palette_final <- c(palette_main, palette_medit, palette_grey)
+col_vec <- palette_final[as.character(merged_regions$Region_Name)]
 
 plot(elevation_crop, col = terrain.colors(25), alpha = 0, legend = FALSE, axes = TRUE)
-plot(st_geometry(merged_phytogeographic_regions), 
-     col = colors_regions[as.numeric(merged_phytogeographic_regions$Region_Name)], 
-     , border = "black", main = "", add = TRUE)
+plot(st_geometry(merged_regions),
+     col = col_vec,  
+     border = NA,
+     main = "",
+     add = TRUE)
 
-mtext("(a)", side = 3, line = 1, at = -15, cex = 0.8)
+# Draw country borders on top
+plot(st_geometry(countries), 
+     border = "black", 
+     lwd = 0.7,       # line width of country borders
+     add = TRUE)
 
 ### Plot 2: Legend Phytogeographic Regions ###
 par(mar = c(0, 0, 0, 0))  # Remove margins
 plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
 legend("left", 
-       legend = levels(merged_phytogeographic_regions$Region_Name),
-       fill = colors_regions, 
+       legend = names(palette_final),
+       fill = palette_final,
        border = "black", 
-       cex = 0.7, 
-       title = NULL, 
+       cex = 0.8, 
+       title = "Phytogeographic regions", 
        bty = "n",  
-       xpd = TRUE)
-mtext("Phytogeographic regions                                                                   ", side = 3, line = -1, cex = 0.6, col = "black")
-
-
-
-### Plot 3: Biomes ###
-n <- length(unique(biomes$BIOME))
-my_colors <- brewer.pal(min(n, 12), "Paired")  # Ensure no errors for >12 colors
-biomes$col <- my_colors[as.integer(factor(biomes$BIOME))]
-
-plot(elevation_crop, col = adjustcolor(terrain.colors(100), alpha.f = 0.5), legend = FALSE)  
-plot(st_geometry(biomes), col = biomes$col, add = TRUE, border = "black")
-
-mtext("(b)", side = 3, line = -1, at = -15, cex = 0.8)
-
-### Plot 4: Legend biomes ###
-par(mar = c(0, 0, 0, 0))  # Remove margins
-plot(1, type = "n", axes = FALSE, xlab = "", ylab = "")
-legend("left", 
-       legend = unique(biomes$BIOME_definition),  
-       fill = my_colors,  
-       border = "black", 
-       cex = 0.7,  
-       title = "Biomes", 
-       bty = "n", 
        xpd = TRUE)
 
 
@@ -825,25 +881,34 @@ dated_records_binned <- na.omit(dated_records_binned)
 dated_records_binned <- filter(dated_records_binned, year_bin <= 20000)
 
 # Create the bar plot with color per Biogeographic area
-dated_records_temporal_distribution <- ggplot(dated_records_binned, 
+dated_records_temporal_distribution<- ggplot(dated_records_binned, 
                                               aes(x = year_bin, y = n, fill = `Biogeographic area`)) +
-  geom_bar(stat = "identity", color = "black", position = "stack") +  # Stack bars per Biogeographic area
+  
+  # AHP shaded region
+  geom_rect(aes(xmin = 14800, xmax = 5500, 
+                ymin = 0, ymax = 100),
+            fill = "lightgrey", alpha = 0.05) +  # pearl-grey translucent background
+  
+  # Bars 
+  geom_bar(stat = "identity", color = "black", position = "stack", alpha = 0.9) +
+  
+  # Annotate AHP on top 
+  annotate("text", x = (5500 + 14800) / 2, y = 105, label = "AHP", color = "black", size = 5, fontface = "bold", hjust = 0.5)  + # Add text "AHP" at the center of the line
+
+  
+  # Scales and theme 
+  scale_x_reverse() +
+  scale_fill_manual(values = palette_3) +
   theme_minimal() +
   labs(x = "Years BP", y = "Number of sites", fill = "Biogeographic region") +
-  scale_x_reverse() +  # Reverse x-axis for chronological representation
-  scale_fill_manual(values = palette_2) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  
         axis.text.y = element_text(size = 12),  
         axis.title.x = element_text(size = 12), 
         axis.title.y = element_text(size = 12),
         plot.title = element_text(size = 14),
         legend.title = element_text(size = 8), 
-        legend.text = element_text(size = 8)) + 
-  geom_segment(aes(x = 5500, xend = 14800, y = 30, yend = 30), color = "black", size = 1) +  # Horizontal line from x = 5500 to x = 14800 at y = 60
-  # Small vertical lines at both ends
-  geom_segment(aes(x = 5500, xend = 5500, y = 28, yend = 32), color = "black", size = 1) +  # Left end vertical
-  geom_segment(aes(x = 14800, xend = 14800, y = 28, yend = 32), color = "black", size = 1) +  # Right end vertical
-  annotate("text", x = (5500 + 14800) / 2, y = 35, label = "AHP", color = "black", size = 5, fontface = "bold", hjust = 0.5)  # Add text "AHP" at the center of the line
+        legend.text = element_text(size = 8))
+
 
 #--------------------------------------------------------#
 # 4) Latitudinal distribution of records according to their archive type----
@@ -871,34 +936,33 @@ sites_archive_type_count_filtered <- sites_archive_type_count |>   group_by(Arch
 
 sites_archive_type_count_filtered <- sites_archive_type_count_filtered |> filter(!Archive_type=="Unknown")
 
-# Calculate percentages so they are in the same scale!
-sites_archive_type_percentages <- sites_archive_type_count_filtered |>
-  group_by(Archive_type) |> 
-  mutate(
-    total_sites = sum(num_sites),
-    percent = round(num_sites / total_sites * 100,3)
-  ) |> 
-  ungroup()
+# Plot
 
-
-violin_plot_latitude_archive_type_num_sites <- ggplot(
-  sites_archive_type_percentages, 
-  aes(x = Archive_type, y = Latitude, fill = Archive_type, weight = percent)
+boxplot_latitude_archive_type_num_sites <- ggplot(
+  sites_archive_type_count_filtered, 
+  aes(x = Archive_type, y = Latitude, fill = Archive_type)
 ) +
-  geom_violin(
-    trim = FALSE, 
-    scale = "width",  # same max. width
-    width = 0.5          # wide violin
+  geom_boxplot(
+    width = 0.5,
+    outlier.shape = NA   # hide boxplot outliers since we’ll plot all points
+  ) +
+  geom_jitter(
+    aes(color = Archive_type),
+    width = 0.15,   # horizontal jitter
+    size = 2,
+    alpha = 0.7,
+    show.legend = FALSE
   ) +
   labs(x = "", y = "Latitude (degrees)") +
-  coord_cartesian(ylim = c(-10, 60)) +  # keeps all rows, just limits view
+  coord_cartesian(ylim = c(-10, 60)) +
   theme_minimal(base_size = 20) +
-  scale_fill_manual(values = palette_2) +
+  scale_fill_manual(values = palette_1) +
+  scale_color_manual(values = palette_1) +
   theme(
     legend.position = "none",
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
     plot.margin = margin(t = 2, r = 2, b = 2, l = 1)
-  ) 
+  )
 
 
 #--------------------------------------------------------#
@@ -916,81 +980,79 @@ sites_altitude_type$Altitude <- floor(sites_altitude_type$Altitude / 100) * 100
 
 names(sites_altitude_type)[3] <- "Biogeographic_area"
 
+# Number of marine records per biogeographic area
+n_records_marine <- sites_altitude_type |> filter(Archive_type =="Marine core")
+n_records_marine <- n_records_marine |> group_by(Biogeographic_area) |>
+  summarise(num_sites = n(), .groups = "drop")
+
 # Exclude marine cores
-sites_altitude_type <- sites_altitude_type |> filter(Archive_type !="Marine core")
+sites_altitude_type <- sites_altitude_type |> filter(!Altitude<0)
 
 # Count the number of sites per altitude and biogeographic area
 sites_altitude_type_count <- sites_altitude_type |>
   group_by(Altitude, Biogeographic_area) |>
   summarise(num_sites = n(), .groups = "drop")
 
+
 sites_altitude_type_count <- na.omit(sites_altitude_type_count)
 
-violin_plot_altitude_biogeography_num_sites <- ggplot(
+# Join the counts of marine records to the biogeographic areas
+biogeo_labels <- n_records_marine |>
+  mutate(label = paste0(Biogeographic_area, "\n","(N marine records = ", " ", num_sites, ")")) |>
+  select(Biogeographic_area, label)
+
+# If some Biogeographic_area have 0 marine sites, include them with (0)
+all_areas <- unique(sites_altitude_type_count$Biogeographic_area)
+biogeo_labels <- full_join(
+  tibble(Biogeographic_area = all_areas),
+  biogeo_labels,
+  by = "Biogeographic_area"
+) |>
+  mutate(label = ifelse(is.na(label),
+                        paste0(Biogeographic_area, " (0)"),
+                        label))
+
+# Boxplot
+
+boxplot_altitude_biogeography_num_sites <- ggplot(
   sites_altitude_type_count, 
-  aes(x = Biogeographic_area, y = Altitude, fill = Biogeographic_area, weight = num_sites)
+  aes(x = Biogeographic_area, y = Altitude, fill = Biogeographic_area)
 ) +
-  geom_violin(trim = FALSE, scale = "width", width = 0.5) + 
+  geom_boxplot(
+    width = 0.5,
+    outlier.shape = NA
+  ) +
+  geom_jitter(
+    aes(color = Biogeographic_area),
+    width = 0.15,
+    size = 2,
+    alpha = 0.7,
+    show.legend = FALSE
+  ) +
   labs(
-    x = "Biogeographic area",
+    x = "",
     y = "Altitude (meters)"
   ) +
   theme_minimal(base_size = 16) +
-  scale_y_continuous(
-    limits = c(-5000, 5000),            
-    breaks = seq(-5000, 5000, by = 1000)) + 
-  scale_fill_manual(values = palette_2) +
+  scale_y_continuous() +
+  scale_fill_manual(values = palette_3) +
+  scale_color_manual(values = palette_3) +
+  scale_x_discrete(labels = setNames(biogeo_labels$label, biogeo_labels$Biogeographic_area)) +
   theme(
     legend.position = "none",
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 16),
-    plot.margin = margin(10, 10, 10, 10))
+    axis.text.x = element_text(
+      angle = 0,        # keep labels horizontal
+      hjust = 0.5,      # center horizontally
+      vjust = 1,        # optional: tweak vertical position
+      size = 6
+    ),
+    plot.margin = margin(10, 10, 10, 10)
+  )
 
 
-#--------------------------------------------------------#
-# 6) Number of harmonised pollen taxa per phytogeographic affinity (proportion)----
-#--------------------------------------------------------#
-
-# Reshape data into long format
-phyto_aff_long <- phyto_aff |>
-  pivot_longer(cols = -Pollen_type_harmonised, # Keep Pollen_type_harmonised
-               names_to = "Phytogeographical_affinity", # Affinities become a new column
-               values_to = "Presence") |> # Presence/absence info
-  filter(Presence == "x")  # Keep only rows where the pollen type is associated with the affinity
-
-# Count the occurrences of each phytogeographic affinity
-affinity_counts <- phyto_aff_long |>
-  count(Phytogeographical_affinity) |>
-  arrange(desc(n))  # Sort in descending order
-
-# Calculate proportions 
-affinity_percentages <- affinity_counts |>
-mutate(percentage = n / sum(n) * 100)
-
-affinity_percentages$Phytogeographical_affinity <- gsub("_", " ", affinity_percentages$Phytogeographical_affinity) # removes the underscore in the names
-
-affinity_percentages <- affinity_percentages |> arrange(desc(percentage))
-order <- affinity_percentages$Phytogeographical_affinity
-
-# Ensure the Phytogeographical_affinity is a factor with the desired order
-affinity_percentages$Phytogeographical_affinity <- factor(affinity_percentages$Phytogeographical_affinity, levels = order)
-
-
-phyto_aff_barplot <- ggplot(affinity_percentages, aes(x = Phytogeographical_affinity, y = percentage)) +
-  geom_bar(stat = "identity", fill = "grey") + # fill all the bars in grey
-  geom_text(aes(label = paste0(round(percentage, 1), "%")), 
-            vjust = -0.5, 
-            size = 2) +
-  theme_minimal() +
-    labs(x = "",
-       y = "") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
-        axis.text.y = element_text(size = 10),
-        axis.title.x = element_text(size = 10),
-        axis.title.y = element_text(size = 10),
-        legend.position = "none")  # removes the legend
 
 #--------------------------------------------------------#
-# 7) Number of taxa per plant functional trait ----
+# 6) Number of taxa per plant functional trait ----
 #--------------------------------------------------------#
 
 # Select only the desired trait columns
@@ -1090,22 +1152,17 @@ dated_records_temporal_distribution
 ```
 
 ```{r}
-#| fig-cap: "Figure 7. Latitudinal distribution of pollen records (sites) according to their archive type"
-violin_plot_latitude_archive_type_num_sites
+#| fig-cap: "Figure 6. Latitudinal distribution of pollen records (sites) according to their archive type"
+boxplot_latitude_archive_type_num_sites
 ```
 
 ```{r}
-#| fig-cap: "Figure 8. Altitudinal distribution of pollen records (sites) according to the biogeographic area"
-violin_plot_altitude_biogeography_num_sites
+#| fig-cap: "Figure 7. Altitudinal distribution of pollen records (sites) according to the biogeographic area"
+boxplot_altitude_biogeography_num_sites
 ```
 
 ```{r}
-#| fig-cap: "Figure 9. Proportion of harmonised pollen types per phytogeographic affinity"
-phyto_aff_barplot
-```
-
-```{r}
-#| fig-cap: "Figure 10. Number of taxa per plant functional trait"
+#| fig-cap: "Figure 8. Number of taxa per plant functional trait"
 pft_barplot
 ```
 
