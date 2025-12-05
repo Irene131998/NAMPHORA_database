@@ -8,15 +8,10 @@ install_if_missing <- function(package) {
 # Processing pollen data ----
 # Check if any numeric values in the data frame have decimals
 
-has_decimals <- function(df) {
-  # Select numeric columns that are NOT 'depth' or contain 'median' or "BP" in the column name
-  pollen_cols <- df|>
-    select(where(is.numeric))|>
-    select(!matches("depth|median|BP|sample")) #eliminate columns that are 'depth' or 'median' or "BP" 
-  
-  # Check if any values have decimals
-  any(sapply(pollen_cols, function(col) any(col %% 1 != 0, na.rm = TRUE)))
+has_decimals <- function(x) {
+  is.numeric(x) && any(x %% 1 != 0, na.rm = TRUE)
 }
+
 
 # Species-pollen types list ----
 

@@ -13,7 +13,9 @@ invisible(lapply(libraries, install_if_missing))
 # Load the libraries
 lapply(libraries, require, character.only = TRUE)
 
-# Modify Gobero_1_Niger site as it has percentages and total pollen count is not reported 
+# Modify Gobero_1_Niger & Beni_Mtir_2_Tunisia sites as they have percentages and total pollen count is not reported 
+
+## Gobero
 gobero_niger <- read_csv(normalizePath("data/raw_data/pollen_data/fossil/Gobero_1_Niger.csv"))
 percentage_data <- gobero_niger[, 5:ncol(gobero_niger)]
 
@@ -28,6 +30,21 @@ estimated_counts <- round(estimated_counts)
 
 Gobero_1_Niger_counts <- cbind(gobero_niger[, 1:4],estimated_counts) 
 
+## Beni Mtir
+Beni_Mtir_2_Tunisia <- read_csv(normalizePath("data/raw_data/pollen_data/fossil/Beni_Mtir_2_Tunisia.csv"))
+
+percentage_data <- Beni_Mtir_2_Tunisia[, 5:ncol(Beni_Mtir_2_Tunisia)]
+
+# Find the lowest non-zero percentage value (min percentage = 1 grain)
+min_percent <- min(percentage_data[percentage_data > 0], na.rm = TRUE)
+
+# Estimate counts by dividing all values by the minimum percentage
+estimated_counts <- percentage_data / min_percent
+
+# Round to nearest integer (to get real grain counts)
+estimated_counts <- round(estimated_counts)
+
+Beni_Mtir_2_Tunisia_counts <- cbind(Beni_Mtir_2_Tunisia[, 1:4],estimated_counts) 
 
 #--------------------------------------------------------#
 # 1. Add new harmonised taxa names to each individual files (records)----
@@ -56,6 +73,8 @@ if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }
 
+file_path <- file_paths[[140]]
+
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"), name_repair = "minimal")
@@ -64,6 +83,12 @@ for (file_path in file_paths) {
   if (grepl("Gobero_1_Niger", tolower(basename(file_path)))) {
     message("Replacing Gobero file with updated grain count version.")
     df <- Gobero_1_Niger_counts
+  }
+  
+  # Replace with modified Beni Mtir data if it's the Beni Mtir file
+  if (grepl("Beni_Mtir_2_Tunisia", tolower(basename(file_path)))) {
+    message("Replacing Gobero file with updated grain count version.")
+    df <- Beni_Mtir_2_Tunisia_counts
   }
   
 
@@ -328,7 +353,6 @@ if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }
 
-file_path <- file_paths[[409]]
 
 for (file_path in file_paths) {
   # Read the file into R
@@ -338,10 +362,23 @@ for (file_path in file_paths) {
   # Remove columns with  empty names
   df <- df[, !(colnames(df) == "")]
   
-  if (grepl("Uan_Afuda_Libya", tolower(basename(file_path)))) {
-    message("As original raw data had a percentage value in the Commicarpus-type column in one row (1.022) which corresponds to the harmonised pollen type of Nyctaginaceae, we transformed to raw count of 1")
-    # Identify rows where the value is 1.022 and set it to 1
-    df$Nyctaginaceae <- ifelse(df$Nyctaginaceae == 1.022, 1, df$Nyctaginaceae)
+  
+  # Some records have a column with percentage (might be an error), so we round it (as it is not the whole record that is in percentages)
+
+  # Check if any column in df has decimals
+  if (any(sapply(df, has_decimals))) {
+    message("This data frame has at least one column with decimals.")
+   
+    decimal_cols <- names(df)[sapply(df, has_decimals)]
+    exclude_keywords <- c("sample", "bp", "depth","concentration","age","quantity","weight","flux","rate","concentration","volume","mass","accumulation","charcoal", "sum", "spike", "grammi", "grains")  # keywords to exclude
+    
+    # Keep only columns that do NOT contain these keywords (case-insensitive)
+    decimal_cols_to_round <- decimal_cols[!grepl(paste(exclude_keywords, collapse = "|"), decimal_cols, ignore.case = TRUE)]
+    
+    df[decimal_cols_to_round] <- lapply(df[decimal_cols_to_round], round)
+    message(paste0("Rounded columns with decimals for site ",basename(file_path),", for columns: ", decimal_cols_to_round, collapse = ", "))
+  } else {
+    message("No decimal columns to round.")
   }
   
   # Clean taxa names
@@ -422,7 +459,6 @@ for (file_path in file_paths) {
   
   # Proceed only if no decimals found in percentages_pollen_sum data
   
-  if (!has_decimals(percentages_pollen_sum)) {
     # Compute percentages by dividing each value by the "Pollen sum" row values
     percentages_pollen_sum <- percentages_pollen_sum |>
       mutate(across(starts_with("V"), ~ . / pollen_sum_row[1, cur_column()] * 100)) # [1, cur_column()] selects the value from the "Pollen sum" row in the same column (.)
@@ -430,11 +466,7 @@ for (file_path in file_paths) {
     # Round %
     percentages_pollen_sum <- percentages_pollen_sum |>
       mutate(across(starts_with("V"), ~ round(.x, 3)))  
-  } else {
-    # If decimals found, skip percentage calculation
-    percentages_pollen_sum <- percentages_pollen_sum
-  }
-  
+
   # 4) Calculate percentages (over total sum: Indeterminable & Unknown)
   percentages_total_sum <- harmonised_df_sums |>
     dplyr::filter(Habit_summarised %in% c("Unknown/Indeterminable"))|>
