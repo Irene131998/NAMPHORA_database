@@ -66,6 +66,7 @@ for (file_path in file_paths) {
     df <- Gobero_1_Niger_counts
   }
   
+
   # Clean taxa names
   colnames(df) <- colnames(df) |>
     trimws() |>
@@ -327,6 +328,8 @@ if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }
 
+file_path <- file_paths[[409]]
+
 for (file_path in file_paths) {
   # Read the file into R
   df <- readr::read_csv(file_path, locale = locale(encoding = "latin1"),
@@ -335,6 +338,11 @@ for (file_path in file_paths) {
   # Remove columns with  empty names
   df <- df[, !(colnames(df) == "")]
   
+  if (grepl("Uan_Afuda_Libya", tolower(basename(file_path)))) {
+    message("As original raw data had a percentage value in the Commicarpus-type column in one row (1.022) which corresponds to the harmonised pollen type of Nyctaginaceae, we transformed to raw count of 1")
+    # Identify rows where the value is 1.022 and set it to 1
+    df$Nyctaginaceae <- ifelse(df$Nyctaginaceae == 1.022, 1, df$Nyctaginaceae)
+  }
   
   # Clean taxa names
   colnames(df) <- colnames(df) |>
@@ -413,6 +421,7 @@ for (file_path in file_paths) {
     mutate(across(starts_with("V"), as.numeric))
   
   # Proceed only if no decimals found in percentages_pollen_sum data
+  
   if (!has_decimals(percentages_pollen_sum)) {
     # Compute percentages by dividing each value by the "Pollen sum" row values
     percentages_pollen_sum <- percentages_pollen_sum |>
