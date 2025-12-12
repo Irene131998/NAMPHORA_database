@@ -300,9 +300,10 @@ Different sections (folders) of the project are structured as follows:
     -   `/references`: Contains the *database_references.csv* file,
         which lists references for each dataset (i.e. pollen records/age
         data, taxonomy, habit, phytogeographic affinity and plants
-        functional traits), and the *contributing_authors_list.docx*
-        file, which includes a list with all contributing authors who
-        provided data to the database.
+        functional traits), and the
+        *Contributing_data_authors_list.docx* file, which includes a
+        list with all contributing authors who provided data to the
+        database.
 
     -   `/taxonomy`: Contains the following:
 
