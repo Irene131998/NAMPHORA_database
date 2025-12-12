@@ -182,13 +182,15 @@ merged_regions$Region_Name <- factor(merged_regions$Region_Name)
 # Get world countries
 countries <- ne_countries(scale = "medium", returnclass = "sf")
 
-# PLOT
-png(normalizePath("outputs/maps/phytogeographical_regions_map.png"),  
-    width = 29,  
-    height = 15,  
-    units = "cm",  
-    res = 2700,  # High resolution
-    pointsize = 15)  # Adjust text size for better readability
+# Plot
+png(
+  normalizePath("outputs/maps/phytogeographical_regions_map.png"),
+  width = 14,       # width in cm
+  height = 8,       # height in cm
+  units = "cm",
+  res = 300,        # resolution in dpi
+  pointsize = 12    # adjust text size
+)
 
 layout(matrix(1:2, nrow = 1, ncol = 2, byrow = TRUE), 
        widths = c(1.1, 0.6),  #  column widths
@@ -247,7 +249,7 @@ legend("left",
        legend = names(palette_final),
        fill = palette_final,
        border = "black", 
-       cex = 0.8, 
+       cex = 0.5, 
        title = "Phytogeographic regions", 
        bty = "n",  
        xpd = TRUE)
@@ -534,17 +536,17 @@ map_study_area <- ggplot() +
            xlim = c(xmin, xmax),
            ylim = c(ymin, ymax),
            expand = FALSE) +  # flat map
-  theme_minimal(base_size = 16) +   # increases all text a bit
+  theme_minimal(base_size = 12) +   # increases all text a bit
   labs(
     title = "",
     x = "Longitude",
     y = "Latitude"
   ) +
   theme(
-    axis.title = element_text(size = 18),               # axis titles bigger
-    axis.text = element_text(size = 14),                               # axis tick labels
-    legend.title = element_text(size = 14),
-    legend.text = element_text(size = 12)
+    axis.title = element_text(size = 12),               # axis titles bigger
+    axis.text = element_text(size = 10),                               # axis tick labels
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 8)
   )
 
 map_study_area
@@ -553,7 +555,7 @@ map_study_area
 ggsave(
   "outputs/maps/study_area.png",
   plot = map_study_area,
-  width = 14, height = 7, dpi = 600
+  width = 14, height = 7, dpi = 600, units = "cm"
 )
 
 
