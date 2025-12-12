@@ -246,9 +246,6 @@ Different sections (folders) of the project are structured as follows:
         -   `/original_excel_files_received_from_authors`, which stores
             the original files provided by the authors.
 
-        -   Table S1.docx file, which includes a list with all
-            contributing authors who provided data to the database.
-
 -   `images/`: Contains the PNG files of the database workflow, pollen
     harmonisation and plant traits processing workflow and the database
     logo.
@@ -303,7 +300,9 @@ Different sections (folders) of the project are structured as follows:
     -   `/references`: Contains the *database_references.csv* file,
         which lists references for each dataset (i.e. pollen records/age
         data, taxonomy, habit, phytogeographic affinity and plants
-        functional traits).
+        functional traits), and the *contributing_authors_list.docx*
+        file, which includes a list with all contributing authors who
+        provided data to the database.
 
     -   `/taxonomy`: Contains the following:
 
