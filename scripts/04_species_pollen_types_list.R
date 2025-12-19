@@ -19,7 +19,7 @@ lapply(libraries, require, character.only = TRUE)
 #--------------------------------------------------------#
 
 # Read pollen types taxa csv
-Taxa_pollen_types <- readr::read_csv((normalizePath("data/processed_data/taxonomy/Taxa_pollen_types_list.csv")),locale = locale(encoding = "latin1")) # pollen types and the taxa that produce the pollen grain (every pollen type with t. and undif. or typeA/typeB: get genera manually/ everything else, get species as it is the taxon)
+Taxa_pollen_types <- readr::read_csv((normalizePath("data/processed_data/taxonomy/taxa_pollen_types_list.csv")),locale = locale(encoding = "latin1")) # pollen types and the taxa that produce the pollen grain (every pollen type with t. and undif. or typeA/typeB: get genera manually/ everything else, get species as it is the taxon)
 
 # Remove leading and trailing spaces
 Taxa_pollen_types$Taxa <- trimws(Taxa_pollen_types$Taxa)
