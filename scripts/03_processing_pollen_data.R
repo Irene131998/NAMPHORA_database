@@ -395,7 +395,7 @@ for (file_path in file_paths) {
   # Replace NA values to 0
   df <- df |>
     mutate(across(
-      .cols = !matches("depth|BP|Sample"),   # all columns except those with "depth" or "BP"
+      .cols = !matches("depth|BP|Sample|references"),   # all columns except those with "depth", "sample", "BP" or "references"
       ~ replace_na(., 0)
     ))
   
@@ -497,7 +497,7 @@ for (file_path in file_paths) {
   
   # Join depth, sums and BP information from original df 
   original_df <- harmonised_df_sums|>
-    dplyr::filter(str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA|Pollen sum|Total sum")) 
+    dplyr::filter(str_detect(Pollen_type_harmonised, "(?i)depth|references|sample|site|BP|AD/BC|age_NA|Pollen sum|Total sum")) 
   
   final_df <- rbind(percentages_df,original_df)
   final_df <- final_df |> select(-c(Habit_summarised,Pollen_type_harmonised))
@@ -552,7 +552,7 @@ for (file_path in file_paths) {
   # Replace NA values to 0
   df <- df |>
     mutate(across(
-      .cols = !matches("depth|BP|sample"),   # all columns except those with "depth" or "BP"
+      .cols = !matches("depth|BP|references|sample"),   # all columns except those with "depth" or "BP"
       ~ replace_na(., 0)
     ))
   
@@ -660,7 +660,7 @@ for (file_path in file_paths) {
   
   # Join depth, sums and BP information from original df
   original_df <- harmonised_df_sums|>
-    filter(str_detect(Pollen_type_harmonised, "(?i)depth|sample|site|BP|AD/BC|age_NA|Pollen sum|Total sum"))
+    filter(str_detect(Pollen_type_harmonised, "(?i)depth|references|sample|site|BP|AD/BC|age_NA|Pollen sum|Total sum"))
   
   final_df <- rbind(percentages_df,original_df)
   final_df <- final_df |> select(-c(Habit_summarised,Pollen_type_harmonised))

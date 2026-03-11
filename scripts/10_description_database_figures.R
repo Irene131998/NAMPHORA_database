@@ -27,6 +27,7 @@ phyto_aff <- read_csv(normalizePath("data/processed_data/taxonomy/phytogeographi
 pft <- read_csv(normalizePath("data/processed_data/plant_functional_types/total_pfts.csv"))
 
 
+
 # Colour palette (colour-blind friendly).
 palette_1 <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999",  "#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",  "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#1F78B4", "#33A02C", "#FB9A99", "#E31A1C",  "#FDBF6F", "#CAB2D6", "#6A3D9A", "#FF7F00")
 

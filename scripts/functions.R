@@ -153,3 +153,45 @@ continuous_traits_unit <- function(df){
   
 }
 
+
+# Plotting maps function ----
+
+plot_sector <- function(data, xmin, xmax, ymin, ymax, zoom_level, title_label) {
+  
+  bbox_sector <- st_as_sfc(st_bbox(
+    c(xmin = xmin, xmax = xmax,
+      ymin = ymin, ymax = ymax),
+    crs = 4326
+  ))
+  
+  base_map <- get_tiles(bbox_sector,
+                        provider = "Esri.WorldImagery",
+                        zoom = zoom_level)
+  
+  ggplot() +
+    layer_spatial(base_map) +
+    geom_point(
+      data = data,
+      aes(x = Longitude,
+          y = Latitude,
+          shape = Record_type,
+          fill = Record_type),
+      size = 3,
+      color = "black",
+      stroke = 0.4,
+      alpha = 0.9
+    ) +
+    scale_shape_manual(values = shape_values) +
+    scale_fill_manual(values = fill_values) +
+    coord_sf(
+      xlim = c(xmin, xmax),
+      ylim = c(ymin, ymax),
+      expand = FALSE
+    ) +
+    labs(title = title_label) +
+    theme_minimal(base_size = 15) +
+    theme(
+      plot.title = element_text(face = "bold", size = 18, hjust = 0),
+      legend.position = "none"
+    )
+}
