@@ -1,5 +1,5 @@
 ---
-title: "NAMPHORA: An Open-access Database of Fossil and Modern Pollen Records from the Mediterranean, Arabian and Northern Africa regions"
+title: "NAMPHORA: An Open-access Database of Fossil and Modern Pollen Records from Northern Africa and adjacent Mediterranean and Arabian regions"
 author:
   
   - name: Irene Solano
